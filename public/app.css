@@ -2042,6 +2042,11 @@ input:where([type='file']):focus {
     color: rgba(255, 255, 255, 1);
     color: rgba(255, 255, 255, var(--tw-text-opacity, 1));
 }
+.text-green-600 {
+    --tw-text-opacity: 1;
+    color: rgba(22, 163, 74, 1);
+    color: rgba(22, 163, 74, var(--tw-text-opacity, 1));
+}
 .underline {
     text-decoration-line: underline;
 }
