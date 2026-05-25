@@ -6,6 +6,16 @@
 | cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
 #}
 {% set important_links = theme.settings.get('important_links') %}
+
+{# 🚀 هنا حقنا السويتش الجديد الخاص بك shret_aaalane #}
+{% if theme.settings.shret_aaalane %}
+  <div class="custom-announcement-bar">
+    <div class="container text-center">
+        <span>🚀 عروض حصرية لفترة محدودة في متجرنا!</span>
+    </div>
+  </div>
+{% endif %}
+
 <header class="store-header">
   {# Top Nav #}
   <div class="top-navbar">
@@ -61,10 +71,7 @@
                       <custom-main-menu></custom-main-menu>
                   </div>
                   <div class="flex items-center justify-end my-2.5">
-                      <!-- Welcome Message -->
-                      <div class="welcome-message text-green-600 font-bold mx-2 px-3 py-1 bg-green-50 rounded-full">
-                          ويلكوم
-                      </div>
+                      {# ✨ تم تنظيف العبارة المشوهة هنا وتجهيز مكانها ليكون أنيقاً #}
                       <salla-user-menu avatar-only show-header show-trigger></salla-user-menu>
                       <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
                         <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
