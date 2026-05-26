@@ -238,15 +238,35 @@
             "selected": false
         },
         {
-            "id": "shret_aaalane",
-            "type": "boolean",
-            "format": "switch",
-            "label": "شريط اعلاني",
-            "description": null,
+            "id": "logo_position",
+            "type": "items",
+            "format": "dropdown-list",
+            "label": "مكان الشعار (اللوجو)",
+            "description": "مكان الشعار (اللوجو)",
             "labelHTML": null,
-            "icon": "sicon-toggle-off",
-            "value": true,
-            "selected": false,
+            "icon": "sicon-keyboard_arrow_down",
+            "selected": [
+                {
+                    "label": "الوضع الافتراضي (يمين)",
+                    "value": "right",
+                    "key": "619fac46-0038-49f7-9abe-aa78c3835d24"
+                }
+            ],
+            "options": [
+                {
+                    "label": "الوضع الافتراضي (يمين)",
+                    "value": "right",
+                    "key": "619fac46-0038-49f7-9abe-aa78c3835d24"
+                },
+                {
+                    "label": "المنتصف",
+                    "value": "center",
+                    "key": "169852d0-99e2-49c1-bc0e-679147c03735"
+                }
+            ],
+            "source": "Manual",
+            "multichoice": false,
+            "searchable": false,
             "required": false
         }
     ],
