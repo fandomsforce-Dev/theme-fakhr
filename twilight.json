@@ -239,30 +239,15 @@
         },
         {
             "id": "shret_aaalane",
-            "type": "collection",
-            "format": "collection",
-            "label": "Collection",
+            "type": "boolean",
+            "format": "switch",
+            "label": "شريط اعلاني",
             "description": null,
             "labelHTML": null,
-            "item_label": null,
-            "icon": "sicon-list-add",
-            "fields": [
-                {
-                    "id": "shret_aaalane.shret_a",
-                    "type": "boolean",
-                    "format": "switch",
-                    "label": "شريط اعلاني",
-                    "description": null,
-                    "labelHTML": null,
-                    "icon": "sicon-toggle-off",
-                    "value": true,
-                    "selected": false,
-                    "required": false
-                }
-            ],
-            "value": [],
-            "minLength": 1,
-            "maxLength": "1"
+            "icon": "sicon-toggle-off",
+            "value": true,
+            "selected": false,
+            "required": false
         }
     ],
     "components": [
