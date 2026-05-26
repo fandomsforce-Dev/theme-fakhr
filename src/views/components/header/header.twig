@@ -45,38 +45,43 @@
       <div class="inner bg-inherit w-full">
           <div class="container">
               
-              {# تقسيم الهيدر لـ 3 حارات مستقلة تماماً بنظام Grid #}
-              <div class="grid grid-cols-3 w-full items-center relative" id="header-grid-layout">
+              {# حاوية مرنة تجمع العناصر بتوزيع طبيعي #}
+              <div class="flex w-full items-center justify-between relative" id="header-inner-flex">
 
-                  {# 1. قسم اللوجو - مستقل ويتحرك بناءً على خيار لوحة التحكم #}
-                  <div class="logo-block flex items-center {% if logo_position == 'center' %} justify-center col-start-2 col-span-1 {% else %} justify-start col-start-1 {% endif %}" id="logo-wrapper">
-                      <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
-                        <i class="sicon-menu text-primary text-2xl"></i>
-                      </a>
+                  {# حاوية تجمع اللوجو والمنيو في الجهة اليمنى دائماً #}
+                  <div class="flex items-center gap-6 flex-1 justify-start" id="right-side-zone">
+                      
+                      {# 1. قسم اللوجو - يتحرك بحرية بناءً على كلاس الـ body #}
+                      <div class="logo-block flex items-center" id="logo-wrapper">
+                          <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
+                            <i class="sicon-menu text-primary text-2xl"></i>
+                          </a>
 
-                      <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: 175px !important; display: block;">
-                          <img fetchpriority="high" 
-                               width="100%" 
-                               height="100%" 
-                               loading="eager" 
-                               src="{{ store.logo|cdn(175) }}" 
-                               alt="{{ store.name }} logo">
-                          
-                          {% if is_page('index') %}
-                            <h1 class="sr-only">{{ store.name }}</h1>
-                          {% else %}
-                            <h2 class="sr-only">{{ store.name }}</h2>
-                          {% endif %}
-                      </a>
+                          <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: 175px !important; display: block;">
+                              <img fetchpriority="high" 
+                                   width="100%" 
+                                   height="100%" 
+                                   loading="eager" 
+                                   src="{{ store.logo|cdn(175) }}" 
+                                   alt="{{ store.name }} logo">
+                              
+                              {% if is_page('index') %}
+                                <h1 class="sr-only">{{ store.name }}</h1>
+                              {% else %}
+                                <h2 class="sr-only">{{ store.name }}</h2>
+                              {% endif %}
+                          </a>
+                      </div>
+
+                      {# 2. قسم المنيو الرئيسي - ثابت على اليمين ومستقل تماماً تمهيداً لمكونك الجديد #}
+                      <div class="menu-block flex justify-start" id="menu-wrapper">
+                          <custom-main-menu></custom-main-menu>
+                      </div>
+
                   </div>
 
-                  {# 2. قسم المنيو الرئيسي - معزول تماماً وثابت في مكانه (الحارة الوسطى افتراضياً) #}
-                  <div class="menu-block flex {% if logo_position == 'center' %} col-start-1 col-span-3 row-start-2 justify-center mt-2 {% else %} col-start-2 justify-center {% endif %}" id="menu-wrapper">
-                      <custom-main-menu></custom-main-menu>
-                  </div>
-
-                  {# 3. قسم السلة والحساب وتجربة الكتابة - ثابت دائماً يساراً #}
-                  <div class="actions-block flex items-center justify-end col-start-3" id="actions-wrapper">
+                  {# 3. قسم السلة والحساب وتجربة الكتابة - ثابت دائماً في أقصى اليسار #}
+                  <div class="actions-block flex items-center justify-end" id="actions-wrapper">
                       <div class="welcome-message text-green-600 font-bold mx-2 px-3 py-1 bg-green-50 rounded-full">
                          تجربة الكتابة
                       </div>
@@ -93,32 +98,25 @@
   </div>
 </header>
 
-{# 🎯 استهدفنا كلاس الـ body لسنترة اللوجو بشكل مستقل وعزل المنيو #}
-{% if logo_position == 'center' %}
+{# 🎯 الستايل نقي 100% وبدون أي شروط Twig تسبب أخطاء في الـ VS Code #}
 <style>
-  body.body-logo-center .navbar-brand,
   body .navbar-brand {
       float: none !important;
       margin: 0 !important;
   }
-  
+
+  /* عند تفعيل خيار السنترة، يطير اللوجو للمنتصف وتظل المنيو ثابتة في اليمين بشكل مستقل */
   @media (min-width: 1024px) {
-      #header-grid-layout {
-          grid-template-columns: 1fr auto 1fr !important;
+      body.body-logo-center #logo-wrapper {
+          position: absolute !important;
+          left: 50% !important;
+          top: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          z-index: 10 !important;
       }
-      #logo-wrapper {
-          grid-column: 2 / span 1 !important;
-          grid-row: 1 !important;
-      }
-      #menu-wrapper {
-          grid-column: 1 / span 3 !important;
-          grid-row: 2 !important;
-          margin-top: 12px !important;
-      }
-      #actions-wrapper {
-          grid-column: 3 / span 1 !important;
-          grid-row: 1 !important;
+      body.body-logo-center #menu-wrapper {
+          margin-right: 0 !important;
+          justify-content: flex-start !important;
       }
   }
 </style>
-{% endif %}
