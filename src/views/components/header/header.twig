@@ -5,35 +5,25 @@
 | cart.items_count | int     |                                 |
 | cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
 #}
-{% set important_links = theme.settings.get('important_links') %}
 
-{# 🚀 السويتش الخاص بالشريط الإعلاني #}
-{% if theme.settings.shret_aaalane %}
-  <div class="custom-announcement-bar">
-    <div class="container text-center">
-        <span>🚀 عروض حصرية لفترة محدودة في متجرنا!</span>
-    </div>
-  </div>
-{% endif %}
+{% set important_links = theme.settings.get('important_links') %}
+{% set logo_position = theme.settings.get('logo_position', 'center') %}
 
 <header class="store-header">
   {# Top Nav #}
   <div class="top-navbar">
     <div class="container flex justify-between">
       <div class="flex-1 flex items-center gap-2">
-          {# Footer Menu #}
           {% if important_links %}
             <salla-menu source="footer" topnav></salla-menu>
           {% endif %}
 
-          {# Language & Currency Component #}
           <div class="header-buttons">
               {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
                   <salla-localization-modal show-trigger></salla-localization-modal>
               {% endif %}
           </div>
 
-          {# Scopes | Branches #}
           {% if store.scope %}
               <button class="btn--rounded-gray"
                       onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
@@ -41,7 +31,6 @@
               </button>
           {% endif %}
 
-          {# Search bar #}
           <div class="header-search flex-1">
             <salla-search inline oval height="36"></salla-search>
           </div>
@@ -52,39 +41,89 @@
   </div>
 
   {# Main Nav #}
-  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center">
+  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center py-4">
       <div class="inner bg-inherit w-full">
           <div class="container">
-              {# ✨ هنا التعديل الذكي: نغير التوزيع إلى السنترة فقط إذا اختار التاجر المنتصف #}
-              <div class="flex items-stretch justify-between relative {% if theme.settings.logo_position == 'center' %} lg:justify-center {% endif %}">
-                  
-                  {# قسم اللوجو والمنيو الرئيسي #}
-                  <div class="flex items-center {% if theme.settings.logo_position == 'center' %} lg:flex-col lg:justify-center lg:gap-2 {% endif %}">
+              {# هنا الخلطة: الحاوية تتغير بالكامل بناءً على خيار السنترة #}
+              <div class="flex w-full {% if logo_position == 'center' %} flex-col items-center justify-center gap-4 {% else %} items-center justify-between relative {% endif %}" id="header-inner-layout">
+
+                  {# 1. حاوية اللوجو وزر الجوال #}
+                  <div class="flex items-center {% if logo_position == 'center' %} justify-center mx-auto w-full {% endif %}" id="logo-wrapper">
                       <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
                         <i class="sicon-menu text-primary text-2xl"></i>
                       </a>
-                      
-                      <a class="navbar-brand" href="{{ store.url }}">
-                          <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
+
+                      <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: 175px !important; display: block;">
+                          <img fetchpriority="high" 
+                               width="100%" 
+                               height="100%" 
+                               loading="eager" 
+                               src="{{ store.logo|cdn(175) }}" 
+                               alt="{{ store.name }} logo">
+                          
                           {% if is_page('index') %}
                             <h1 class="sr-only">{{ store.name }}</h1>
                           {% else %}
                             <h2 class="sr-only">{{ store.name }}</h2>
                           {% endif %}
                       </a>
-                      
-                      <custom-main-menu {% if theme.settings.logo_position == 'center' %} class="lg:mt-1" {% endif %}></custom-main-menu>
                   </div>
 
-                  {# قسم الحساب والسلة (يتحول إلى تثبيت مطلق باليسار absolute لو كان الشعار بالمنتصف عشان يحافظ على التوازن) #}
-                  <div class="flex items-center justify-end my-2.5 {% if theme.settings.logo_position == 'center' %} lg:absolute lg:left-4 lg:top-1/2 lg:-translate-y-1/2 {% endif %}">
+                  {# 2. المنيو الرئيسي #}
+                  <div class="flex {% if logo_position == 'center' %} justify-center w-full {% endif %}" id="menu-wrapper">
+                      <custom-main-menu></custom-main-menu>
+                  </div>
+
+                  {# 3. السلة والحساب #}
+                  <div class="flex items-center justify-end my-2.5 {% if logo_position == 'center' %} lg:absolute lg:left-4 lg:top-1/2 lg:-translate-y-1/2 m-0 {% endif %}" id="actions-wrapper">
+                      <div class="welcome-message text-green-600 font-bold mx-2 px-3 py-1 bg-green-50 rounded-full">
+                         تجربة الكتابة
+                      </div>
                       <salla-user-menu avatar-only show-header show-trigger></salla-user-menu>
                       <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
                         <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
                       </salla-cart-summary>
                   </div>
+
               </div>
           </div>
       </div>
   </div>
 </header>
+
+{# 🎯 القوة الضاربة: نربط السنترة بوجود كلاس body-logo-center المطبوع من الماستر لإلغاء جافاسكريبت سلة القديم #}
+<style>
+  body.body-logo-center #header-inner-layout {
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 16px !important;
+  }
+  body.body-logo-center #logo-wrapper {
+      justify-content: center !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      width: auto !important;
+  }
+  body.body-logo-center .navbar-brand {
+      float: none !important;
+      display: block !important;
+      margin: 0 auto !important;
+  }
+  body.body-logo-center #menu-wrapper {
+      justify-content: center !important;
+      width: 100 !important;
+  }
+  @media (min-width: 1024px) {
+      body.body-logo-center .main-nav-container .container {
+          position: relative !important;
+      }
+      body.body-logo-center #actions-wrapper {
+          position: absolute !important;
+          left: 16px !important;
+          top: 50% !important;
+          transform: translateY(-50%) !important;
+          margin: 0 !important;
+      }
+  }
+</style>
