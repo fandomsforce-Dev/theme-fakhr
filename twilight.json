@@ -126,6 +126,36 @@
             "required": false
         },
         {
+            "id": "menu_position",
+            "type": "items",
+            "format": "radio-list",
+            "label": "مكان المنيو",
+            "description": null,
+            "labelHTML": null,
+            "icon": "sicon-list",
+            "selected": [
+                {
+                    "label": "الوضع الافتراضي ( يمين )",
+                    "value": "right",
+                    "key": "c6454777-9e50-473a-8eb1-d5fab47c5834"
+                }
+            ],
+            "options": [
+                {
+                    "label": "الوضع الافتراضي ( يمين )",
+                    "value": "right",
+                    "key": "c6454777-9e50-473a-8eb1-d5fab47c5834"
+                },
+                {
+                    "label": "المنتصف",
+                    "value": "center",
+                    "key": "aeda2b6f-9c96-4a9f-8fdd-47f6550448ac"
+                }
+            ],
+            "source": "Manual",
+            "required": false
+        },
+        {
             "id": "header_is_sticky",
             "label": "تثبت القائمة الرئيسية أعلى الصفحة عند التمرير لأسفل",
             "description": "يُنصح بالغاء تفعيلها في حالة وجود عناصر كثيرة في القائمة المنسدلة",
