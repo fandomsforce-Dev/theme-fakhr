@@ -30,7 +30,7 @@
             "type": "items",
             "format": "dropdown-list",
             "label": "مكان الشعار (اللوجو)",
-            "description": "مكان الشعار (اللوجو)",
+            "description": null,
             "labelHTML": null,
             "icon": "sicon-keyboard_arrow_down",
             "selected": [
