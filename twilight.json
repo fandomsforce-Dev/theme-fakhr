@@ -26,38 +26,6 @@
     ],
     "settings": [
         {
-            "id": "logo_position",
-            "type": "items",
-            "format": "dropdown-list",
-            "label": "مكان الشعار (اللوجو)",
-            "description": null,
-            "labelHTML": null,
-            "icon": "sicon-keyboard_arrow_down",
-            "selected": [
-                {
-                    "label": "الوضع الافتراضي (يمين)",
-                    "value": "right",
-                    "key": "619fac46-0038-49f7-9abe-aa78c3835d24"
-                }
-            ],
-            "options": [
-                {
-                    "label": "الوضع الافتراضي (يمين)",
-                    "value": "right",
-                    "key": "619fac46-0038-49f7-9abe-aa78c3835d24"
-                },
-                {
-                    "label": "المنتصف",
-                    "value": "center",
-                    "key": "169852d0-99e2-49c1-bc0e-679147c03735"
-                }
-            ],
-            "source": "Manual",
-            "multichoice": false,
-            "searchable": false,
-            "required": false
-        },
-        {
             "id": "squar_photo_bg_image_size",
             "type": "items",
             "format": "dropdown-list",
@@ -115,6 +83,47 @@
             "id": "static-label2",
             "value": "<div class='rounded-lg' ><h6 > خيارات أعلى الصفحة</h6></div>",
             "variant": "h6"
+        },
+        {
+            "id": "title",
+            "type": "static",
+            "format": "title",
+            "label": "Title",
+            "value": "التحكم باتجاه الشعا ر(اللوجو) & المنيو",
+            "variant": "h6",
+            "icon": "sicon-format-text"
+        },
+        {
+            "id": "logo_position",
+            "type": "items",
+            "format": "dropdown-list",
+            "label": "مكان الشعار (اللوجو)",
+            "description": null,
+            "labelHTML": null,
+            "icon": "sicon-keyboard_arrow_down",
+            "selected": [
+                {
+                    "label": "الوضع الافتراضي (يمين)",
+                    "value": "right",
+                    "key": "619fac46-0038-49f7-9abe-aa78c3835d24"
+                }
+            ],
+            "options": [
+                {
+                    "label": "الوضع الافتراضي (يمين)",
+                    "value": "right",
+                    "key": "619fac46-0038-49f7-9abe-aa78c3835d24"
+                },
+                {
+                    "label": "المنتصف",
+                    "value": "center",
+                    "key": "169852d0-99e2-49c1-bc0e-679147c03735"
+                }
+            ],
+            "source": "Manual",
+            "multichoice": false,
+            "searchable": false,
+            "required": false
         },
         {
             "id": "header_is_sticky",
