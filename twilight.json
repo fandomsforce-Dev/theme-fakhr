@@ -128,17 +128,18 @@
         {
             "id": "logo_width",
             "type": "number",
-            "format": "units",
-            "label": "عرض الشعار (اللوجو)",
-            "description": null,
+            "format": "float",
+            "inputType": "number",
+            "label": "عرض شعار الموقع في الهيدر",
+            "description": "الوحدة المستخدمة هي البيكسل، عند تركه فارغاً سيتم حساب العرض بشكل تلقائي اعتماداً على طول الشعار.",
             "labelHTML": null,
-            "placeholder": "175",
-            "icon": "sicon-percentage",
-            "value": 175,
+            "placeholder": null,
+            "icon": "sicon-hashtag",
+            "value": 0,
             "required": false,
-            "unit": "px",
-            "minimum": "50",
-            "maximum": "300"
+            "step": null,
+            "minimum": null,
+            "maximum": null
         },
         {
             "id": "menu_position",
