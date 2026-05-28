@@ -89,7 +89,7 @@
             "type": "static",
             "format": "title",
             "label": "Title",
-            "value": "التحكم باتجاه الشعا ر(اللوجو) & المنيو",
+            "value": "التحكم بالشعار (اللوجو) & المنيو",
             "variant": "h6",
             "icon": "sicon-format-text"
         },
