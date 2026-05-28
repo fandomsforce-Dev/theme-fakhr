@@ -132,11 +132,11 @@
             "label": "عرض الشعار (اللوجو)",
             "description": null,
             "labelHTML": null,
-            "placeholder": "ادخل القيمة بالبكسل",
+            "placeholder": "175",
             "icon": "sicon-percentage",
             "value": 175,
             "required": false,
-            "unit": "بكسل",
+            "unit": "px",
             "minimum": "50",
             "maximum": "300"
         },
