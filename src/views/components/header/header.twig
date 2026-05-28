@@ -52,13 +52,13 @@
                   {# حاوية تجمع اللوجو والمنيو في الجهة اليمنى دائماً #}
                   <div class="flex items-center gap-6 flex-1 justify-start" id="right-side-zone">
                       
-                      {# 1. قسم اللوجو - يتحرك ويتحكم بحجمه بحرية بناءً على خيارات لوحة التحكم #}
+                      {# 1. قسم اللوجو - يستجيب ديناميكياً لحجم الـ Unit المختار #}
                       <div class="logo-block flex items-center" id="logo-wrapper">
                           <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
                             <i class="sicon-menu text-primary text-2xl"></i>
                           </a>
 
-                          <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: var(--logo-width) !important; display: block; width: 100%;">
+                          <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: var(--logo-width, 175px) !important; display: block; width: 100%;">
                               <img fetchpriority="high" 
                                    width="100%" 
                                    height="100%" 
@@ -74,7 +74,7 @@
                           </a>
                       </div>
 
-                      {# 2. قسم المنيو الرئيسي - يتحرك بحرية أو يثبت يميناً تمهيداً لمكونك الجديد #}
+                      {# 2. قسم المنيو الرئيسي - ثابت على اليمين ومستقل تماماً تمهيداً لمكونك الجديد #}
                       <div class="menu-block flex justify-start" id="menu-wrapper">
                           <custom-main-menu></custom-main-menu>
                       </div>
