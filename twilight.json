@@ -126,6 +126,21 @@
             "required": false
         },
         {
+            "id": "logo_width",
+            "type": "number",
+            "format": "slider",
+            "inputType": "range",
+            "label": "عرض الشعار (اللوجو)",
+            "description": null,
+            "labelHTML": null,
+            "icon": "sicon-pin",
+            "value": "175",
+            "required": false,
+            "step": "5",
+            "minimum": "50",
+            "maximum": "300"
+        },
+        {
             "id": "menu_position",
             "type": "items",
             "format": "radio-list",
