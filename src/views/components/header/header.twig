@@ -52,18 +52,18 @@
                   {# حاوية تجمع اللوجو والمنيو في الجهة اليمنى دائماً #}
                   <div class="flex items-center gap-6 flex-1 justify-start" id="right-side-zone">
                       
-                      {# 1. قسم اللوجو - يتحرك بحرية بناءً على كلاس الـ body #}
+                      {# 1. قسم اللوجو - يتحرك ويتحكم بحجمه بحرية بناءً على خيارات لوحة التحكم #}
                       <div class="logo-block flex items-center" id="logo-wrapper">
                           <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
                             <i class="sicon-menu text-primary text-2xl"></i>
                           </a>
 
-                          <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: 175px !important; display: block;">
+                          <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: var(--logo-width) !important; display: block; width: 100%;">
                               <img fetchpriority="high" 
                                    width="100%" 
                                    height="100%" 
                                    loading="eager" 
-                                   src="{{ store.logo|cdn(175) }}" 
+                                   src="{{ store.logo|cdn(300) }}" 
                                    alt="{{ store.name }} logo">
                               
                               {% if is_page('index') %}
@@ -106,6 +106,13 @@
       margin: 0 !important;
   }
 
+  /* جعل صورة الشعار مرنة وتتبع الحجم الديناميكي الجديد تماماً */
+  body .navbar-brand img {
+      width: 100% !important;
+      height: auto !important;
+      object-fit: contain !important;
+  }
+
   @media (min-width: 1024px) {
       /* ─── 1. حالة سنترة اللوجو فقط ─── */
       body.body-logo-center #logo-wrapper {
@@ -131,7 +138,6 @@
       }
 
       /* ─── 3. الحالة القصوى: اللوجو والمنيو كلاهما في المنتصف ─── */
-      /* لمنع تداخل العناصر فوق بعضها، يتم تصفيف اللوجو بالأعلى وتحته المنيو تلقائياً */
       body.body-logo-center.body-menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 12px !important;
