@@ -137,8 +137,8 @@
             "icon": "sicon-hashtag",
             "value": null,
             "required": false,
-            "minimum": null,
-            "maximum": null
+            "minimum": "50",
+            "maximum": "300"
         },
         {
             "id": "menu_position",
