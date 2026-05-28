@@ -2,7 +2,7 @@
 | Variable         | Type    | Description                     |
 |------------------|---------|---------------------------------|
 | cart             | object  |                                 |
-| cart.items_count | int     |                                 |
+| cart.items_count | int      |                                 |
 | cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
 #}
 
@@ -99,16 +99,19 @@
   </div>
 </header>
 
-{# 🎯 الستايل نقي 100% ومريح للـ VS Code بدون أي شروط Twig بداخله #}
+{# 🎯 تم التحديث هنا لإجبار الحاوية والصورة على الانصياع للمتغير البرمجي وكسر أي تنسيق قديم #}
 <style>
   body .navbar-brand {
       float: none !important;
       margin: 0 !important;
+      max-width: var(--logo-width, auto) !important;
+      width: var(--logo-width, 100%) !important;
   }
 
   body .navbar-brand img {
       width: 100% !important;
       height: auto !important;
+      max-width: 100% !important;
       object-fit: contain !important;
   }
 
