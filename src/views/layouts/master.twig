@@ -88,8 +88,7 @@
             --color-primary-dark: {{ theme.color.darker(0.15) }};
             --color-primary-light: {{ theme.color.lighter(0.15) }};
             --color-primary-reverse: {{ theme.color.reverse_text }};
-            --logo-width: {% if theme.settings.get('logo_width') %}{{ theme.settings.get('logo_width') }}px{% else %}auto{% endif %};
-        }
+--logo-width: {% if theme.settings.get('logo_width') %}{{ theme.settings.get('logo_width') }}px{% else %}auto{% endif %};        }
     </style>
     {# tracking services, custom css feature. #}
     {% hook 'head:end' %}
