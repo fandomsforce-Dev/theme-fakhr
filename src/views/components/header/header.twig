@@ -52,7 +52,7 @@
                   {# حاوية تجمع اللوجو والمنيو في الجهة اليمنى دائماً #}
                   <div class="flex items-center gap-6 flex-1 justify-start" id="right-side-zone">
                       
-                      {# 1. قسم اللوجو - يستجيب ديناميكياً للحجم المختار أو يرجع للحجم الافتراضي التلقائي إذا تُرك فارغاً #}
+                      {# 1. قسم اللوجو #}
                       <div class="logo-block flex items-center" id="logo-wrapper">
                           <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
                             <i class="sicon-menu text-primary text-2xl"></i>
@@ -99,7 +99,7 @@
   </div>
 </header>
 
-{# 🎯 تم التحديث هنا لإجبار الحاوية والصورة على الانصياع للمتغير البرمجي وكسر أي تنسيق قديم #}
+{# 🎯 الستايل نقي وجديد بالكامل يعتمد على التوزيع المرن المستقر في الـ Sticky #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,7 +116,41 @@
   }
 
   @media (min-width: 1024px) {
-      /* ─── 1. حالة سنترة اللوجو فقط ─── */
+      /* ─── ضبط التوزيع الافتراضي المستقر للحاوية الكبيرة ─── */
+      body #header-inner-flex {
+          display: flex !important;
+          width: 100% !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+      }
+
+      /* ─── حالة: اللوجو يمين والمنيو بالمنتصف (توزيع Flex ذكي) ─── */
+      body.body-menu-center #right-side-zone {
+          display: flex !important;
+          flex: 1 !important;
+          justify-content: space-between !important;
+          align-items: center !important;
+          gap: 0 !important;
+      }
+
+      body.body-menu-center #logo-wrapper {
+          flex: 0 0 auto !important;
+      }
+
+      body.body-menu-center #menu-wrapper {
+          position: static !important; /* إلغاء الـ absolute تماماً لمنع طيران المنيو في السكرول */
+          transform: none !important;
+          flex: 1 !important;
+          display: flex !important;
+          justify-content: center !important;
+          margin: 0 !important;
+      }
+
+      body.body-menu-center #actions-wrapper {
+          flex: 0 0 auto !important;
+      }
+
+      /* ─── حالة سنترة اللوجو فقط ─── */
       body.body-logo-center #logo-wrapper {
           position: absolute !important;
           left: 50% !important;
@@ -129,17 +163,7 @@
           justify-content: flex-start !important;
       }
 
-      /* ─── 2. حالة سنترة المنيو فقط ─── */
-      body.body-menu-center #menu-wrapper {
-          position: absolute !important;
-          left: 50% !important;
-          top: 50% !important;
-          transform: translate(-50%, -50%) !important;
-          z-index: 9 !important;
-          margin-right: 0 !important;
-      }
-
-      /* ─── 3. الحالة القصوى: اللوجو والمنيو كلاهما في المنتصف ─── */
+      /* ─── الحالة القصوى: اللوجو والمنيو كلاهما في المنتصف ─── */
       body.body-logo-center.body-menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 12px !important;
