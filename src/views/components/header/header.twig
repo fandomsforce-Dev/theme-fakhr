@@ -99,7 +99,7 @@
   </div>
 </header>
 
-{# 🎯 الستايل نقي وجديد بالكامل يعتمد على التوزيع المرن المستقر في الـ Sticky وحل مشكلة محاذاة اليمين #}
+{# 🎯 التعديل هِنا يركز بالكامل على تقريب المنيو من اللوجو في وضع اليمين #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -124,7 +124,7 @@
           justify-content: space-between !important;
       }
 
-      /* ─── حالة: اللوجو يمين والمنيو بالمنتصف (توزيع Flex ذكي) ─── */
+      /* ─── حالة: اللوجو يمين والمنيو بالمنتصف ─── */
       body.body-menu-center #right-side-zone {
           display: flex !important;
           flex: 1 !important;
@@ -138,37 +138,54 @@
       }
 
       body.body-menu-center #menu-wrapper {
-          position: static !important; /* إلغاء الـ absolute تماماً لمنع طيران المنيو في السكرول */
+          position: static !important;
           transform: none !important;
           flex: 1 !important;
           display: flex !important;
           justify-content: center !important;
           margin: 0 !important;
       }
+      
+      body.body-menu-center #menu-wrapper custom-main-menu {
+          display: flex !important;
+          justify-content: center !important;
+          width: auto !important;
+      }
 
       body.body-menu-center #actions-wrapper {
           flex: 0 0 auto !important;
       }
 
-      /* ─── حالة: اللوجو يمين والمنيو يمين (منع التباعد والدمج بجانب بعض) ─── */
+      /* ─── حالة: اللوجو يمين والمنيو يمين (حل مشكلة الفراغ الكبير) ─── */
       body:not(.body-menu-center) #right-side-zone {
           display: flex !important;
-          justify-content: flex-start !important;
+          justify-content: flex-start !important; /* إلغاء التوزيع المتباعد وتثبيت البداية من اليمين */
           flex: 1 !important;
-          gap: 35px !important; /* المسافة المباشرة بين اللوجو وأول رابط بالمنيو في اليمين */
+          gap: 30px !important; /* المسافة المباشرة الحقيقية بين اللوجو وبداية المنيو */
       }
 
       body:not(.body-menu-center) #menu-wrapper {
           position: static !important;
           transform: none !important;
           margin: 0 !important;
+          padding: 0 !important;
           justify-content: flex-start !important;
-          flex: none !important;
+          flex: 0 0 auto !important; /* منع الحاوية من التمدد وأخذ مساحة أكبر من اللوجو */
+          width: auto !important;
       }
 
-      body:not(.body-menu-center) #menu-wrapper custom-main-menu {
+      /* استهداف وسم المنيو الفعلي وعناصره الداخلية لكسر أي مسافات تلقائية */
+      body:not(.body-menu-center) custom-main-menu,
+      body:not(.body-menu-center) #menu-wrapper custom-main-menu,
+      body:not(.body-menu-center) custom-main-menu .main-menu,
+      body:not(.body-menu-center) custom-main-menu ul {
           display: flex !important;
           justify-content: flex-start !important;
+          width: auto !important; /* إجبار المنيو على أخذ حجم النصوص فقط */
+          max-width: max-content !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          gap: 20px !important; /* المسافة بين روابط المنيو نفسها (فساتين، تنانير...) */
       }
 
       /* ─── حالة سنترة اللوجو فقط ─── */
