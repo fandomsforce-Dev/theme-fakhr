@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل الهندسي المعزز لحل مشكلة التموضع المطلق والـ Sticky بشكل نهائي وقاطع #}
+{# 🎯 الستايل الهندسي المعزز - الحل النهائي لمشكلة ضغط المنيو عند التمرير #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,6 +116,7 @@
   }
 
   @media (min-width: 1024px) {
+      /* تثبيت الحاوية الرئيسية */
       body #header-inner-flex {
           display: flex !important;
           width: 100% !important;
@@ -124,7 +125,11 @@
           position: relative !important;
       }
 
-      /* الحالة: اللوجو يمين والمنيو في المنتصف */
+      /* ──────────────────────────────────────────────────────────
+         الحالة: اللوجو يمين والمنيو في المنتصف (logo-right menu-center)
+         ────────────────────────────────────────────────────────── */
+      
+      /* ترتيب العناصر */
       .theme-header-setting.logo-right.menu-center #logo-wrapper {
           order: 3 !important;
           margin-left: auto !important;
@@ -134,7 +139,7 @@
           order: 2 !important;
       }
       
-      /* تثبيت المنيو في المنتصف بشكل مطلق - قبل التمرير */
+      /* وضع المنيو في المنتصف - قبل التمرير */
       .theme-header-setting.logo-right.menu-center #menu-wrapper {
           position: absolute !important;
           left: 50% !important;
@@ -144,7 +149,7 @@
           background: transparent !important;
       }
       
-      /* 🔥 الحل السحري: عند التمرير (is-sticky أو fixed-header) نمنع أي تغيير في سلوك المنيو */
+      /* 🔥 الحل السحري - عند التمرير (عند إضافة is-sticky أو fixed-header) */
       body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
       body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper,
       body .is-sticky .theme-header-setting.logo-right.menu-center .menu-block,
@@ -158,9 +163,12 @@
           flex: 0 0 auto !important;
           flex-shrink: 0 !important;
           flex-grow: 0 !important;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+          padding: 0 10px !important;
+          border-radius: 30px !important;
       }
       
-      /* ضمان أن عناصر المنيو تبقى أفقية وغير مضغوطة */
+      /* ضمان أن عناصر المنيو تبقى أفقية وغير مضغوطة - قبل وبعد التمرير */
       .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu ul,
       body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu ul,
       body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu ul {
@@ -172,22 +180,19 @@
           padding: 0 !important;
       }
       
+      /* منع انضغاط عناصر القائمة */
       .theme-header-setting.logo-right.menu-center #menu-wrapper li,
+      .theme-header-setting.logo-right.menu-center #menu-wrapper a,
       body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper li,
-      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper li {
+      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper a,
+      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper li,
+      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper a {
           flex-shrink: 0 !important;
           list-style: none !important;
+          white-space: nowrap !important;
       }
       
-      /* منع أي تأثير من الكلاسات الأخرى التي قد تسبب المشكلة */
-      body .is-sticky .theme-header-setting.logo-right.menu-center .menu-block,
-      body .fixed-header .theme-header-setting.logo-right.menu-center .menu-block {
-          display: flex !important;
-          justify-content: center !important;
-          align-items: center !important;
-      }
-      
-      /* إعادة ضبط أي flex قد يضغط المنيو */
+      /* إعادة ضبط أي flex قد يضغط المنيو عند التمرير */
       body .is-sticky .theme-header-setting.logo-right.menu-center #header-inner-flex,
       body .fixed-header .theme-header-setting.logo-right.menu-center #header-inner-flex {
           display: flex !important;
@@ -201,12 +206,17 @@
           flex-shrink: 0 !important;
       }
 
-      /* باقي الحالات الأخرى */
+      /* ──────────────────────────────────────────────────────────
+         الحالة: اللوجو يمين والمنيو يمين (logo-right menu-right)
+         ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           flex: 1 !important;
           justify-content: flex-start !important;
       }
-      
+
+      /* ──────────────────────────────────────────────────────────
+         الحالة: اللوجو وسط والمنيو وسط (logo-center menu-center)
+         ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 16px !important;
@@ -218,7 +228,10 @@
           top: 50% !important;
           transform: translateY(-50%) !important;
       }
-      
+
+      /* ──────────────────────────────────────────────────────────
+         الحالة: اللوجو وسط والمنيو يمين (logo-center menu-right)
+         ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
           position: absolute !important;
           left: 50% !important;
@@ -228,6 +241,16 @@
       .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper {
           flex: 1 !important;
           justify-content: flex-start !important;
+      }
+  }
+  
+  /* تحسين المظهر للشاشات الصغيرة */
+  @media (max-width: 1023px) {
+      .theme-header-setting.logo-right.menu-center #menu-wrapper {
+          order: 2 !important;
+      }
+      .theme-header-setting.logo-right.menu-center #actions-wrapper {
+          order: 3 !important;
       }
   }
 </style>
