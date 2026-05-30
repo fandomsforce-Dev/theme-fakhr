@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل المحدث والمصحح هندسياً 100% لمنع انضغاط القائمة نهائياً #}
+{# 🎯 الستايل المحدث والمصحح جذرياً لمنع أخطاء التكويد وانضغاط المنيو #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -133,12 +133,14 @@
       /* تنسيق افتراضي آمن لعناصر المنيو يمنع تشوهها الرأسي أو انضغاطها */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
-      body #menu-wrapper ul {
+      body #menu-wrapper ul,
+      body .is-sticky #menu-wrapper,
+      body .fixed-header #menu-wrapper {
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 28px !important; /* التباعد الأفقي المثالي والمريح بين الروابط */
-          white-space: nowrap !important; /* منع نزول الكلمات لسطر جديد نهائياً */
+          gap: 28px !important; /* مسافة تباعد أفقية مريحة ومطابقة للصورة السليمة */
+          white-space: nowrap !important; /* منع الكلمات من النزول لسطر جديد نهائياً */
       }
 
       body #logo-wrapper, 
@@ -147,11 +149,12 @@
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 1: اللوجو يمين والمنيو في المنتصف (حساب مساحة العرض الكاملة بدون انضغاط)
+         الحالة 1: اللوجو يمين والمنيو في المنتصف (حاوية مفرودة كلياً تمنع الانضغاط)
          ────────────────────────────────────────────────────────── */
+      .theme-header-setting.menu-center #menu-wrapper,
       .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper,
+      body .is-sticky .theme-header-setting.menu-center #menu-wrapper,
+      body .fixed-header .theme-header-setting.menu-center #menu-wrapper,
       body [id^="mainnav"].is-sticky #menu-wrapper,
       body [id^="mainnav"].fixed-header #menu-wrapper {
           position: absolute !important;
@@ -160,17 +163,16 @@
           transform: translate(-50%, -50%) !important;
           margin: 0 !important;
           padding: 0 !important;
-          /* الحل الجوهري: فرض المساحة الحقيقية للنصوص بناءً على المحتوى وبحد أقصى مريح */
-          width: max-content !important; 
-          max-width: 55% !important; 
+          width: max-content !important; /* حل مشكلة الانضغاط: فرض العرض الكامل الطبيعي للنصوص */
+          max-width: 55% !important; /* مساحة آمنة تضمن عدم التداخل مع اللوجو أو السلة */
           display: flex !important;
           justify-content: center !important;
           z-index: 10 !important;
       }
       
-      .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
-      .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
-      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
+      .theme-header-setting.menu-center #menu-wrapper custom-main-menu,
+      .theme-header-setting.menu-center #menu-wrapper ul,
+      body .is-sticky .theme-header-setting.menu-center #menu-wrapper ul {
           justify-content: center !important;
           width: 100% !important;
       }
@@ -186,6 +188,7 @@
           padding-right: 35px !important;
           padding-left: 0 !important;
           margin: 0 !important;
+          width: auto !important;
       }
       .theme-header-setting.logo-right.menu-right #menu-wrapper custom-main-menu,
       .theme-header-setting.logo-right.menu-right #menu-wrapper ul {
@@ -210,10 +213,6 @@
           width: auto !important;
           justify-content: center !important;
       }
-      .theme-header-setting.logo-center.menu-center #menu-wrapper custom-main-menu,
-      .theme-header-setting.logo-center.menu-center #menu-wrapper ul {
-          justify-content: center !important;
-      }
       .theme-header-setting.logo-center.menu-center #actions-wrapper {
           position: absolute !important;
           left: 0 !important;
@@ -236,10 +235,6 @@
           flex: 1 !important;
           justify-content: flex-start !important;
           padding-right: 0 !important;
-      }
-      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper custom-main-menu,
-      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper ul {
-          justify-content: flex-start !important;
       }
   }
 </style>
