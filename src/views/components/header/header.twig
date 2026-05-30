@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 1. الستايل العام النظيف لجميع الحالات (متوافق تماماً وبدون أخطاء محررات الأكواد) #}
+{# 🎯 الستايل الجذري العام والنهائي الصارم لحماية الارتفاع وتأمين السنترة #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,7 +116,23 @@
   }
 
   @media (min-width: 1024px) {
-      /* الحفاظ على مرونة وتوزيع عناصر الفليكس في الوضع الطبيعي والستيكي */
+      /* 🚀 [تعديل صارم] فرض ارتفاع داخلي مريح وثابت على حاوية الـ Nav الرئيسية في كل حالات الثيم (العادية، والـ Sticky والـ Fixed) */
+      body .main-nav-container,
+      body [id^="mainnav"],
+      body .is-sticky [id^="mainnav"],
+      body .fixed-header [id^="mainnav"],
+      body [class*="sticky"] [id^="mainnav"],
+      body [class*="fixed"] [id^="mainnav"],
+      body .is-sticky .main-nav-container,
+      body .fixed-header .main-nav-container {
+          padding-top: 16px !important;    /* نفس الارتفاع الرأسي الممتاز الذي طلبته */
+          padding-bottom: 16px !important; /* نفس الارتفاع الرأسي الممتاز الذي طلبته */
+          min-height: 82px !important;     /* قفل هندسي للارتفاع يمنع أي انضغاط رأسي سكربتي */
+          display: flex !important;
+          align-items: center !important;
+      }
+
+      /* تأمين توزيع الفليكس الأفقي بداخل الهيدر حتى أثناء الـ Sticky والسكرول */
       body #header-inner-flex,
       body [class*="fixed"] #header-inner-flex,
       body [class*="sticky"] #header-inner-flex,
@@ -127,9 +143,10 @@
           align-items: center !important;
           justify-content: space-between !important;
           position: relative !important;
+          height: 100% !important;
       }
 
-      /* المحافظة على فرد القائمة أفقياً والتباعد الثابت الأنيق للروابط */
+      /* الحفاظ على انتشار عناصر المنيو أفقياً وتباعدها بمسافات مريحة دائماً */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
@@ -148,7 +165,7 @@
           z-index: 30 !important;
       }
 
-      /* الوضع: لوجو يمين ومنيو يمين */
+      /* الحالة: اللوجو يمين والمنيو يمين */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
           transform: none !important;
@@ -160,7 +177,7 @@
           width: auto !important;
       }
 
-      /* الوضع: لوجو سنتر ومنيو سنتر (يعمل بشكل ممتاز لديك واحتفظنا به كاملاً) */
+      /* الحالة: اللوجو والمنيو كلاهما في المنتصف */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 16px !important;
@@ -182,7 +199,7 @@
           transform: translateY(-50%) !important;
       }
 
-      /* الوضع: لوجو سنتر ومنيو يمين */
+      /* الحالة: اللوجو في المنتصف والمنيو يمين */
       .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
           position: absolute !important;
           left: 50% !important;
@@ -199,24 +216,11 @@
   }
 </style>
 
-{# 🎯 2. الحل السحري والحصري الموجه لوضعية (لوجو يمين + منيو سنتر) أثناء السكرول #}
+{# 🎯 الموجه الذكي لوضعية (لوجو يمين + منيو سنتر) لتثبيت السنترة والارتفاع المطلق #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* 🚀 منع انضغاط الارتفاع نهائياً عبر فرض padding رأسي صارم على الحاوية الكبرى والداخلية عند نزول السكرول */
-      body .is-sticky [id^="mainnav"],
-      body .fixed-header [id^="mainnav"],
-      body [class*="sticky"] [id^="mainnav"],
-      body [class*="fixed"] [id^="mainnav"],
-      body .is-sticky .main-nav-container,
-      body .fixed-header .main-nav-container,
-      body .main-nav-container {
-          padding-top: 16px !important;    /* نفس طول الارتفاع الممتاز الأصلي */
-          padding-bottom: 16px !important; /* نفس طول الارتفاع الممتاز الأصلي */
-          min-height: 80px !important;     /* تأمين هندسي إضافي لمنع الهبوط الرأسي */
-      }
-
-      /* الحفاظ على سنترة مطلقة دقيقة جداً للمنيو في مركز الارتفاع الجديد */
+      /* إجبار المنيو على السنترة المطلقة هندسياً في مركز الارتفاع الجديد دائماً وأبداً */
       body #menu-wrapper,
       body [id^="mainnav"] #menu-wrapper,
       body [class*="sticky"] #menu-wrapper,
