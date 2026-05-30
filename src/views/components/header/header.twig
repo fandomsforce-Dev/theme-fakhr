@@ -99,7 +99,7 @@
   </div>
 </header>
 
-{# 🎯 الستايل نقي وجديد بالكامل يعتمد على التوزيع المرن المستقر في الـ Sticky #}
+{# 🎯 الستايل نقي وجديد بالكامل يعتمد على التوزيع المرن المستقر في الـ Sticky وحل مشكلة محاذاة اليمين #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -150,6 +150,27 @@
           flex: 0 0 auto !important;
       }
 
+      /* ─── حالة: اللوجو يمين والمنيو يمين (منع التباعد والدمج بجانب بعض) ─── */
+      body:not(.body-menu-center) #right-side-zone {
+          display: flex !important;
+          justify-content: flex-start !important;
+          flex: 1 !important;
+          gap: 35px !important; /* المسافة المباشرة بين اللوجو وأول رابط بالمنيو في اليمين */
+      }
+
+      body:not(.body-menu-center) #menu-wrapper {
+          position: static !important;
+          transform: none !important;
+          margin: 0 !important;
+          justify-content: flex-start !important;
+          flex: none !important;
+      }
+
+      body:not(.body-menu-center) #menu-wrapper custom-main-menu {
+          display: flex !important;
+          justify-content: flex-start !important;
+      }
+
       /* ─── حالة سنترة اللوجو فقط ─── */
       body.body-logo-center #logo-wrapper {
           position: absolute !important;
@@ -157,11 +178,11 @@
           top: 50% !important;
           transform: translate(-50%, -50%) !important;
           z-index: 10 !important;
-      }
-      body.body-logo-center #menu-wrapper {
+       }
+       body.body-logo-center #menu-wrapper {
           margin-right: 0 !important;
           justify-content: flex-start !important;
-      }
+       }
 
       /* ─── الحالة القصوى: اللوجو والمنيو كلاهما في المنتصف ─── */
       body.body-logo-center.body-menu-center #header-inner-flex {
