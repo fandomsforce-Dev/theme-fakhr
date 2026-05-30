@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 1. الستايل العام لجميع الحالات (نظيف، مفرود ومستقر) #}
+{# 🎯 1. الستايل العام النظيف لجميع الحالات (بدون شروط داخلية لتفادي الخطوط الحمراء) #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,7 +116,7 @@
   }
 
   @media (min-width: 1024px) {
-      /* الحفاظ على مرونة الحاوية الرئيسية في كل الحالات (العادية والـ Sticky) */
+      /* تأمين مرونة وتوزيع الحاوية الرئيسية في الوضع الطبيعي والـ Sticky */
       body #header-inner-flex,
       body [class*="fixed"] #header-inner-flex,
       body [class*="sticky"] #header-inner-flex,
@@ -129,7 +129,7 @@
           position: relative !important;
       }
 
-      /* التنسيق الأساسي لانتشار عناصر المنيو أفقياً بشكل مفرود وأنيق */
+      /* تنسيق انتشار المنيو بشكل مفرود وأنيق دائماً */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
@@ -139,8 +139,8 @@
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 28px !important; /* مسافة تباعد ممتازة بين الكلمات */
-          white-space: nowrap !important; /* منع نزول الكلمات نهائياً لسطر جديد */
+          gap: 28px !important;
+          white-space: nowrap !important;
       }
 
       body #logo-wrapper, 
@@ -199,11 +199,23 @@
   }
 </style>
 
-{# 🎯 2. الحل الجذري والنهائي لمنع انضغاط المنيو أثناء السكرول (لوجو يمين + منيو سنتر) #}
+{# 🎯 2. الحل الجذري والنهائي لحماية ارتفاع الهيدر الرأسي وسنترة المنيو أثناء السكرول #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* استهداف شامل وقوي لفك انضغاط الحاوية المتموضعة في المنتصف */
+      /* 🚀 حماية الارتفاع الرأسي (Padding) لمنع انضغاط الهيدر عند السكرول */
+      body .is-sticky [id^="mainnav"],
+      body .fixed-header [id^="mainnav"],
+      body [class*="sticky"] [id^="mainnav"],
+      body [class*="fixed"] [id^="mainnav"],
+      body .is-sticky .main-nav-container,
+      body .fixed-header .main-nav-container {
+          padding-top: 16px !important;   /* إرجاع المسافة العلوية السليمة الافتراضية */
+          padding-bottom: 16px !important;/* إرجاع المسافة السفلية السليمة الافتراضية */
+          transition: all 0.3s ease !important;
+      }
+
+      /* ضمان تموضع المنيو بدقة في منتصف الارتفاع والعرض الكلي */
       body #menu-wrapper,
       body [id^="mainnav"] #menu-wrapper,
       body [class*="sticky"] #menu-wrapper,
@@ -216,32 +228,17 @@
           transform: translate(-50%, -50%) !important;
           margin: 0 !important;
           padding: 0 !important;
-          
-          /* 🚀 الحل السحري للانضغاط: فرض أقصى عرض مفرود متاح وحماية العناصر من الانكماش */
           width: max-content !important; 
-          max-width: 65% !important; /* مساحة واسعة ومحمية في نفس الوقت تمنع التداخل مع الأطراف */
+          max-width: 60% !important; 
           display: flex !important;
           justify-content: center !important;
-          flex-shrink: 0 !important; /* منع الـ Flexbox من ضغط المنيو نهائياً أثناء السكرول */
           z-index: 10 !important;
       }
 
-      /* تأكيد فرد المنيو الداخلية المخصصة وروابط الـ UL بشكل كامل وبنفس مسافة التباعد السليمة */
       body #menu-wrapper custom-main-menu,
-      body #menu-wrapper ul,
-      body .is-sticky #menu-wrapper ul,
-      body .fixed-header #menu-wrapper ul {
-          display: flex !important;
+      body #menu-wrapper ul {
           justify-content: center !important;
-          align-items: center !important;
           width: 100% !important;
-          gap: 28px !important; /* الحفاظ على تباعد الكلمات المريح */
-          flex-shrink: 0 !important;
-      }
-
-      body #menu-wrapper ul li,
-      body .is-sticky #menu-wrapper ul li {
-          flex-shrink: 0 !important; /* حماية كل رابط فرعي داخل القائمة من الانكماش */
       }
   }
 </style>
