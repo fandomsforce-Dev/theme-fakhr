@@ -135,7 +135,7 @@
             "labelHTML": null,
             "placeholder": null,
             "icon": "sicon-hashtag",
-            "value": null,
+            "value": 150,
             "required": false,
             "minimum": "50",
             "maximum": "300"
