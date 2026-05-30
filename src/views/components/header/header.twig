@@ -10,7 +10,7 @@
 {% set logo_position = theme.settings.get('logo_position', 'center') %}
 {% set menu_position = theme.settings.get('menu_position', 'right') %}
 
-{# قمنا بإنشاء حاوية مخصصة تحمل خيارات لوحة التحكم ككلاسات ديناميكية للاعتماد عليها في الـ CSS #}
+{# حاوية ذكية تحمل إعدادات لوحة التحكم كـ Classes ديناميكية للاعتماد عليها بالكامل في الـ CSS #}
 <div class="theme-header-setting logo-{{ logo_position }} menu-{{ menu_position }}">
 
 <header class="store-header">
@@ -49,11 +49,11 @@
       <div class="inner bg-inherit w-full">
           <div class="container">
               
-              {# حاوية الهيدر الرئيسية #}
+              {# حاوية الهيدر الرئيسية المرنة #}
               <div class="flex w-full items-center justify-between relative" id="header-inner-flex">
 
                   {# 1. قسم اللوجو #}
-                  <div class="logo-block flex items-center flex-none" id="logo-wrapper" style="z-index: 20;">
+                  <div class="logo-block flex items-center flex-none" id="logo-wrapper">
                       <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
                         <i class="sicon-menu text-primary text-2xl"></i>
                       </a>
@@ -80,7 +80,7 @@
                   </div>
 
                   {# 3. قسم السلة والحساب وتجربة الاتصال #}
-                  <div class="actions-block flex items-center justify-end flex-none gap-2" id="actions-wrapper" style="z-index: 20;">
+                  <div class="actions-block flex items-center justify-end flex-none gap-2" id="actions-wrapper">
                       <div class="welcome-message text-green-600 font-bold mx-2 px-3 py-1 bg-green-50 rounded-full">
                          تجربة الاتصال
                       </div>
@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل الذكي المعتمد على خيارات التاجر الحقيقية #}
+{# 🎯 الستايل الشامل والذكي لحل مشاكل السنترة والـ Sticky #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,66 +116,116 @@
   }
 
   @media (min-width: 1024px) {
-      /* الحاوية الكبيرة المرنة لتثبيت العناصر في الأطراف */
+      /* التثبيت الأساسي لمرونة الحاوية في جميع الأوضاع والحالات الثابتة والديناميكية (الستيكي) */
       body #header-inner-flex,
-      body .is-sticky #header-inner-flex {
+      body .fixed-header #header-inner-flex,
+      body .is-sticky #header-inner-flex,
+      body [id^="mainnav"] #header-inner-flex {
           display: flex !important;
           width: 100% !important;
           align-items: center !important;
           justify-content: space-between !important;
       }
 
-      /* ─── [اللوجو يمين والمنيو في المنتصف بالظبط] ─── */
+      /* تنسيق افتراضي آمن لعناصر المنيو يمنع تشوهها الرأسي */
+      body #menu-wrapper,
+      body #menu-wrapper custom-main-menu,
+      body #menu-wrapper ul {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          gap: 24px !important;
+      }
+
+      body #logo-wrapper, 
+      body #actions-wrapper {
+          z-index: 30 !important;
+      }
+
+      /* ──────────────────────────────────────────────────────────
+         الحالة 1: اللوجو يمين والمنيو في المنتصف بالظبط (logo-right menu-center)
+         ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-center #menu-wrapper {
           position: absolute !important;
           left: 50% !important;
           top: 50% !important;
           transform: translate(-50%, -50%) !important;
-          z-index: 10 !important;
           margin: 0 !important;
           padding: 0 !important;
           width: auto !important;
-          display: flex !important;
           justify-content: center !important;
       }
       .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
       .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
-          display: flex !important;
           justify-content: center !important;
-          gap: 24px !important;
       }
 
-      /* ─── [اللوجو يمين والمنيو يمين - التصاق تام باللوجو] ─── */
+      /* ──────────────────────────────────────────────────────────
+         الحالة 2: اللوجو يمين والمنيو يمين - التصاق تام بجانب اللوجو (logo-right menu-right)
+         ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
           transform: none !important;
           flex: 1 !important;
-          display: flex !important;
           justify-content: flex-start !important;
-          padding-right: 30px !important; /* المسافة المباشرة الدقيقة بين اللوجو والمنيو */
+          padding-right: 35px !important; /* مسافة التباعد الدقيقة بين اللوجو والمنيو */
           padding-left: 0 !important;
           margin: 0 !important;
       }
       .theme-header-setting.logo-right.menu-right #menu-wrapper custom-main-menu,
       .theme-header-setting.logo-right.menu-right #menu-wrapper ul {
-          display: flex !important;
           justify-content: flex-start !important;
           width: auto !important;
-          gap: 24px !important;
       }
 
-      /* ─── حالة سنترة اللوجو (لو تم اختيارها مستقبلاً) ─── */
-      .theme-header-setting.logo-center #logo-wrapper {
+      /* ──────────────────────────────────────────────────────────
+         الحالة 3: اللوجو والمنيو كلاهما في المنتصف (logo-center menu-center)
+         ────────────────────────────────────────────────────────── */
+      /* نقوم بتحويل التوزيع إلى عمودي (اللوجو فوق والمنيو تحته) ليتوسطا معاً بشكل متناسق */
+      .theme-header-setting.logo-center.menu-center #header-inner-flex {
+          flex-direction: column !important;
+          gap: 16px !important;
+          align-items: center !important;
+          justify-content: center !important;
+      }
+      .theme-header-setting.logo-center.menu-center #logo-wrapper,
+      .theme-header-setting.logo-center.menu-center #menu-wrapper {
+          position: static !important;
+          transform: none !important;
+          margin: 0 auto !important;
+          width: auto !important;
+          justify-content: center !important;
+      }
+      .theme-header-setting.logo-center.menu-center #menu-wrapper custom-main-menu,
+      .theme-header-setting.logo-center.menu-center #menu-wrapper ul {
+          justify-content: center !important;
+      }
+      /* تثبيت الأزرار والسلة على اليسار مطلقاً لمنع هبوطها مع المنيو واللوجو */
+      .theme-header-setting.logo-center.menu-center #actions-wrapper {
+          position: absolute !important;
+          left: 0 !important;
+          top: 50% !important;
+          transform: translateY(-50%) !important;
+      }
+
+      /* ──────────────────────────────────────────────────────────
+         الحالة 4: اللوجو في المنتصف والمنيو يمين (logo-center menu-right)
+         ────────────────────────────────────────────────────────── */
+      .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
           position: absolute !important;
           left: 50% !important;
           top: 50% !important;
           transform: translate(-50%, -50%) !important;
-          z-index: 30 !important;
       }
-      .theme-header-setting.logo-center #menu-wrapper {
+      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper {
           position: static !important;
           transform: none !important;
+          flex: 1 !important;
+          justify-content: flex-start !important;
           padding-right: 0 !important;
+      }
+      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper custom-main-menu,
+      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper ul {
           justify-content: flex-start !important;
       }
   }
