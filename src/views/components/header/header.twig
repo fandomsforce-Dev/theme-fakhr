@@ -115,16 +115,19 @@
       object-fit: contain !important;
   }
 
+  /* منع أي flex نمو في المنيو بشكل عام */
+  body #menu-wrapper,
+  body .is-sticky #menu-wrapper,
+  body .fixed-header #menu-wrapper {
+      flex: 0 0 auto !important;
+  }
+
   @media (min-width: 1024px) {
-      /* التثبيت الأساسي لمرونة الحاوية لمنع كسر عناصر الفليكس والـ Sticky */
+      /* التثبيت الأساسي لمرونة الحاوية */
       body #header-inner-flex,
       body .fixed-header #header-inner-flex,
       body .is-sticky #header-inner-flex,
-      body [id^="mainnav"] #header-inner-flex,
-      body .fixed-header .container > div,
-      body .is-sticky .container > div,
-      body [class*="fixed"] .container > div,
-      body [class*="sticky"] .container > div {
+      body [id^="mainnav"] #header-inner-flex {
           display: flex !important;
           width: 100% !important;
           align-items: center !important;
@@ -132,19 +135,30 @@
           position: relative !important;
       }
 
-      /* تنسيق افتراضي آمن لعناصر المنيو يضمن انتشارها الطبيعي المفرود وعدم انضغاطها */
+      /* تنسيق المنيو الأساسي - يمنع الانضغاط تمامًا */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
       body .is-sticky #menu-wrapper,
       body .fixed-header #menu-wrapper,
-      body [class*="sticky"] #menu-wrapper,
-      body [class*="fixed"] #menu-wrapper {
+      body .is-sticky #menu-wrapper custom-main-menu,
+      body .fixed-header #menu-wrapper custom-main-menu {
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 28px !important; /* مسافة تباعد أفقية ممتازة ومريحة ومطابقة للصورة السليمة */
-          white-space: nowrap !important; /* منع الكلمات من النزول لسطر جديد نهائياً */
+          gap: 28px !important;
+          white-space: nowrap !important;
+          flex-wrap: nowrap !important;
+          overflow: visible !important;
+      }
+
+      /* منع أي عناصر داخلية من الانضغاط */
+      body #menu-wrapper li,
+      body #menu-wrapper a,
+      body .is-sticky #menu-wrapper li,
+      body .fixed-header #menu-wrapper li {
+          flex-shrink: 0 !important;
+          white-space: nowrap !important;
       }
 
       body #logo-wrapper, 
@@ -153,37 +167,40 @@
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 1: اللوجو يمين والمنيو في المنتصف (الحل النهائي الجوهري لوضعية السكرول)
+         الحالة 1: اللوجو يمين والمنيو في المنتصف (الحل النهائي)
          ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-center #menu-wrapper,
       body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body [id^="mainnav"].is-sticky #menu-wrapper,
-      body [id^="mainnav"].fixed-header #menu-wrapper,
-      body [class*="sticky"] #menu-wrapper,
-      body [class*="fixed"] #menu-wrapper {
+      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper {
           position: absolute !important;
           left: 50% !important;
           top: 50% !important;
           transform: translate(-50%, -50%) !important;
           margin: 0 !important;
           padding: 0 !important;
-          width: max-content !important; /* فرض العرض الكامل الطبيعي للنصوص لمنع الانضغاط */
-          max-width: 55% !important; /* حماية هندسية تمنع التداخل أو الاصطدام الجانبي */
-          display: flex !important;
+          width: auto !important;
+          max-width: none !important;
+          flex: 0 0 auto !important;
           justify-content: center !important;
           z-index: 10 !important;
       }
       
+      /* ضمان أن المحتوى الداخلي للمنيو لا ينضغط أبدًا */
       .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
       .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
-      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
+      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
+      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
+      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
+      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
           justify-content: center !important;
-          width: 100% !important;
+          width: auto !important;
+          flex-direction: row !important;
+          flex-wrap: nowrap !important;
+          gap: 28px !important;
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 2: اللوجو يمين والمنيو يمين - الالتصاق بجانب اللوجو (مع إصلاح خطأ السينتاكس المكتشف)
+         الحالة 2: اللوجو يمين والمنيو يمين
          ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
@@ -202,7 +219,7 @@
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 3: اللوجو والمنيو كلاهما في المنتصف (logo-center menu-center)
+         الحالة 3: اللوجو والمنيو كلاهما في المنتصف
          ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
