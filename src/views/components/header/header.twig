@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 1. الستايل العام النظيف لجميع الحالات (بدون شروط داخلية لتفادي الخطوط الحمراء) #}
+{# 🎯 1. الستايل العام النظيف لجميع الحالات (متوافق تماماً وبدون أخطاء محررات الأكواد) #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,7 +116,7 @@
   }
 
   @media (min-width: 1024px) {
-      /* تأمين مرونة وتوزيع الحاوية الرئيسية في الوضع الطبيعي والـ Sticky */
+      /* الحفاظ على مرونة وتوزيع عناصر الفليكس في الوضع الطبيعي والستيكي */
       body #header-inner-flex,
       body [class*="fixed"] #header-inner-flex,
       body [class*="sticky"] #header-inner-flex,
@@ -129,7 +129,7 @@
           position: relative !important;
       }
 
-      /* تنسيق انتشار المنيو بشكل مفرود وأنيق دائماً */
+      /* المحافظة على فرد القائمة أفقياً والتباعد الثابت الأنيق للروابط */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
@@ -148,7 +148,7 @@
           z-index: 30 !important;
       }
 
-      /* الحالة: اللوجو يمين والمنيو يمين */
+      /* الوضع: لوجو يمين ومنيو يمين */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
           transform: none !important;
@@ -160,7 +160,7 @@
           width: auto !important;
       }
 
-      /* الحالة: اللوجو والمنيو كلاهما في المنتصف */
+      /* الوضع: لوجو سنتر ومنيو سنتر (يعمل بشكل ممتاز لديك واحتفظنا به كاملاً) */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 16px !important;
@@ -182,7 +182,7 @@
           transform: translateY(-50%) !important;
       }
 
-      /* الحالة: اللوجو في المنتصف والمنيو يمين */
+      /* الوضع: لوجو سنتر ومنيو يمين */
       .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
           position: absolute !important;
           left: 50% !important;
@@ -199,23 +199,24 @@
   }
 </style>
 
-{# 🎯 2. الحل الجذري والنهائي لحماية ارتفاع الهيدر الرأسي وسنترة المنيو أثناء السكرول #}
+{# 🎯 2. الحل السحري والحصري الموجه لوضعية (لوجو يمين + منيو سنتر) أثناء السكرول #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* 🚀 حماية الارتفاع الرأسي (Padding) لمنع انضغاط الهيدر عند السكرول */
+      /* 🚀 منع انضغاط الارتفاع نهائياً عبر فرض padding رأسي صارم على الحاوية الكبرى والداخلية عند نزول السكرول */
       body .is-sticky [id^="mainnav"],
       body .fixed-header [id^="mainnav"],
       body [class*="sticky"] [id^="mainnav"],
       body [class*="fixed"] [id^="mainnav"],
       body .is-sticky .main-nav-container,
-      body .fixed-header .main-nav-container {
-          padding-top: 16px !important;   /* إرجاع المسافة العلوية السليمة الافتراضية */
-          padding-bottom: 16px !important;/* إرجاع المسافة السفلية السليمة الافتراضية */
-          transition: all 0.3s ease !important;
+      body .fixed-header .main-nav-container,
+      body .main-nav-container {
+          padding-top: 16px !important;    /* نفس طول الارتفاع الممتاز الأصلي */
+          padding-bottom: 16px !important; /* نفس طول الارتفاع الممتاز الأصلي */
+          min-height: 80px !important;     /* تأمين هندسي إضافي لمنع الهبوط الرأسي */
       }
 
-      /* ضمان تموضع المنيو بدقة في منتصف الارتفاع والعرض الكلي */
+      /* الحفاظ على سنترة مطلقة دقيقة جداً للمنيو في مركز الارتفاع الجديد */
       body #menu-wrapper,
       body [id^="mainnav"] #menu-wrapper,
       body [class*="sticky"] #menu-wrapper,
