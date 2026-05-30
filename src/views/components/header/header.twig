@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 1. الستايل العام لجميع الحالات (نظيف وبدون أي شروط Twig بداخله لإنهاء مشكلة الخط الأحمر) #}
+{# 🎯 1. الستايل العام لجميع الحالات (نظيف، مفرود ومستقر) #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,7 +116,7 @@
   }
 
   @media (min-width: 1024px) {
-      /* الحفاظ على مرونة وتوزيع الحاوية الرئيسية في كل الحالات (العادية والـ Sticky) */
+      /* الحفاظ على مرونة الحاوية الرئيسية في كل الحالات (العادية والـ Sticky) */
       body #header-inner-flex,
       body [class*="fixed"] #header-inner-flex,
       body [class*="sticky"] #header-inner-flex,
@@ -129,7 +129,7 @@
           position: relative !important;
       }
 
-      /* تنسيق انتشار المنيو الأفقي المفرود في كل حالات السكرول لمنع انضغاط النصوص */
+      /* التنسيق الأساسي لانتشار عناصر المنيو أفقياً بشكل مفرود وأنيق */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
@@ -139,8 +139,8 @@
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 28px !important;
-          white-space: nowrap !important;
+          gap: 28px !important; /* مسافة تباعد ممتازة بين الكلمات */
+          white-space: nowrap !important; /* منع نزول الكلمات نهائياً لسطر جديد */
       }
 
       body #logo-wrapper, 
@@ -199,11 +199,11 @@
   }
 </style>
 
-{# 🎯 2. الحل الجذري الذكي: وشم ستايل مستقل يشتغل فقط ويُحقن عند اختيار (لوجو يمين + منيو سنتر) #}
+{# 🎯 2. الحل الجذري والنهائي لمنع انضغاط المنيو أثناء السكرول (لوجو يمين + منيو سنتر) #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* استهداف المنيو بالهوية الثابتة (ID) لإجبارها على السنترة المطلقة في الوضع العادي ووضع السكرول الـ Sticky */
+      /* استهداف شامل وقوي لفك انضغاط الحاوية المتموضعة في المنتصف */
       body #menu-wrapper,
       body [id^="mainnav"] #menu-wrapper,
       body [class*="sticky"] #menu-wrapper,
@@ -216,17 +216,32 @@
           transform: translate(-50%, -50%) !important;
           margin: 0 !important;
           padding: 0 !important;
-          width: max-content !important; /* فرد المحتوى بالكامل ومنع الالتصاق باليسار */
-          max-width: 55% !important; /* حماية هندسية تمنع الاصطدام بالجانبين */
+          
+          /* 🚀 الحل السحري للانضغاط: فرض أقصى عرض مفرود متاح وحماية العناصر من الانكماش */
+          width: max-content !important; 
+          max-width: 65% !important; /* مساحة واسعة ومحمية في نفس الوقت تمنع التداخل مع الأطراف */
           display: flex !important;
           justify-content: center !important;
+          flex-shrink: 0 !important; /* منع الـ Flexbox من ضغط المنيو نهائياً أثناء السكرول */
           z-index: 10 !important;
       }
 
+      /* تأكيد فرد المنيو الداخلية المخصصة وروابط الـ UL بشكل كامل وبنفس مسافة التباعد السليمة */
       body #menu-wrapper custom-main-menu,
-      body #menu-wrapper ul {
+      body #menu-wrapper ul,
+      body .is-sticky #menu-wrapper ul,
+      body .fixed-header #menu-wrapper ul {
+          display: flex !important;
           justify-content: center !important;
+          align-items: center !important;
           width: 100% !important;
+          gap: 28px !important; /* الحفاظ على تباعد الكلمات المريح */
+          flex-shrink: 0 !important;
+      }
+
+      body #menu-wrapper ul li,
+      body .is-sticky #menu-wrapper ul li {
+          flex-shrink: 0 !important; /* حماية كل رابط فرعي داخل القائمة من الانكماش */
       }
   }
 </style>
