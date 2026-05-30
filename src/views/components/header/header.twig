@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل المحدث والمصحح جذرياً لمنع أخطاء التكويد وانضغاط المنيو #}
+{# 🎯 الستايل الهندسي المعزز لحل مشكلة التموضع المطلق والـ Sticky بشكل نهائي وقاطع #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,13 +116,15 @@
   }
 
   @media (min-width: 1024px) {
-      /* التثبيت الأساسي لمرونة الحاوية في جميع الأوضاع والحالات الثابتة والديناميكية (الستيكي) */
+      /* التثبيت الأساسي لمرونة الحاوية لمنع كسر عناصر الفليكس والـ Sticky */
       body #header-inner-flex,
       body .fixed-header #header-inner-flex,
       body .is-sticky #header-inner-flex,
       body [id^="mainnav"] #header-inner-flex,
       body .fixed-header .container > div,
-      body .is-sticky .container > div {
+      body .is-sticky .container > div,
+      body [class*="fixed"] .container > div,
+      body [class*="sticky"] .container > div {
           display: flex !important;
           width: 100% !important;
           align-items: center !important;
@@ -130,16 +132,18 @@
           position: relative !important;
       }
 
-      /* تنسيق افتراضي آمن لعناصر المنيو يمنع تشوهها الرأسي أو انضغاطها */
+      /* تنسيق افتراضي آمن لعناصر المنيو يضمن انتشارها الطبيعي المفرود وعدم انضغاطها */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
       body .is-sticky #menu-wrapper,
-      body .fixed-header #menu-wrapper {
+      body .fixed-header #menu-wrapper,
+      body [class*="sticky"] #menu-wrapper,
+      body [class*="fixed"] #menu-wrapper {
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 28px !important; /* مسافة تباعد أفقية مريحة ومطابقة للصورة السليمة */
+          gap: 28px !important; /* مسافة تباعد أفقية ممتازة ومريحة ومطابقة للصورة السليمة */
           white-space: nowrap !important; /* منع الكلمات من النزول لسطر جديد نهائياً */
       }
 
@@ -149,36 +153,37 @@
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 1: اللوجو يمين والمنيو في المنتصف (حاوية مفرودة كلياً تمنع الانضغاط)
+         الحالة 1: اللوجو يمين والمنيو في المنتصف (الحل النهائي الجوهري لوضعية السكرول)
          ────────────────────────────────────────────────────────── */
-      .theme-header-setting.menu-center #menu-wrapper,
       .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body .is-sticky .theme-header-setting.menu-center #menu-wrapper,
-      body .fixed-header .theme-header-setting.menu-center #menu-wrapper,
+      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
+      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper,
       body [id^="mainnav"].is-sticky #menu-wrapper,
-      body [id^="mainnav"].fixed-header #menu-wrapper {
+      body [id^="mainnav"].fixed-header #menu-wrapper,
+      body [class*="sticky"] #menu-wrapper,
+      body [class*="fixed"] #menu-wrapper {
           position: absolute !important;
           left: 50% !important;
           top: 50% !important;
           transform: translate(-50%, -50%) !important;
           margin: 0 !important;
           padding: 0 !important;
-          width: max-content !important; /* حل مشكلة الانضغاط: فرض العرض الكامل الطبيعي للنصوص */
-          max-width: 55% !important; /* مساحة آمنة تضمن عدم التداخل مع اللوجو أو السلة */
+          width: max-content !important; /* فرض العرض الكامل الطبيعي للنصوص لمنع الانضغاط */
+          max-width: 55% !important; /* حماية هندسية تمنع التداخل أو الاصطدام الجانبي */
           display: flex !important;
           justify-content: center !important;
           z-index: 10 !important;
       }
       
-      .theme-header-setting.menu-center #menu-wrapper custom-main-menu,
-      .theme-header-setting.menu-center #menu-wrapper ul,
-      body .is-sticky .theme-header-setting.menu-center #menu-wrapper ul {
+      .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
+      .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
+      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
           justify-content: center !important;
           width: 100% !important;
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 2: اللوجو يمين والمنيو يمين - التصاق تام بجانب اللوجو
+         الحالة 2: اللوجو يمين والمنيو يمين - الالتصاق بجانب اللوجو (مع إصلاح خطأ السينتاكس المكتشف)
          ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
