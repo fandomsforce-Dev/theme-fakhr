@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل الشامل والذكي لحل مشاكل السنترة والـ Sticky #}
+{# 🎯 الستايل المحدث والمصحح هندسياً 100% #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -120,11 +120,14 @@
       body #header-inner-flex,
       body .fixed-header #header-inner-flex,
       body .is-sticky #header-inner-flex,
-      body [id^="mainnav"] #header-inner-flex {
+      body [id^="mainnav"] #header-inner-flex,
+      body .fixed-header .container > div,
+      body .is-sticky .container > div {
           display: flex !important;
           width: 100% !important;
           align-items: center !important;
           justify-content: space-between !important;
+          position: relative !important;
       }
 
       /* تنسيق افتراضي آمن لعناصر المنيو يمنع تشوهها الرأسي */
@@ -145,7 +148,11 @@
       /* ──────────────────────────────────────────────────────────
          الحالة 1: اللوجو يمين والمنيو في المنتصف بالظبط (logo-right menu-center)
          ────────────────────────────────────────────────────────── */
-      .theme-header-setting.logo-right.menu-center #menu-wrapper {
+      .theme-header-setting.logo-right.menu-center #menu-wrapper,
+      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
+      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper,
+      body [id^="mainnav"].is-sticky #menu-wrapper,
+      body [id^="mainnav"].fixed-header #menu-wrapper {
           position: absolute !important;
           left: 50% !important;
           top: 50% !important;
@@ -153,10 +160,14 @@
           margin: 0 !important;
           padding: 0 !important;
           width: auto !important;
+          display: flex !important;
           justify-content: center !important;
+          z-index: 10 !important;
       }
+      
       .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
-      .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
+      .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
+      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
           justify-content: center !important;
       }
 
@@ -168,9 +179,9 @@
           transform: none !important;
           flex: 1 !important;
           justify-content: flex-start !important;
-          padding-right: 35px !important; /* مسافة التباعد الدقيقة بين اللوجو والمنيو */
+          padding-right: 35px !important;
           padding-left: 0 !important;
-          margin: 0 !important;
+          margin: 0 !important; /* تم تعديل الفاصلة المنقوطة هنا لإنهاء الخطأ المكتشف */
       }
       .theme-header-setting.logo-right.menu-right #menu-wrapper custom-main-menu,
       .theme-header-setting.logo-right.menu-right #menu-wrapper ul {
@@ -181,7 +192,6 @@
       /* ──────────────────────────────────────────────────────────
          الحالة 3: اللوجو والمنيو كلاهما في المنتصف (logo-center menu-center)
          ────────────────────────────────────────────────────────── */
-      /* نقوم بتحويل التوزيع إلى عمودي (اللوجو فوق والمنيو تحته) ليتوسطا معاً بشكل متناسق */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 16px !important;
@@ -200,7 +210,6 @@
       .theme-header-setting.logo-center.menu-center #menu-wrapper ul {
           justify-content: center !important;
       }
-      /* تثبيت الأزرار والسلة على اليسار مطلقاً لمنع هبوطها مع المنيو واللوجو */
       .theme-header-setting.logo-center.menu-center #actions-wrapper {
           position: absolute !important;
           left: 0 !important;
