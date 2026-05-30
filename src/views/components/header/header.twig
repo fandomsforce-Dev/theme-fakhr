@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل المحدث والمصحح هندسياً 100% #}
+{# 🎯 الستايل المحدث والمصحح هندسياً 100% لمنع انضغاط القائمة نهائياً #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -130,14 +130,15 @@
           position: relative !important;
       }
 
-      /* تنسيق افتراضي آمن لعناصر المنيو يمنع تشوهها الرأسي */
+      /* تنسيق افتراضي آمن لعناصر المنيو يمنع تشوهها الرأسي أو انضغاطها */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul {
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 24px !important;
+          gap: 28px !important; /* التباعد الأفقي المثالي والمريح بين الروابط */
+          white-space: nowrap !important; /* منع نزول الكلمات لسطر جديد نهائياً */
       }
 
       body #logo-wrapper, 
@@ -146,7 +147,7 @@
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 1: اللوجو يمين والمنيو في المنتصف بالظبط (logo-right menu-center)
+         الحالة 1: اللوجو يمين والمنيو في المنتصف (حساب مساحة العرض الكاملة بدون انضغاط)
          ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-center #menu-wrapper,
       body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
@@ -159,7 +160,9 @@
           transform: translate(-50%, -50%) !important;
           margin: 0 !important;
           padding: 0 !important;
-          width: auto !important;
+          /* الحل الجوهري: فرض المساحة الحقيقية للنصوص بناءً على المحتوى وبحد أقصى مريح */
+          width: max-content !important; 
+          max-width: 55% !important; 
           display: flex !important;
           justify-content: center !important;
           z-index: 10 !important;
@@ -169,10 +172,11 @@
       .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
       body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
           justify-content: center !important;
+          width: 100% !important;
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 2: اللوجو يمين والمنيو يمين - التصاق تام بجانب اللوجو (logo-right menu-right)
+         الحالة 2: اللوجو يمين والمنيو يمين - التصاق تام بجانب اللوجو
          ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
@@ -181,7 +185,7 @@
           justify-content: flex-start !important;
           padding-right: 35px !important;
           padding-left: 0 !important;
-          margin: 0 !important; /* تم تعديل الفاصلة المنقوطة هنا لإنهاء الخطأ المكتشف */
+          margin: 0 !important;
       }
       .theme-header-setting.logo-right.menu-right #menu-wrapper custom-main-menu,
       .theme-header-setting.logo-right.menu-right #menu-wrapper ul {
@@ -218,7 +222,7 @@
       }
 
       /* ──────────────────────────────────────────────────────────
-         الحالة 4: اللوجو في المنتصف والمنيو يمين (logo-center menu-right)
+         الحالة 4: اللوجو في المنتصف والمنيو يمين
          ────────────────────────────────────────────────────────── */
       .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
           position: absolute !important;
