@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل الهندسي المعزز لحل مشكلة التموضع المطلق والـ Sticky بشكل نهائي وقاطع #}
+{# 🎯 1. الستايل العام لجميع الحالات (نظيف وبدون أي شروط Twig بداخله لإنهاء مشكلة الخط الأحمر) #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,15 +116,12 @@
   }
 
   @media (min-width: 1024px) {
-      /* التثبيت الأساسي لمرونة الحاوية لمنع كسر عناصر الفليكس والـ Sticky */
+      /* الحفاظ على مرونة وتوزيع الحاوية الرئيسية في كل الحالات (العادية والـ Sticky) */
       body #header-inner-flex,
-      body .fixed-header #header-inner-flex,
+      body [class*="fixed"] #header-inner-flex,
+      body [class*="sticky"] #header-inner-flex,
       body .is-sticky #header-inner-flex,
-      body [id^="mainnav"] #header-inner-flex,
-      body .fixed-header .container > div,
-      body .is-sticky .container > div,
-      body [class*="fixed"] .container > div,
-      body [class*="sticky"] .container > div {
+      body .fixed-header #header-inner-flex {
           display: flex !important;
           width: 100% !important;
           align-items: center !important;
@@ -132,19 +129,18 @@
           position: relative !important;
       }
 
-      /* تنسيق افتراضي آمن لعناصر المنيو يضمن انتشارها الطبيعي المفرود وعدم انضغاطها */
+      /* تنسيق انتشار المنيو الأفقي المفرود في كل حالات السكرول لمنع انضغاط النصوص */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
-      body .is-sticky #menu-wrapper,
-      body .fixed-header #menu-wrapper,
       body [class*="sticky"] #menu-wrapper,
-      body [class*="fixed"] #menu-wrapper {
+      body [class*="fixed"] #menu-wrapper,
+      body .is-sticky #menu-wrapper {
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 28px !important; /* مسافة تباعد أفقية ممتازة ومريحة ومطابقة للصورة السليمة */
-          white-space: nowrap !important; /* منع الكلمات من النزول لسطر جديد نهائياً */
+          gap: 28px !important;
+          white-space: nowrap !important;
       }
 
       body #logo-wrapper, 
@@ -152,39 +148,7 @@
           z-index: 30 !important;
       }
 
-      /* ──────────────────────────────────────────────────────────
-         الحالة 1: اللوجو يمين والمنيو في المنتصف (الحل النهائي الجوهري لوضعية السكرول)
-         ────────────────────────────────────────────────────────── */
-      .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body .fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper,
-      body [id^="mainnav"].is-sticky #menu-wrapper,
-      body [id^="mainnav"].fixed-header #menu-wrapper,
-      body [class*="sticky"] #menu-wrapper,
-      body [class*="fixed"] #menu-wrapper {
-          position: absolute !important;
-          left: 50% !important;
-          top: 50% !important;
-          transform: translate(-50%, -50%) !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          width: max-content !important; /* فرض العرض الكامل الطبيعي للنصوص لمنع الانضغاط */
-          max-width: 55% !important; /* حماية هندسية تمنع التداخل أو الاصطدام الجانبي */
-          display: flex !important;
-          justify-content: center !important;
-          z-index: 10 !important;
-      }
-      
-      .theme-header-setting.logo-right.menu-center #menu-wrapper custom-main-menu,
-      .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
-      body .is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
-          justify-content: center !important;
-          width: 100% !important;
-      }
-
-      /* ──────────────────────────────────────────────────────────
-         الحالة 2: اللوجو يمين والمنيو يمين - الالتصاق بجانب اللوجو (مع إصلاح خطأ السينتاكس المكتشف)
-         ────────────────────────────────────────────────────────── */
+      /* الحالة: اللوجو يمين والمنيو يمين */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
           transform: none !important;
@@ -195,15 +159,8 @@
           margin: 0 !important;
           width: auto !important;
       }
-      .theme-header-setting.logo-right.menu-right #menu-wrapper custom-main-menu,
-      .theme-header-setting.logo-right.menu-right #menu-wrapper ul {
-          justify-content: flex-start !important;
-          width: auto !important;
-      }
 
-      /* ──────────────────────────────────────────────────────────
-         الحالة 3: اللوجو والمنيو كلاهما في المنتصف (logo-center menu-center)
-         ────────────────────────────────────────────────────────── */
+      /* الحالة: اللوجو والمنيو كلاهما في المنتصف */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 16px !important;
@@ -225,9 +182,7 @@
           transform: translateY(-50%) !important;
       }
 
-      /* ──────────────────────────────────────────────────────────
-         الحالة 4: اللوجو في المنتصف والمنيو يمين
-         ────────────────────────────────────────────────────────── */
+      /* الحالة: اللوجو في المنتصف والمنيو يمين */
       .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
           position: absolute !important;
           left: 50% !important;
@@ -241,39 +196,38 @@
           justify-content: flex-start !important;
           padding-right: 0 !important;
       }
-      /* 🔥 حل مشكلة ضغط المنيو عند التمرير فقط - للحالة logo-right menu-center */
-@media (min-width: 1024px) {
-    .theme-header-setting.logo-right.menu-center.is-sticky #menu-wrapper,
-    .theme-header-setting.logo-right.menu-center.fixed-header #menu-wrapper,
-    body.is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper,
-    body.fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper {
-        position: fixed !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        width: auto !important;
-        max-width: 90% !important;
-        background: white !important;
-        padding: 0 20px !important;
-        border-radius: 40px !important;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
-    }
-    
-    /* منع انضغاط عناصر المنيو عند التمرير */
-    .theme-header-setting.logo-right.menu-center.is-sticky #menu-wrapper ul,
-    .theme-header-setting.logo-right.menu-center.fixed-header #menu-wrapper ul,
-    body.is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper ul,
-    body.fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper ul {
-        gap: 28px !important;
-        flex-wrap: nowrap !important;
-    }
-    
-    .theme-header-setting.logo-right.menu-center.is-sticky #menu-wrapper li,
-    .theme-header-setting.logo-right.menu-center.fixed-header #menu-wrapper li,
-    body.is-sticky .theme-header-setting.logo-right.menu-center #menu-wrapper li,
-    body.fixed-header .theme-header-setting.logo-right.menu-center #menu-wrapper li {
-        flex-shrink: 0 !important;
-    }
-}
   }
 </style>
+
+{# 🎯 2. الحل الجذري الذكي: وشم ستايل مستقل يشتغل فقط ويُحقن عند اختيار (لوجو يمين + منيو سنتر) #}
+{% if logo_position == 'right' and menu_position == 'center' %}
+<style>
+  @media (min-width: 1024px) {
+      /* استهداف المنيو بالهوية الثابتة (ID) لإجبارها على السنترة المطلقة في الوضع العادي ووضع السكرول الـ Sticky */
+      body #menu-wrapper,
+      body [id^="mainnav"] #menu-wrapper,
+      body [class*="sticky"] #menu-wrapper,
+      body [class*="fixed"] #menu-wrapper,
+      body .is-sticky #menu-wrapper,
+      body .fixed-header #menu-wrapper {
+          position: absolute !important;
+          left: 50% !important;
+          top: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: max-content !important; /* فرد المحتوى بالكامل ومنع الالتصاق باليسار */
+          max-width: 55% !important; /* حماية هندسية تمنع الاصطدام بالجانبين */
+          display: flex !important;
+          justify-content: center !important;
+          z-index: 10 !important;
+      }
+
+      body #menu-wrapper custom-main-menu,
+      body #menu-wrapper ul {
+          justify-content: center !important;
+          width: 100% !important;
+      }
+  }
+</style>
+{% endif %}
