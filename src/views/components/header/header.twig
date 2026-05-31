@@ -2,13 +2,16 @@
 | Variable         | Type    | Description                     |
 |------------------|---------|---------------------------------|
 | cart             | object  |                                 |
-| cart.items_count | int     |                                 |
+| cart.items_count | int      |                                 |
 | cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
 #}
 
 {% set important_links = theme.settings.get('important_links') %}
 {% set logo_position = theme.settings.get('logo_position', 'center') %}
 {% set menu_position = theme.settings.get('menu_position', 'right') %}
+
+{# حاوية ذكية تحمل إعدادات لوحة التحكم كـ Classes ديناميكية للاعتماد عليها بالكامل في الـ CSS #}
+<div class="theme-header-setting logo-{{ logo_position }} menu-{{ menu_position }}">
 
 <header class="store-header">
   {# Top Nav #}
@@ -46,43 +49,38 @@
       <div class="inner bg-inherit w-full">
           <div class="container">
               
-              {# حاوية مرنة تجمع العناصر بتوزيع طبيعي #}
+              {# حاوية الهيدر الرئيسية المرنة #}
               <div class="flex w-full items-center justify-between relative" id="header-inner-flex">
 
-                  {# حاوية تجمع اللوجو والمنيو في الجهة اليمنى دائماً #}
-                  <div class="flex items-center gap-6 flex-1 justify-start" id="right-side-zone">
-                      
-                      {# 1. قسم اللوجو - يتحرك بحرية بناءً على كلاس الـ body #}
-                      <div class="logo-block flex items-center" id="logo-wrapper">
-                          <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
-                            <i class="sicon-menu text-primary text-2xl"></i>
-                          </a>
+                  {# 1. قسم اللوجو #}
+                  <div class="logo-block flex items-center flex-none" id="logo-wrapper">
+                      <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
+                        <i class="sicon-menu text-primary text-2xl"></i>
+                      </a>
 
-                          <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: 175px !important; display: block;">
-                              <img fetchpriority="high" 
-                                   width="100%" 
-                                   height="100%" 
-                                   loading="eager" 
-                                   src="{{ store.logo|cdn(175) }}" 
-                                   alt="{{ store.name }} logo">
-                              
-                              {% if is_page('index') %}
-                                <h1 class="sr-only">{{ store.name }}</h1>
-                              {% else %}
-                                <h2 class="sr-only">{{ store.name }}</h2>
-                              {% endif %}
-                          </a>
-                      </div>
-
-                      {# 2. قسم المنيو الرئيسي - يتحرك بحرية أو يثبت يميناً تمهيداً لمكونك الجديد #}
-                      <div class="menu-block flex justify-start" id="menu-wrapper">
-                          <custom-main-menu></custom-main-menu>
-                      </div>
-
+                      <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: var(--logo-width, auto) !important; display: block; width: 100%;">
+                          <img fetchpriority="high" 
+                               width="100%" 
+                               height="100%" 
+                               loading="eager" 
+                               src="{{ store.logo|cdn(300) }}" 
+                               alt="{{ store.name }} logo">
+                          
+                          {% if is_page('index') %}
+                            <h1 class="sr-only">{{ store.name }}</h1>
+                          {% else %}
+                            <h2 class="sr-only">{{ store.name }}</h2>
+                          {% endif %}
+                      </a>
                   </div>
 
-                  {# 3. قسم السلة والحساب وتجربة الاتصال - ثابت دائماً في أقصى اليسار #}
-                  <div class="actions-block flex items-center justify-end" id="actions-wrapper">
+                  {# 2. قسم المنيو الرئيسي #}
+                  <div class="menu-block flex" id="menu-wrapper">
+                      <custom-main-menu></custom-main-menu>
+                  </div>
+
+                  {# 3. قسم السلة والحساب وتجربة الاتصال #}
+                  <div class="actions-block flex items-center justify-end flex-none gap-2" id="actions-wrapper">
                       <div class="welcome-message text-green-600 font-bold mx-2 px-3 py-1 bg-green-50 rounded-full">
                          تجربة الاتصال
                       </div>
@@ -99,60 +97,138 @@
   </div>
 </header>
 
-{# 🎯 الستايل نقي 100% وبدون أي شروط Twig تسبب أخطاء في الـ VS Code #}
+</div>
+
+{# 🎯 1. الستايل العام النظيف والمستقر لجميع الحالات (متوافق 100% مع معايير محررات الأكواد) #}
 <style>
   body .navbar-brand {
       float: none !important;
       margin: 0 !important;
+      max-width: var(--logo-width, auto) !important;
+      width: var(--logo-width, 100%) !important;
+  }
+
+  body .navbar-brand img {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100% !important;
+      object-fit: contain !important;
   }
 
   @media (min-width: 1024px) {
-      /* ─── 1. حالة سنترة اللوجو فقط ─── */
-      body.body-logo-center #logo-wrapper {
-          position: absolute !important;
-          left: 50% !important;
-          top: 50% !important;
-          transform: translate(-50%, -50%) !important;
-          z-index: 10 !important;
+      body #header-inner-flex {
+          display: flex !important;
+          width: 100% !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+          position: relative !important;
       }
-      body.body-logo-center #menu-wrapper {
-          margin-right: 0 !important;
+
+      body #menu-wrapper,
+      body #menu-wrapper custom-main-menu,
+      body #menu-wrapper ul {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          gap: 28px !important;
+          white-space: nowrap !important;
+      }
+
+      body #logo-wrapper, 
+      body #actions-wrapper {
+          z-index: 30 !important;
+      }
+
+      /* وضعية: لوجو يمين ومنيو يمين */
+      .theme-header-setting.logo-right.menu-right #menu-wrapper {
+          position: static !important;
+          transform: none !important;
+          flex: 1 !important;
           justify-content: flex-start !important;
+          padding-right: 35px !important;
+          padding-left: 0 !important;
+          margin: 0 !important;
+          width: auto !important;
       }
 
-      /* ─── 2. حالة سنترة المنيو فقط ─── */
-      body.body-menu-center #menu-wrapper {
-          position: absolute !important;
-          left: 50% !important;
-          top: 50% !important;
-          transform: translate(-50%, -50%) !important;
-          z-index: 9 !important;
-          margin-right: 0 !important;
-      }
-
-      /* ─── 3. الحالة القصوى: اللوجو والمنيو كلاهما في المنتصف ─── */
-      /* لمنع تداخل العناصر فوق بعضها، يتم تصفيف اللوجو بالأعلى وتحته المنيو تلقائياً */
-      body.body-logo-center.body-menu-center #header-inner-flex {
+      /* وضعية: لوجو سنتر ومنيو سنتر */
+      .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
-          gap: 12px !important;
+          gap: 16px !important;
+          align-items: center !important;
+          justify-content: center !important;
       }
-      body.body-logo-center.body-menu-center #logo-wrapper,
-      body.body-logo-center.body-menu-center #menu-wrapper {
+      .theme-header-setting.logo-center.menu-center #logo-wrapper,
+      .theme-header-setting.logo-center.menu-center #menu-wrapper {
           position: static !important;
           transform: none !important;
           margin: 0 auto !important;
+          width: auto !important;
           justify-content: center !important;
       }
-      body.body-logo-center.body-menu-center #right-side-zone {
-          flex-direction: column !important;
-          width: 100% !important;
-          gap: 8px !important;
-      }
-      body.body-logo-center.body-menu-center #actions-wrapper {
+      .theme-header-setting.logo-center.menu-center #actions-wrapper {
           position: absolute !important;
           left: 0 !important;
           top: 50% !important;
           transform: translateY(-50%) !important;
       }
+
+      /* وضعية: لوجو سنتر ومنيو يمين */
+      .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
+          position: absolute !important;
+          left: 50% !important;
+          top: 50% !important;
+          transform: translate(-50%, -50%) !important;
+      }
+      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper {
+          position: static !important;
+          transform: none !important;
+          flex: 1 !important;
+          justify-content: flex-start !important;
+          padding-right: 0 !important;
+      }
   }
 </style>
+
+{# 🎯 2. الحل الهندسي الصارم والقاطع لقفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
+{% if logo_position == 'right' and menu_position == 'center' %}
+<style>
+  @media (min-width: 1024px) {
+      /* 🚀 [تثبيت الشريط الأبيض] استهداف شامل وصارم جداً للشريط الأبيض وحاويته الرئيسية لمنع انكماش ارتفاعه أثناء السكرول */
+      body .main-nav-container,
+      body #mainnav,
+      body header [id^="mainnav"],
+      body .is-sticky #mainnav,
+      body .fixed-header #mainnav,
+      body [class*="sticky"] [id^="mainnav"],
+      body [class*="fixed"] [id^="mainnav"],
+      body .is-sticky .main-nav-container,
+      body .fixed-header .main-nav-container,
+      body [id^="mainnav"] .inner {
+          padding-top: 16px !important;    /* الحفاظ على المسافة العلوية المريحة */
+          padding-bottom: 16px !important; /* الحفاظ على المسافة السفلية المريحة */
+          height: 84px !important;         /* فرض الارتفاع الكامل المثالي المفرود */
+          min-height: 84px !important;     /* قفل الحاوية هندسياً لمنع الهبوط */
+          display: flex !important;
+          align-items: center !important;
+      }
+
+      /* المحافظة الدقيقة على توازن السنترة والتموضع المطلق للمنيو بداخل الارتفاع الثابت للشريط */
+      body #menu-wrapper,
+      body .is-sticky #menu-wrapper,
+      body .fixed-header #menu-wrapper {
+          position: absolute !important;
+          left: 50% !important;
+          top: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: max-content !important; 
+          max-width: 60% !important; 
+          display: flex !important;
+          justify-content: center !important;
+          z-index: 10 !important;
+      }
+  }
+</style>
+{% endif %}
