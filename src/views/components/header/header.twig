@@ -10,6 +10,7 @@
 {% set logo_position = theme.settings.get('logo_position', 'center') %}
 {% set menu_position = theme.settings.get('menu_position', 'right') %}
 
+{# حاوية ذكية تحمل إعدادات لوحة التحكم كـ Classes ديناميكية للاعتماد عليها بالكامل في الـ CSS #}
 <div class="theme-header-setting logo-{{ logo_position }} menu-{{ menu_position }}">
 
 <header class="store-header">
@@ -34,9 +35,8 @@
               </button>
           {% endif %}
 
-          {# 🔍 شريط البحث #}
           <div class="header-search flex-1">
-            <salla-search id="dynamic-search" inline oval height="36"></salla-search>
+            <salla-search inline oval height="36"></salla-search>
           </div>
       </div>
 
@@ -49,6 +49,7 @@
       <div class="inner bg-inherit w-full">
           <div class="container">
               
+              {# حاوية الهيدر الرئيسية المرنة #}
               <div class="flex w-full items-center justify-between relative" id="header-inner-flex">
 
                   {# 1. قسم اللوجو #}
@@ -98,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل العام والارتفاعات المستقرة #}
+{# 🎯 1. الستايل العام النظيف والمستقر لجميع الحالات (متوافق 100% مع معايير محررات الأكواد) #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -129,7 +130,7 @@
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
-          gap: 28px !important;
+          gap: 16px !important;
           white-space: nowrap !important;
       }
 
@@ -171,12 +172,29 @@
           top: 50% !important;
           transform: translateY(-50%) !important;
       }
+
+      /* وضعية: لوجو سنتر ومنيو يمين */
+      .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
+          position: absolute !important;
+          left: 50% !important;
+          top: 50% !important;
+          transform: translate(-50%, -50%) !important;
+      }
+      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper {
+          position: static !important;
+          transform: none !important;
+          flex: 1 !important;
+          justify-content: flex-start !important;
+          padding-right: 0 !important;
+      }
   }
 </style>
 
+{# 🎯 2. الحل الهندسي الصارم والقاطع لقفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
+      /* 🚀 [تثبيت الشريط الأبيض] استهداف شامل وصارم جداً للشريط الأبيض وحاويته الرئيسية لمنع انكماش ارتفاعه أثناء السكرول */
       body .main-nav-container,
       body #mainnav,
       body header [id^="mainnav"],
@@ -187,14 +205,15 @@
       body .is-sticky .main-nav-container,
       body .fixed-header .main-nav-container,
       body [id^="mainnav"] .inner {
-          padding-top: 16px !important;
-          padding-bottom: 16px !important;
-          height: 84px !important;
-          min-height: 84px !important;
+          padding-top: 16px !important;    /* الحفاظ على المسافة العلوية المريحة */
+          padding-bottom: 16px !important; /* الحفاظ على المسافة السفلية المريحة */
+          height: 84px !important;         /* فرض الارتفاع الكامل المثالي المفرود */
+          min-height: 84px !important;     /* قفل الحاوية هندسياً لمنع الهبوط */
           display: flex !important;
           align-items: center !important;
       }
 
+      /* المحافظة الدقيقة على توازن السنترة والتموضع المطلق للمنيو بداخل الارتفاع الثابت للشريط */
       body #menu-wrapper,
       body .is-sticky #menu-wrapper,
       body .fixed-header #menu-wrapper {
@@ -213,47 +232,3 @@
   }
 </style>
 {% endif %}
-
-{# 🎯 سكريبت التدوير المباشر والمضمون 100% #}
-<script>
-  (function() {
-    function initSearchAnimation() {
-      const searchElement = document.getElementById('dynamic-search');
-      if (!searchElement) return;
-
-      // 📝 اكتب العبارات التي تبيها تظهر هنا مباشرة وافصل بينها بفاصلة
-      const searchPhrases = [
-        'البحث عن "كيبل آيفون سريع"',
-        'البحث عن "يد تحكم للألعاب"',
-        'البحث عن "شاحن متنقل عالي الأداء"',
-        'البحث عن "ملحقات ألعاب حصرية"'
-      ];
-
-      let currentIndex = 0;
-
-      function updatePlaceholder() {
-        const currentText = searchPhrases[currentIndex];
-        
-        // تطبيق النص على الحاوية الخارجية والداخلية لدعم الـ Shadow DOM بالكامل
-        searchElement.setAttribute('placeholder', currentText);
-        
-        const innerInput = searchElement.querySelector('input') || searchElement.shadowRoot?.querySelector('input');
-        if (innerInput) {
-          innerInput.setAttribute('placeholder', currentText);
-        }
-
-        currentIndex = (currentIndex + 1) % searchPhrases.length;
-      }
-
-      updatePlaceholder();
-      setInterval(updatePlaceholder, 2500);
-    }
-
-    // تشغيل السكريبت فوراً وعند تحميل الصفحة لضمان الالتقاط
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initSearchAnimation);
-    } else {
-      initSearchAnimation();
-    }
-  })();
-</script>
