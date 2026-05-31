@@ -10,9 +10,6 @@
 {% set logo_position = theme.settings.get('logo_position', 'center') %}
 {% set menu_position = theme.settings.get('menu_position', 'right') %}
 
-{# 🔑 ربط برمي ذكي لجلب العبارات المكتوبة من خانة التاجر الجديدة #}
-{% set search_placeholder = theme.settings.get('search_placeholder', 'البحث عن كيبل, البحث عن يد تحكم') %}
-
 <div class="theme-header-setting logo-{{ logo_position }} menu-{{ menu_position }}">
 
 <header class="store-header">
@@ -37,9 +34,9 @@
               </button>
           {% endif %}
 
-          {# 🔍 شريط البحث الذكي المربوط بالبيانات الديناميكية #}
+          {# 🔍 شريط البحث #}
           <div class="header-search flex-1">
-            <salla-search id="dynamic-search" data-phrases="{{ search_placeholder }}" inline oval height="36"></salla-search>
+            <salla-search id="dynamic-search" inline oval height="36"></salla-search>
           </div>
       </div>
 
@@ -101,7 +98,7 @@
 
 </div>
 
-{# 🎯 ستايل الارتفاعات الثابتة والسنترة الكاملة التي ضبطناها #}
+{# 🎯 الستايل العام والارتفاعات المستقرة #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -151,7 +148,7 @@
           padding-left: 0 !important;
           margin: 0 !important;
           width: auto !important;
-       }
+      }
 
       /* وضعية: لوجو سنتر ومنيو سنتر */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
@@ -217,27 +214,30 @@
 </style>
 {% endif %}
 
-{# 🎯 السكريبت الذكي المسؤول عن تدوير وتحريك الكلمات في شريط البحث #}
+{# 🎯 سكريبت التدوير المباشر والمضمون 100% #}
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const searchElement = document.getElementById('dynamic-search');
-    
-    if (searchElement) {
-      const rawPhrases = searchElement.getAttribute('data-phrases') || '';
-      const searchPhrases = rawPhrases.split(',').map(phrase => phrase.trim()).filter(phrase => phrase.length > 0);
+  (function() {
+    function initSearchAnimation() {
+      const searchElement = document.getElementById('dynamic-search');
+      if (!searchElement) return;
 
-      if (searchPhrases.length === 0) {
-        searchPhrases.push('البحث عن المنتجات...');
-      }
+      // 📝 اكتب العبارات التي تبيها تظهر هنا مباشرة وافصل بينها بفاصلة
+      const searchPhrases = [
+        'البحث عن "كيبل آيفون سريع"',
+        'البحث عن "يد تحكم للألعاب"',
+        'البحث عن "شاحن متنقل عالي الأداء"',
+        'البحث عن "ملحقات ألعاب حصرية"'
+      ];
 
       let currentIndex = 0;
 
       function updatePlaceholder() {
         const currentText = searchPhrases[currentIndex];
+        
+        // تطبيق النص على الحاوية الخارجية والداخلية لدعم الـ Shadow DOM بالكامل
         searchElement.setAttribute('placeholder', currentText);
         
-        // دعم حقل الإدخال الداخلي الفعلي المتولد بواسطة مكوّن سلة
-        const innerInput = searchElement.querySelector('input');
+        const innerInput = searchElement.querySelector('input') || searchElement.shadowRoot?.querySelector('input');
         if (innerInput) {
           innerInput.setAttribute('placeholder', currentText);
         }
@@ -246,7 +246,14 @@
       }
 
       updatePlaceholder();
-      setInterval(updatePlaceholder, 2500); // سرعة الحركة (ثانيتين ونصف)
+      setInterval(updatePlaceholder, 2500);
     }
-  });
+
+    // تشغيل السكريبت فوراً وعند تحميل الصفحة لضمان الالتقاط
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSearchAnimation);
+    } else {
+      initSearchAnimation();
+    }
+  })();
 </script>
