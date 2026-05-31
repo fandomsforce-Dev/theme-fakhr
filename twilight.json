@@ -26,6 +26,13 @@
     ],
     "settings": [
         {
+  "id": "search_placeholder",
+  "type": "text",
+  "label": "كلمات البحث المتحركة",
+  "placeholder": "البحث عن كيبل آيفون, البحث عن يد تحكم",
+  "hint": "اكتب العبارات وافصل بين كل عبارة وأخرى بفاصلة (,) لتتحرك وراء بعضها"
+},
+        {
             "id": "squar_photo_bg_image_size",
             "type": "items",
             "format": "dropdown-list",

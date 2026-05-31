@@ -10,7 +10,9 @@
 {% set logo_position = theme.settings.get('logo_position', 'center') %}
 {% set menu_position = theme.settings.get('menu_position', 'right') %}
 
-{# حاوية ذكية تحمل إعدادات لوحة التحكم كـ Classes ديناميكية للاعتماد عليها بالكامل في الـ CSS #}
+{# 🔑 ربط برمي ذكي لجلب العبارات المكتوبة من خانة التاجر الجديدة #}
+{% set search_placeholder = theme.settings.get('search_placeholder', 'البحث عن كيبل, البحث عن يد تحكم') %}
+
 <div class="theme-header-setting logo-{{ logo_position }} menu-{{ menu_position }}">
 
 <header class="store-header">
@@ -35,8 +37,9 @@
               </button>
           {% endif %}
 
+          {# 🔍 شريط البحث الذكي المربوط بالبيانات الديناميكية #}
           <div class="header-search flex-1">
-            <salla-search inline oval height="36"></salla-search>
+            <salla-search id="dynamic-search" data-phrases="{{ search_placeholder }}" inline oval height="36"></salla-search>
           </div>
       </div>
 
@@ -49,7 +52,6 @@
       <div class="inner bg-inherit w-full">
           <div class="container">
               
-              {# حاوية الهيدر الرئيسية المرنة #}
               <div class="flex w-full items-center justify-between relative" id="header-inner-flex">
 
                   {# 1. قسم اللوجو #}
@@ -99,7 +101,7 @@
 
 </div>
 
-{# 🎯 1. الستايل العام النظيف والمستقر لجميع الحالات (متوافق 100% مع معايير محررات الأكواد) #}
+{# 🎯 ستايل الارتفاعات الثابتة والسنترة الكاملة التي ضبطناها #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -149,7 +151,7 @@
           padding-left: 0 !important;
           margin: 0 !important;
           width: auto !important;
-      }
+       }
 
       /* وضعية: لوجو سنتر ومنيو سنتر */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
@@ -172,29 +174,12 @@
           top: 50% !important;
           transform: translateY(-50%) !important;
       }
-
-      /* وضعية: لوجو سنتر ومنيو يمين */
-      .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
-          position: absolute !important;
-          left: 50% !important;
-          top: 50% !important;
-          transform: translate(-50%, -50%) !important;
-      }
-      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper {
-          position: static !important;
-          transform: none !important;
-          flex: 1 !important;
-          justify-content: flex-start !important;
-          padding-right: 0 !important;
-      }
   }
 </style>
 
-{# 🎯 2. الحل الهندسي الصارم والقاطع لقفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* 🚀 [تثبيت الشريط الأبيض] استهداف شامل وصارم جداً للشريط الأبيض وحاويته الرئيسية لمنع انكماش ارتفاعه أثناء السكرول */
       body .main-nav-container,
       body #mainnav,
       body header [id^="mainnav"],
@@ -205,15 +190,14 @@
       body .is-sticky .main-nav-container,
       body .fixed-header .main-nav-container,
       body [id^="mainnav"] .inner {
-          padding-top: 16px !important;    /* الحفاظ على المسافة العلوية المريحة */
-          padding-bottom: 16px !important; /* الحفاظ على المسافة السفلية المريحة */
-          height: 84px !important;         /* فرض الارتفاع الكامل المثالي المفرود */
-          min-height: 84px !important;     /* قفل الحاوية هندسياً لمنع الهبوط */
+          padding-top: 16px !important;
+          padding-bottom: 16px !important;
+          height: 84px !important;
+          min-height: 84px !important;
           display: flex !important;
           align-items: center !important;
       }
 
-      /* المحافظة الدقيقة على توازن السنترة والتموضع المطلق للمنيو بداخل الارتفاع الثابت للشريط */
       body #menu-wrapper,
       body .is-sticky #menu-wrapper,
       body .fixed-header #menu-wrapper {
@@ -232,3 +216,37 @@
   }
 </style>
 {% endif %}
+
+{# 🎯 السكريبت الذكي المسؤول عن تدوير وتحريك الكلمات في شريط البحث #}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchElement = document.getElementById('dynamic-search');
+    
+    if (searchElement) {
+      const rawPhrases = searchElement.getAttribute('data-phrases') || '';
+      const searchPhrases = rawPhrases.split(',').map(phrase => phrase.trim()).filter(phrase => phrase.length > 0);
+
+      if (searchPhrases.length === 0) {
+        searchPhrases.push('البحث عن المنتجات...');
+      }
+
+      let currentIndex = 0;
+
+      function updatePlaceholder() {
+        const currentText = searchPhrases[currentIndex];
+        searchElement.setAttribute('placeholder', currentText);
+        
+        // دعم حقل الإدخال الداخلي الفعلي المتولد بواسطة مكوّن سلة
+        const innerInput = searchElement.querySelector('input');
+        if (innerInput) {
+          innerInput.setAttribute('placeholder', currentText);
+        }
+
+        currentIndex = (currentIndex + 1) % searchPhrases.length;
+      }
+
+      updatePlaceholder();
+      setInterval(updatePlaceholder, 2500); // سرعة الحركة (ثانيتين ونصف)
+    }
+  });
+</script>
