@@ -99,7 +99,7 @@
 
 </div>
 
-{# 🎯 الستايل الجذري والنهائي الصارم لحماية الارتفاع وتأمين السنترة وفرد القائمة #}
+{# 🎯 الستايل الجذري الصارم - يفرض فرد الارتفاع والسنترة على كل حالات السكرول والـ Sticky #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -116,7 +116,25 @@
   }
 
   @media (min-width: 1024px) {
-      /* الحفاظ على مرونة وتوزيع عناصر الفليكس في الوضع الطبيعي والستيكي */
+      /* 🚀 [قفل الارتفاع الرأسي الكلي] منع السكريبت من ضغط ارتفاع الهيدر عند السكرول في كل القوالب والـ Classes الديناميكية */
+      body .main-nav-container,
+      body [id^="mainnav"],
+      body header [id^="mainnav"],
+      body .is-sticky [id^="mainnav"],
+      body .fixed-header [id^="mainnav"],
+      body [class*="sticky"] [id^="mainnav"],
+      body [class*="fixed"] [id^="mainnav"],
+      body .is-sticky .main-nav-container,
+      body .fixed-header .main-nav-container {
+          padding-top: 16px !important;    /* إرجاع نفس مسافة الارتفاع السليمة المريحة */
+          padding-bottom: 16px !important; /* إرجاع نفس مسافة الارتفاع السليمة المريحة */
+          min-height: 80px !important;     /* تأمين كامل لمنع تسطيح الهيدر عمودياً */
+          height: auto !important;
+          display: flex !important;
+          align-items: center !important;
+      }
+
+      /* تأمين مرونة الحاوية الداخلية وتوزيعها الصحيح عند السكرول */
       body #header-inner-flex,
       body [class*="fixed"] #header-inner-flex,
       body [class*="sticky"] #header-inner-flex,
@@ -127,15 +145,17 @@
           align-items: center !important;
           justify-content: space-between !important;
           position: relative !important;
+          height: 100% !important;
       }
 
-      /* المحافظة على فرد القائمة أفقياً والتباعد الثابت الأنيق للروابط */
+      /* تأمين الفرد الأفقي لمنع تداخل الكلمات */
       body #menu-wrapper,
       body #menu-wrapper custom-main-menu,
       body #menu-wrapper ul,
       body [class*="sticky"] #menu-wrapper,
       body [class*="fixed"] #menu-wrapper,
-      body .is-sticky #menu-wrapper {
+      body .is-sticky #menu-wrapper,
+      body .fixed-header #menu-wrapper {
           display: flex !important;
           flex-direction: row !important;
           align-items: center !important;
@@ -148,7 +168,11 @@
           z-index: 30 !important;
       }
 
-      /* الوضع: لوجو يمين ومنيو يمين */
+      /* ──────────────────────────────────────────────────────────
+         الوضع الافتراضي عند عدم السكرول (بناءً على خيارات لوحة التحكم)
+         ────────────────────────────────────────────────────────── */
+      
+      /* لوجو يمين ومنيو يمين */
       .theme-header-setting.logo-right.menu-right #menu-wrapper {
           position: static !important;
           transform: none !important;
@@ -160,7 +184,7 @@
           width: auto !important;
       }
 
-      /* الوضع: لوجو سنتر ومنيو سنتر */
+      /* لوجو سنتر ومنيو سنتر */
       .theme-header-setting.logo-center.menu-center #header-inner-flex {
           flex-direction: column !important;
           gap: 16px !important;
@@ -182,7 +206,7 @@
           transform: translateY(-50%) !important;
       }
 
-      /* الوضع: لوجو سنتر ومنيو يمين */
+      /* لوجو سنتر ومنيو يمين */
       .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
           position: absolute !important;
           left: 50% !important;
@@ -199,22 +223,11 @@
   }
 </style>
 
-{# 🎯 2. هندسة فك انضغاط الهيدر والمنيو لوضعية (لوجو يمين + منيو سنتر) رغماً عن الـ JavaScript #}
+{# 🎯 2. [الحل القاطع] استهداف عام وصارم لوضعية (لوجو يمين + منيو سنتر) يفرض السنترة المطلقة وفك انضغاط الروابط الداخلية رغماً عن الـ JavaScript أثناء السكرول #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* 🚀 [مهم جداً] إجبار حاوية الـ Sticky على الاحتفاظ بنفس الطول والارتفاع والـ Padding الممتاز الأصلي */
-      body .is-sticky [id^="mainnav"],
-      body .fixed-header [id^="mainnav"],
-      body [id^="mainnav"].is-sticky,
-      body .is-sticky .main-nav-container,
-      body .fixed-header .main-nav-container {
-          padding-top: 16px !important;    /* إرجاع مسافة الارتفاع العلوية السليمة */
-          padding-bottom: 16px !important; /* إرجاع مسافة الارتفاع السفلية السليمة */
-          min-height: 80px !important;     /* قفل هندسي للارتفاع يمنع انضغاط العناصر رأسيًا */
-      }
-
-      /* إجبار المنيو على السنترة المطلقة في مركز الارتفاع الجديد دائماً وأبداً */
+      /* فرض السنترة المطلقة للمنيو في مركز الارتفاع الجديد دائماً (في الوضع الطبيعي والـ Sticky) */
       body #menu-wrapper,
       body [id^="mainnav"] #menu-wrapper,
       body [class*="sticky"] #menu-wrapper,
@@ -235,22 +248,24 @@
           z-index: 10 !important;
       }
 
-      /* 🚀 [فك الانضغاط الداخلي] حماية روابط المنيو والـ custom-menu من الانضغاط الرأسي المفروض من نظام المنصة */
+      /* 🚀 [فك الانضغاط الداخلي للروابط] إجبار الـ custom-menu وعناصر الـ ul والـ li على الامتداد الرأسي الكامل لمنع الالتصاق بالحواف العلوية */
+      body #menu-wrapper custom-main-menu,
+      body #menu-wrapper ul,
       body .is-sticky #menu-wrapper custom-main-menu,
       body .is-sticky #menu-wrapper ul,
+      body .fixed-header #menu-wrapper ul,
       body .is-sticky #menu-wrapper ul li,
       body .is-sticky #menu-wrapper ul li a,
-      body .fixed-header #menu-wrapper custom-main-menu,
-      body .fixed-header #menu-wrapper ul,
       body .fixed-header #menu-wrapper ul li a {
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
           height: auto !important;
-          min-height: 44px !important; /* إعطاء مساحة طولية مفرودة وممتازة للروابط والنصوص داخل الـ Sticky */
+          min-height: 48px !important; /* فرض مساحة طولية داخلية فسيحة ومفرودة للنصوص والروابط */
           padding-top: 4px !important;
           padding-bottom: 4px !important;
-          gap: 28px !important; /* تباعد الكلمات السليم والمريح */
+          gap: 28px !important; 
+          flex-shrink: 0 !important;
       }
   }
 </style>
