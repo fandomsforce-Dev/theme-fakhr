@@ -1,19 +1,12 @@
-{#
-| Variable         | Type    | Description                     |
-|------------------|---------|---------------------------------|
-| cart             | object  |                                 |
-| cart.items_count | int      |                                 |
-| cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
-#}
-
 {% set important_links = theme.settings.get('important_links') %}
 {% set logo_position = theme.settings.get('logo_position', 'center') %}
 {% set menu_position = theme.settings.get('menu_position', 'right') %}
+{% set header_height = theme.settings.get('header_height', 84) %}
 
-{# حاوية ذكية تحمل إعدادات لوحة التحكم كـ Classes ديناميكية للاعتماد عليها بالكامل في الـ CSS #}
-<div class="theme-header-setting logo-{{ logo_position }} menu-{{ menu_position }}">
+<div class="theme-header-setting logo-{{ logo_position }} menu-{{ menu_position }}" 
+     style="--header-min-height: {{ header_height }}px; --header-py: 16px;">
 
-<header class="store-header">
+<<header class="store-header">
   {# Top Nav #}
   <div class="top-navbar">
     <div class="container flex justify-between">
@@ -45,20 +38,19 @@
   </div>
 
   {# Main Nav #}
-  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center py-4">
+  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center">
       <div class="inner bg-inherit w-full">
           <div class="container">
-              
-              {# حاوية الهيدر الرئيسية المرنة #}
               <div class="flex w-full items-center justify-between relative" id="header-inner-flex">
 
-                  {# 1. قسم اللوجو #}
+                  {# 1. اللوجو #}
                   <div class="logo-block flex items-center flex-none" id="logo-wrapper">
                       <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
                         <i class="sicon-menu text-primary text-2xl"></i>
                       </a>
 
-                      <a class="navbar-brand m-0" href="{{ store.url }}" style="max-width: var(--logo-width, auto) !important; display: block; width: 100%;">
+                      <a class="navbar-brand m-0" href="{{ store.url }}" 
+                         style="max-width: var(--logo-width, auto); display: block; width: 100%;">
                           <img fetchpriority="high" 
                                width="100%" 
                                height="100%" 
@@ -74,12 +66,12 @@
                       </a>
                   </div>
 
-                  {# 2. قسم المنيو الرئيسي #}
+                  {# 2. المنيو #}
                   <div class="menu-block flex" id="menu-wrapper">
                       <custom-main-menu></custom-main-menu>
                   </div>
 
-                  {# 3. قسم السلة والحساب وتجربة الاتصال #}
+                  {# 3. الأزرار #}
                   <div class="actions-block flex items-center justify-end flex-none gap-2" id="actions-wrapper">
                       <div class="welcome-message text-green-600 font-bold mx-2 px-3 py-1 bg-green-50 rounded-full">
                         تست
@@ -91,7 +83,6 @@
                   </div>
 
               </div>
-
           </div>
       </div>
   </div>
@@ -99,136 +90,136 @@
 
 </div>
 
-{# 🎯 1. الستايل العام النظيف والمستقر لجميع الحالات (متوافق 100% مع معايير محررات الأكواد) #}
+{# ===== 🎨 CSS عام (بدون أي شروط Twig داخله) ===== #}
 <style>
   body .navbar-brand {
-      float: none !important;
-      margin: 0 !important;
-      max-width: var(--logo-width, auto) !important;
-      width: var(--logo-width, 100%) !important;
+    float: none;
+    margin: 0;
+    max-width: var(--logo-width, auto);
+    width: var(--logo-width, 100%);
   }
 
   body .navbar-brand img {
-      width: 100% !important;
-      height: auto !important;
-      max-width: 100% !important;
-      object-fit: contain !important;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .main-nav-container {
+    min-height: var(--header-min-height, 84px);
+    padding-top: var(--header-py, 16px);
+    padding-bottom: var(--header-py, 16px);
+    display: flex;
+    align-items: center;
   }
 
   @media (min-width: 1024px) {
-      body #header-inner-flex {
-          display: flex !important;
-          width: 100% !important;
-          align-items: center !important;
-          justify-content: space-between !important;
-          position: relative !important;
-      }
+    #header-inner-flex {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
 
-      body #menu-wrapper,
-      body #menu-wrapper custom-main-menu,
-      body #menu-wrapper ul {
-          display: flex !important;
-          flex-direction: row !important;
-          align-items: center !important;
-          gap: 16px !important;
-          white-space: nowrap !important;
-      }
+    #menu-wrapper,
+    #menu-wrapper custom-main-menu,
+    #menu-wrapper ul {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      white-space: nowrap;
+    }
 
-      body #logo-wrapper, 
-      body #actions-wrapper {
-          z-index: 30 !important;
-      }
+    #logo-wrapper, 
+    #actions-wrapper {
+      z-index: 30;
+    }
 
-      /* وضعية: لوجو يمين ومنيو يمين */
-      .theme-header-setting.logo-right.menu-right #menu-wrapper {
-          position: static !important;
-          transform: none !important;
-          flex: 1 !important;
-          justify-content: flex-start !important;
-          padding-right: 35px !important;
-          padding-left: 0 !important;
-          margin: 0 !important;
-          width: auto !important;
-      }
+    /* وضعية: لوجو يمين + منيو يمين */
+    .theme-header-setting.logo-right.menu-right #menu-wrapper {
+      position: static;
+      transform: none;
+      flex: 1;
+      justify-content: flex-start;
+      padding-right: 35px;
+      padding-left: 0;
+      margin: 0;
+      width: auto;
+    }
 
-      /* وضعية: لوجو سنتر ومنيو سنتر */
-      .theme-header-setting.logo-center.menu-center #header-inner-flex {
-          flex-direction: column !important;
-          gap: 16px !important;
-          align-items: center !important;
-          justify-content: center !important;
-      }
-      .theme-header-setting.logo-center.menu-center #logo-wrapper,
-      .theme-header-setting.logo-center.menu-center #menu-wrapper {
-          position: static !important;
-          transform: none !important;
-          margin: 0 auto !important;
-          width: auto !important;
-          justify-content: center !important;
-      }
-      .theme-header-setting.logo-center.menu-center #actions-wrapper {
-          position: absolute !important;
-          left: 0 !important;
-          top: 50% !important;
-          transform: translateY(-50%) !important;
-      }
+    /* وضعية: لوجو سنتر + منيو سنتر */
+    .theme-header-setting.logo-center.menu-center #header-inner-flex {
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-header-setting.logo-center.menu-center #logo-wrapper,
+    .theme-header-setting.logo-center.menu-center #menu-wrapper {
+      position: static;
+      transform: none;
+      margin: 0 auto;
+      width: auto;
+      justify-content: center;
+    }
+    .theme-header-setting.logo-center.menu-center #actions-wrapper {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
 
-      /* وضعية: لوجو سنتر ومنيو يمين */
-      .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
-          position: absolute !important;
-          left: 50% !important;
-          top: 50% !important;
-          transform: translate(-50%, -50%) !important;
-      }
-      .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper {
-          position: static !important;
-          transform: none !important;
-          flex: 1 !important;
-          justify-content: flex-start !important;
-          padding-right: 0 !important;
-      }
+    /* وضعية: لوجو سنتر + منيو يمين */
+    .theme-header-setting.logo-center:not(.menu-center) #logo-wrapper {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .theme-header-setting.logo-center:not(.menu-center) #menu-wrapper {
+      position: static;
+      transform: none;
+      flex: 1;
+      justify-content: flex-start;
+      padding-right: 0;
+    }
   }
 </style>
 
-{# 🎯 2. الحل الهندسي الصارم والقاطع لقفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
+{# ===== 🎨 CSS خاص بوضعية لوجو يمين + منيو سنتر (منفصل تماماً) ===== #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* 🚀 [تثبيت الشريط الأبيض] استهداف شامل وصارم جداً للشريط الأبيض وحاويته الرئيسية لمنع انكماش ارتفاعه أثناء السكرول */
-      body .main-nav-container,
-      body #mainnav,
-      body header [id^="mainnav"],
-      body .is-sticky #mainnav,
-      body .fixed-header #mainnav,
-      body [class*="sticky"] [id^="mainnav"],
-      body [class*="fixed"] [id^="mainnav"],
-      body .is-sticky .main-nav-container,
-      body .fixed-header .main-nav-container,
-      body [id^="mainnav"] .inner {
-          padding-top: 16px !important;    /* الحفاظ على المسافة العلوية المريحة */
-          padding-bottom: 16px !important; /* الحفاظ على المسافة السفلية المريحة */
-          height: 84px !important;         /* فرض الارتفاع الكامل المثالي المفرود */
-          min-height: 84px !important;     /* قفل الحاوية هندسياً لمنع الهبوط */
-          display: flex !important;
-          align-items: center !important;
-      }
+    .theme-header-setting.logo-right.menu-center .main-nav-container,
+    .theme-header-setting.logo-right.menu-center #mainnav,
+    .theme-header-setting.logo-right.menu-center .is-sticky #mainnav,
+    .theme-header-setting.logo-right.menu-center .fixed-header #mainnav,
+    .theme-header-setting.logo-right.menu-center .is-sticky .main-nav-container,
+    .theme-header-setting.logo-right.menu-center .fixed-header .main-nav-container,
+    .theme-header-setting.logo-right.menu-center #mainnav .inner {
+      padding-top: var(--header-py, 16px) !important;
+      padding-bottom: var(--header-py, 16px) !important;
+      min-height: var(--header-min-height, 84px) !important;
+      display: flex !important;
+      align-items: center !important;
+    }
 
-      /* المحافظة الدقيقة على توازن السنترة والتموضع المطلق للمنيو بداخل الارتفاع الثابت للشريط */
-      body #menu-wrapper,
-      body .is-sticky #menu-wrapper,
-      body .fixed-header #menu-wrapper {
-          position: absolute !important;
-          left: 50% !important;
-          top: 50% !important;
-          transform: translate(-50%, -50%) !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          width: max-content !important; 
-          max-width: 60% !important; 
-          display: flex !important;
-          justify-content: center !important;
-          z-index: 10 !important;
-      }
+    .theme-header-setting.logo-right.menu-center #menu-wrapper {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: max-content !important; 
+      max-width: 60% !important; 
+      display: flex !important;
+      justify-content: center !important;
+      z-index: 10 !important;
+    }
   }
 </style>
 {% endif %}
