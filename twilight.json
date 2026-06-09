@@ -26,6 +26,21 @@
     ],
     "settings": [
         {
+            "id": "search_words",
+            "type": "string",
+            "format": "text",
+            "label": "اضف كلمات متحركه لمحرك البحث",
+            "description": null,
+            "labelHTML": null,
+            "placeholder": "Placeholder text ..",
+            "icon": "sicon-format-text-alt",
+            "value": null,
+            "multilanguage": true,
+            "required": false,
+            "minLength": 6,
+            "maxLength": 30
+        },
+        {
             "id": "squar_photo_bg_image_size",
             "type": "items",
             "format": "dropdown-list",
