@@ -35,8 +35,16 @@
               </button>
           {% endif %}
 
+          {# 🎯 تعديل مربع البحث ليرتبط بالمعرف المميز الجديد search_words #}
           <div class="header-search flex-1">
-            <salla-search inline oval height="36"></salla-search>
+            <salla-search 
+               id="fandom-dynamic-search"
+               inline 
+               oval 
+               height="36"
+               data-search-words="{{ theme.settings.search_words }}"
+               placeholder="ابحث عن...">
+            </salla-search>
           </div>
       </div>
 
@@ -157,7 +165,7 @@
           gap: 16px !important;
           align-items: center !important;
           justify-content: center !important;
-      }
+  }
       .theme-header-setting.logo-center.menu-center #logo-wrapper,
       .theme-header-setting.logo-center.menu-center #menu-wrapper {
           position: static !important;
@@ -232,3 +240,37 @@
   }
 </style>
 {% endif %}
+
+{# 🎯 3. جافاسكريبت مدمج وذكي لتحريك نصوص الـ Placeholder المدخلة جرافيكياً #}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const searchComponent = document.getElementById('fandom-dynamic-search');
+      if (!searchComponent) return;
+
+      // جلب الكلمات المكتوبة في لوحة التحكم
+      const rawData = searchComponent.getAttribute('data-search-words');
+      
+      // تحويل النص إلى مصفوفة كلمات، وفي حال كانت فارغة نضع كلمات افتراضية تناسب متجرك الفخم
+      let searchPhrases = rawData && rawData.trim() !== "" 
+          ? rawData.split(',').map(word => word.trim()) 
+          : ["سلك شاحن آيفون برابط سريع", "يد تحكم GameSir", "قاعدة جوال مكتبية مريحة"];
+
+      let currentPhraseIndex = 0;
+
+      function rotateSearchPlaceholder() {
+          const nextText = "ابحث عن: " + searchPhrases[currentPhraseIndex];
+          
+          // تحديث الخاصية لمكون سلة مباشرة
+          searchComponent.setAttribute('placeholder', nextText);
+          
+          // الانتقال للكلمة التالية في المصفوفة
+          currentPhraseIndex = (currentPhraseIndex + 1) % searchPhrases.length;
+      }
+
+      // الانتقال التلقائي للكلمة الصاعدة كل 3 ثوانٍ
+      setInterval(rotateSearchPlaceholder, 3000);
+      
+      // تشغيل مبدئي فوري عند تحميل الصفحة
+      rotateSearchPlaceholder();
+  });
+</script>
