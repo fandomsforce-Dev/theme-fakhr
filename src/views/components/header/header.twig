@@ -35,16 +35,19 @@
               </button>
           {% endif %}
 
-          {# 🎯 تعديل مربع البحث ليرتبط بالمعرف المميز الجديد search_words #}
-          <div class="header-search flex-1">
-            <salla-search 
-               id="fandom-dynamic-search"
-               inline 
-               oval 
-               height="36"
-               data-search-words="{{ theme.settings.search_words }}"
-               placeholder="ابحث عن...">
-            </salla-search>
+          {# 🎯 التطوير الهندسي الجديد لمربع البحث مع الطبقة النصية المتحركة الصاعدة #}
+          <div class="header-search flex-1 min-w-[240px] max-w-[450px] relative">
+            <div class="fandom-search-box relative w-full">
+              
+              <salla-search inline oval height="36"></salla-search>
+              
+              {# تأثير النصوص الصاعدة المربوط بلوحة التحكم #}
+              <div id="search-dynamic-overlay" class="fandom-search-overlay" data-search-words="{{ theme.settings.search_words }}">
+                  <span class="static-txt">ابحث عن: </span>
+                  <span id="changing-txt" class="changing-txt"></span>
+              </div>
+
+            </div>
           </div>
       </div>
 
@@ -165,7 +168,7 @@
           gap: 16px !important;
           align-items: center !important;
           justify-content: center !important;
-  }
+      }
       .theme-header-setting.logo-center.menu-center #logo-wrapper,
       .theme-header-setting.logo-center.menu-center #menu-wrapper {
           position: static !important;
@@ -196,13 +199,49 @@
           padding-right: 0 !important;
       }
   }
+
+  /* 🎯 التنسيق الهندسي لثبات حجم حقل البحث وتشغيل أنيميشن صعود النصوص */
+  .fandom-search-box salla-search {
+      width: 100% !important;
+      display: block !important;
+  }
+  .fandom-search-overlay {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none; /* لتمرير الضغطة والكتابة للحقل الحقيقي بالخلف */
+      font-size: 13px;
+      color: #9c9c9c;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      z-index: 10;
+      font-weight: 400;
+      transition: opacity 0.25s ease;
+  }
+  .changing-txt {
+      display: inline-block;
+      color: #2a2a2a;
+      font-weight: 500;
+      transition: transform 0.35s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.35s ease;
+      opacity: 1;
+      transform: translateY(0);
+  }
+  .changing-txt.slide-out {
+      opacity: 0;
+      transform: translateY(-14px); /* الهروب للأعلى */
+  }
+  .changing-txt.slide-in {
+      opacity: 0;
+      transform: translateY(14px); /* الدخول من الأسفل */
+  }
 </style>
 
-{# 🎯 2. الحل الهندسي الصارم والقاطع لقفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
+{# 🎯 2. الحل الهندسي الصارم لقفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
-      /* 🚀 [تثبيت الشريط الأبيض] استهداف شامل وصارم جداً للشريط الأبيض وحاويته الرئيسية لمنع انكماش ارتفاعه أثناء السكرول */
       body .main-nav-container,
       body #mainnav,
       body header [id^="mainnav"],
@@ -213,15 +252,14 @@
       body .is-sticky .main-nav-container,
       body .fixed-header .main-nav-container,
       body [id^="mainnav"] .inner {
-          padding-top: 16px !important;    /* الحفاظ على المسافة العلوية المريحة */
-          padding-bottom: 16px !important; /* الحفاظ على المسافة السفلية المريحة */
-          height: 84px !important;         /* فرض الارتفاع الكامل المثالي المفرود */
-          min-height: 84px !important;     /* قفل الحاوية هندسياً لمنع الهبوط */
+          padding-top: 16px !important;
+          padding-bottom: 16px !important;
+          height: 84px !important;
+          min-height: 84px !important;
           display: flex !important;
           align-items: center !important;
       }
 
-      /* المحافظة الدقيقة على توازن السنترة والتموضع المطلق للمنيو بداخل الارتفاع الثابت للشريط */
       body #menu-wrapper,
       body .is-sticky #menu-wrapper,
       body .fixed-header #menu-wrapper {
@@ -241,36 +279,68 @@
 </style>
 {% endif %}
 
-{# 🎯 3. جافاسكريبت مدمج وذكي لتحريك نصوص الـ Placeholder المدخلة جرافيكياً #}
+{# 🎯 3. سكريبت التبديل العمودي الانسيابي والمراقبة التفاعلية لحقل البحث #}
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-      const searchComponent = document.getElementById('fandom-dynamic-search');
-      if (!searchComponent) return;
-
-      // جلب الكلمات المكتوبة في لوحة التحكم
-      const rawData = searchComponent.getAttribute('data-search-words');
+      const overlay = document.getElementById('search-dynamic-overlay');
+      const changingTxt = document.getElementById('changing-txt');
+      const boxWrapper = document.querySelector('.fandom-search-box');
       
-      // تحويل النص إلى مصفوفة كلمات، وفي حال كانت فارغة نضع كلمات افتراضية تناسب متجرك الفخم
+      if (!overlay || !changingTxt || !boxWrapper) return;
+
+      const rawData = overlay.getAttribute('data-search-words');
       let searchPhrases = rawData && rawData.trim() !== "" 
           ? rawData.split(',').map(word => word.trim()) 
-          : ["سلك شاحن آيفون برابط سريع", "يد تحكم GameSir", "قاعدة جوال مكتبية مريحة"];
+          : ["يد تحكم GameSir", "سلك شاحن آيفون", "ستاند جوال مكتبي"];
 
-      let currentPhraseIndex = 0;
+      let currentIndex = 0;
 
-      function rotateSearchPlaceholder() {
-          const nextText = "ابحث عن: " + searchPhrases[currentPhraseIndex];
+      function triggerVerticalSlide() {
+          // 1. بدء تأثير الهروب والصعود للأعلى للكلمة القديمة
+          changingTxt.classList.add('slide-out');
           
-          // تحديث الخاصية لمكون سلة مباشرة
-          searchComponent.setAttribute('placeholder', nextText);
-          
-          // الانتقال للكلمة التالية في المصفوفة
-          currentPhraseIndex = (currentPhraseIndex + 1) % searchPhrases.length;
+          setTimeout(() => {
+              // 2. تحديث الكلمة وتجهيز وضعية الدخول من الأسفل للكلمة الجديدة
+              changingTxt.textContent = searchPhrases[currentIndex];
+              changingTxt.classList.remove('slide-out');
+              changingTxt.classList.add('slide-in');
+              
+              // 3. السماح للكلمة الجديدة بالاستقرار في موضعها الطبيعي
+              setTimeout(() => {
+                  changingTxt.classList.remove('slide-in');
+              }, 40);
+
+              currentIndex = (currentIndex + 1) % searchPhrases.length;
+          }, 350);
       }
 
-      // الانتقال التلقائي للكلمة الصاعدة كل 3 ثوانٍ
-      setInterval(rotateSearchPlaceholder, 3000);
+      // تبديل تلقائي مريح كل 3.5 ثوانٍ
+      setInterval(triggerVerticalSlide, 3500);
+      triggerVerticalSlide();
+
+      // إدارة التفاعل: إخفاء الطبقة بمجرد الضغط أو الكتابة داخل البحث لمنع التداخل العشوائي
+      boxWrapper.addEventListener('pointerdown', () => {
+          overlay.style.opacity = '0';
+      });
       
-      // تشغيل مبدئي فوري عند تحميل الصفحة
-      rotateSearchPlaceholder();
+      // التفتيش عن الـ Input الداخلي بمكون سلة وتأمين حالته عند مسح النص
+      setTimeout(() => {
+          const sallaInput = boxWrapper.querySelector('input');
+          if (sallaInput) {
+              sallaInput.addEventListener('input', function() {
+                  if (this.value.length > 0) {
+                      overlay.style.display = 'none';
+                  } else {
+                      overlay.style.display = 'flex';
+                      overlay.style.opacity = '1';
+                  }
+              });
+              sallaInput.addEventListener('blur', function() {
+                  if (this.value.length === 0) {
+                      overlay.style.opacity = '1';
+                  }
+              });
+          }
+      }, 1000); // مهلة أمان لضمان رندرة مكوّن سلة بالكامل
   });
 </script>
