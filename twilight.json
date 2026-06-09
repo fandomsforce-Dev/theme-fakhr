@@ -37,7 +37,7 @@
             "value": null,
             "multilanguage": true,
             "required": false,
-            "minLength": 6,
+            "minLength": "3",
             "maxLength": 30
         },
         {
