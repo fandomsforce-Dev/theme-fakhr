@@ -168,7 +168,7 @@
           gap: 16px !important;
           align-items: center !important;
           justify-content: center !important;
-      }
+       }
       .theme-header-setting.logo-center.menu-center #logo-wrapper,
       .theme-header-setting.logo-center.menu-center #menu-wrapper {
           position: static !important;
@@ -206,7 +206,7 @@
       display: block !important;
   }
   
-  /* 🛑 [جديد] إخفاء النص التلقائي "أدخل كلمة البحث" تماماً ومنع ظهوره في اللايت والدارك مود */
+  /* إخفاء النص التلقائي "أدخل كلمة البحث" عبر الـ CSS لضمان الحجب الفوري */
   .fandom-search-box salla-search::part(input)::placeholder {
       color: transparent !important;
       opacity: 0 !important;
@@ -217,10 +217,6 @@
       opacity: 0 !important;
   }
   .fandom-search-box salla-search::part(input):-ms-input-placeholder {
-      color: transparent !important;
-      opacity: 0 !important;
-  }
-  .fandom-search-box salla-search::part(input)::-ms-input-placeholder {
       color: transparent !important;
       opacity: 0 !important;
   }
@@ -308,6 +304,12 @@
       
       if (!overlay || !changingTxt || !boxWrapper) return;
 
+      // 🛑 [تعديل هجين] إجبار حقل سلة على تفريغ الـ Placeholder برمجياً فوراً لمنع أي تداخل
+      const sallaSearchElement = boxWrapper.querySelector('salla-search');
+      if (sallaSearchElement) {
+          sallaSearchElement.setAttribute('placeholder', '');
+      }
+
       // قراءة النص وتجهيز فلترة ذكية لفك تشفير مخرجات اللغات المتعددة في سلة
       let rawData = overlay.getAttribute('data-search-words');
       
@@ -366,6 +368,9 @@
       setTimeout(() => {
           const sallaInput = boxWrapper.querySelector('input');
           if (sallaInput) {
+              // مسح الـ placeholder من حقل الإدخال الأصلي المولد بالداخل أيضاً تأكيداً للإزالة
+              sallaInput.setAttribute('placeholder', '');
+              
               sallaInput.addEventListener('input', function() {
                   if (this.value.length > 0) {
                       overlay.style.display = 'none';
