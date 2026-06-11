@@ -160,6 +160,7 @@
           padding-left: 0 !important;
           margin: 0 !important;
           width: auto !important;
+          
       }
 
       /* وضعية: لوجو سنتر ومنيو سنتر */
@@ -200,35 +201,35 @@
       }
   }
 
-  /* 🎯 التنسيق الهندسي لحقل البحث وإخفاء الـ placeholder الافتراضي */
+  /* 🎯 التنسيق الهندسي لحقل البحث وإخفاء الـ placeholder الافتراضي مشروطاً بوجود الطبقة المخصصة */
   .fandom-search-box salla-search {
       width: 100% !important;
       display: block !important;
   }
 
-  /* إخفاء نص سلة الافتراضي "أدخل كلمة البحث" تماماً وفي جميع الأوضاع */
-  .fandom-search-box salla-search::part(input)::placeholder {
+  /* إخفاء نص سلة الافتراضي "أدخل كلمة البحث" فقط عندما تكون الطبقة المخصصة نشطة (غير مخفية) */
+  .fandom-search-box:not(.fallback-mode) salla-search::part(input)::placeholder {
       color: transparent !important;
       opacity: 0 !important;
   }
-  .fandom-search-box salla-search::part(input)::-webkit-input-placeholder {
+  .fandom-search-box:not(.fallback-mode) salla-search::part(input)::-webkit-input-placeholder {
       color: transparent !important;
       opacity: 0 !important;
   }
 
-  /* 🎯 الطبقة النصية المتحركة الفخمة - مجهزة هندسياً لتمرير النقرات بالكامل للخلف */
+  /* 🎯 الطبقة النصية المتحركة */
   .fandom-search-overlay {
       position: absolute;
-      right: 42px; /* محاذاته بشكل متناسق مع أيقونة البحث */
+      right: 42px; 
       top: 50%;
       transform: translateY(-50%);
-      pointer-events: none !important; /* سر الميزة: تمرير أي نقرة أو لمسة مباشرة لصندوق البحث الحقيقي خلفه */
+      pointer-events: none !important; /* تمرير اللمس والنقر للخلف */
       font-size: 13px;
       color: #9c9c9c;
       display: flex;
       align-items: center;
       gap: 3px;
-      z-index: 5; /* أعلى من صندوق الإدخال كعرض وأقل كـ تفاعل */
+      z-index: 5; 
       font-weight: 400;
       user-select: none;
       transition: opacity 0.2s ease;
@@ -244,11 +245,11 @@
   }
   .changing-txt.slide-out {
       opacity: 0;
-      transform: translateY(-16px); /* تأثير الهروب والصعود للأعلى الفخم */
+      transform: translateY(-16px); /* الهروب للأعلى */
   }
   .changing-txt.slide-in {
       opacity: 0;
-      transform: translateY(16px); /* الدخول الانسيابي من الأسفل */
+      transform: translateY(16px); /* الدخول من الأسفل */
   }
 </style>
 
@@ -293,7 +294,7 @@
 </style>
 {% endif %}
 
-{# 🎯 3. سكريبت التبديل العمودي الانسيابي والمراقبة التفاعلية الكاملة لحقل البحث #}
+{# 🎯 3. سكريبت التبديل العمودي الانسيابي الذكي مع ميزة التراجع التلقائي الافتراضي #}
 <script>
   document.addEventListener("DOMContentLoaded", function() {
       const overlay = document.getElementById('search-dynamic-overlay');
@@ -319,13 +320,16 @@
           }
       }
 
-      // تقسيم العبارات
+      // تقسيم العبارات بناءً على الفواصل المكتوبة من قبل التاجر
       let searchPhrases = rawData && rawData.trim() !== "" && !rawData.includes('object Object')
           ? rawData.split(',').map(word => word.trim()) 
           : [];
 
+      // 🛑 [الفحص الذكي]: إذا لم يكتب التاجر أي شيء في لوحة التحكم
       if (searchPhrases.length === 0) {
-          searchPhrases = ["يد تحكم GameSir", "سلك شاحن آيفون", "اكسسوارات قيمنق فخمة"];
+          boxWrapper.classList.add('fallback-mode'); // تفعيل كود الـ CSS الذي يعيد إظهار نص سلة الأصلي
+          overlay.style.display = 'none';            // إخفاء وحذف الطبقة المتحركة تماماً
+          return;                                    // إيقاف السكريبت هنا تماماً ليعمل حقل سلة الطبيعي
       }
 
       let currentIndex = 0;
@@ -362,7 +366,7 @@
 
       startAnimation();
 
-      // البحث عن الحقل الداخلي لـ سلة لربط الأحداث بشكل كامل وصحيح ومستقر
+      // ربط أحداث الإدخال الحقيقية لـ سلة لضمان مرونة النقرات والكتابة
       const checkInputAndLock = setInterval(() => {
           const sallaSearchElement = boxWrapper.querySelector('salla-search');
           const sallaInput = sallaSearchElement && sallaSearchElement.shadowRoot 
@@ -372,28 +376,34 @@
           if (sallaInput) {
               clearInterval(checkInputAndLock);
               
-              // مسح الـ placeholder الافتراضي من داخل الـ input الحقيقي لضمان الأمان الفوري
-              sallaInput.setAttribute('placeholder', '');
+              // مسح الـ placeholder فقط إذا كنا لسنا في الـ fallback mode
+              if (!boxWrapper.classList.contains('fallback-mode')) {
+                  sallaInput.setAttribute('placeholder', '');
+              }
 
               // إدارة الحالة عند التركيز (Focus) والكتابة
               sallaInput.addEventListener('focus', function() {
-                  overlay.style.opacity = '0';
-                  stopAnimation();
+                  if (!boxWrapper.classList.contains('fallback-mode')) {
+                      overlay.style.opacity = '0';
+                      stopAnimation();
+                  }
               });
 
               sallaInput.addEventListener('blur', function() {
-                  if (this.value.length === 0) {
+                  if (!boxWrapper.classList.contains('fallback-mode') && this.value.length === 0) {
                       overlay.style.opacity = '1';
                       startAnimation();
                   }
               });
 
               sallaInput.addEventListener('input', function() {
-                  if (this.value.length > 0) {
-                      overlay.style.opacity = '0';
-                      overlay.style.display = 'none';
-                  } else {
-                      overlay.style.display = 'flex';
+                  if (!boxWrapper.classList.contains('fallback-mode')) {
+                      if (this.value.length > 0) {
+                          overlay.style.opacity = '0';
+                          overlay.style.display = 'none';
+                      } else {
+                          overlay.style.display = 'flex';
+                      }
                   }
               });
           }
