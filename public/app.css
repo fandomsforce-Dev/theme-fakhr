@@ -1261,17 +1261,20 @@ input:where([type='file']):focus {
 .min-w-0 {
     min-width: 0px;
 }
-.min-w-full {
-    min-width: 100%;
-}
 .min-w-\[240px\] {
     min-width: 240px;
+}
+.min-w-full {
+    min-width: 100%;
 }
 .max-w-16 {
     max-width: 4rem;
 }
 .max-w-3xl {
     max-width: 48rem;
+}
+.max-w-\[450px\] {
+    max-width: 450px;
 }
 .max-w-full {
     max-width: 100%;
@@ -1284,9 +1287,6 @@ input:where([type='file']):focus {
 }
 .max-w-xs {
     max-width: 20rem;
-}
-.max-w-\[450px\] {
-    max-width: 450px;
 }
 .flex-1 {
     flex: 1 1 0%;

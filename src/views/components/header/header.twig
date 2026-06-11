@@ -35,14 +35,14 @@
               </button>
           {% endif %}
 
-          {# 🎯 التطوير الهندسي الجديد لمربع البحث مع الطبقة النصية المتحركة الصاعدة #}
+          {# 🎯 مربع البحث المستقر مع الطبقة النصية المربوطة رسمياً بلوحة التحكم #}
           <div class="header-search flex-1 min-w-[240px] max-w-[450px] relative">
             <div class="fandom-search-box relative w-full">
               
               <salla-search inline oval height="36"></salla-search>
               
-              {# تأثير النصوص الصاعدة المربوط بلوحة التحكم #}
-              <div id="search-dynamic-overlay" class="fandom-search-overlay" data-search-words="{{ theme.settings.search_words }}">
+              {# جلب النص الصافي عبر الدالة الرسمية والمعتمدة في توثيق سلة .get() #}
+              <div id="search-dynamic-overlay" class="fandom-search-overlay" data-search-words="{{ theme.settings.get('search_words') }}">
                   <span class="static-txt">ابحث عن: </span>
                   <span id="changing-txt" class="changing-txt"></span>
               </div>
@@ -288,10 +288,39 @@
       
       if (!overlay || !changingTxt || !boxWrapper) return;
 
-      const rawData = overlay.getAttribute('data-search-words');
-      let searchPhrases = rawData && rawData.trim() !== "" 
+      // قراءة النص وتجهيز فلترة ذكية لفك تشفير مخرجات اللغات المتعددة في سلة
+      let rawData = overlay.getAttribute('data-search-words');
+      
+      if (rawData) {
+          // تنظيف علامات الاقتباس الخارجية في حال وجودها
+          rawData = rawData.trim();
+          
+          // إذا قامت سلة بتمرير البيانات ككائن JSON يحتوي على اللغات المتعددة
+          if (rawData.includes('{') || rawData.includes('"ar"')) {
+              try {
+                  // تنظيف ترميز الاقتباسات الخاص بالـ HTML إن وُجد
+                  const sanitized = rawData.replace(/&quot;/g, '"');
+                  const parsed = JSON.parse(sanitized);
+                  rawData = parsed.ar || parsed.en || Object.values(parsed)[0];
+              } catch(e) {
+                  // حل بديل سريع عبر Regex إذا كان الـ JSON غير مكتمل البنية
+                  const match = rawData.match(/"ar"\s*:\s*"([^"]+)"/);
+                  if (match && match[1]) {
+                      rawData = match[1];
+                  }
+              }
+          }
+      }
+
+      // تقسيم العبارات بناءً على الفواصل والابتعاد عن الكائنات التالفة
+      let searchPhrases = rawData && rawData.trim() !== "" && !rawData.includes('object Object')
           ? rawData.split(',').map(word => word.trim()) 
-          : ["يد تحكم GameSir", "سلك شاحن آيفون", "ستاند جوال مكتبي"];
+          : [];
+
+      // خط الأمان الاحتياطي الافتراضي في حال كانت الخانة فارغة تماماً بلائحة التحكم
+      if (searchPhrases.length === 0) {
+          searchPhrases = ["يد تحكم GameSir", "سلك شاحن آيفون", "اكسسوارات قيمنق فخمة"];
+      }
 
       let currentIndex = 0;
 
@@ -341,6 +370,6 @@
                   }
               });
           }
-      }, 1000); // مهلة أمان لضمان رندرة مكوّن سلة بالكامل
+      }, 1200); // مهلة كافية لضمان رندرة مكوّن سلة الجاهز بالكامل في المتصفح
   });
 </script>
