@@ -205,6 +205,26 @@
       width: 100% !important;
       display: block !important;
   }
+  
+  /* 🛑 [جديد] إخفاء النص التلقائي "أدخل كلمة البحث" تماماً ومنع ظهوره في اللايت والدارك مود */
+  .fandom-search-box salla-search::part(input)::placeholder {
+      color: transparent !important;
+      opacity: 0 !important;
+      background: transparent !important;
+  }
+  .fandom-search-box salla-search::part(input)::-webkit-input-placeholder {
+      color: transparent !important;
+      opacity: 0 !important;
+  }
+  .fandom-search-box salla-search::part(input):-ms-input-placeholder {
+      color: transparent !important;
+      opacity: 0 !important;
+  }
+  .fandom-search-box salla-search::part(input)::-ms-input-placeholder {
+      color: transparent !important;
+      opacity: 0 !important;
+  }
+
   .fandom-search-overlay {
       position: absolute;
       right: 18px;
@@ -292,18 +312,14 @@
       let rawData = overlay.getAttribute('data-search-words');
       
       if (rawData) {
-          // تنظيف علامات الاقتباس الخارجية في حال وجودها
           rawData = rawData.trim();
           
-          // إذا قامت سلة بتمرير البيانات ككائن JSON يحتوي على اللغات المتعددة
           if (rawData.includes('{') || rawData.includes('"ar"')) {
               try {
-                  // تنظيف ترميز الاقتباسات الخاص بالـ HTML إن وُجد
                   const sanitized = rawData.replace(/&quot;/g, '"');
                   const parsed = JSON.parse(sanitized);
                   rawData = parsed.ar || parsed.en || Object.values(parsed)[0];
               } catch(e) {
-                  // حل بديل سريع عبر Regex إذا كان الـ JSON غير مكتمل البنية
                   const match = rawData.match(/"ar"\s*:\s*"([^"]+)"/);
                   if (match && match[1]) {
                       rawData = match[1];
@@ -325,16 +341,13 @@
       let currentIndex = 0;
 
       function triggerVerticalSlide() {
-          // 1. بدء تأثير الهروب والصعود للأعلى للكلمة القديمة
           changingTxt.classList.add('slide-out');
           
           setTimeout(() => {
-              // 2. تحديث الكلمة وتجهيز وضعية الدخول من الأسفل للكلمة الجديدة
               changingTxt.textContent = searchPhrases[currentIndex];
               changingTxt.classList.remove('slide-out');
               changingTxt.classList.add('slide-in');
               
-              // 3. السماح للكلمة الجديدة بالاستقرار في موضعها الطبيعي
               setTimeout(() => {
                   changingTxt.classList.remove('slide-in');
               }, 40);
@@ -343,16 +356,13 @@
           }, 350);
       }
 
-      // تبديل تلقائي مريح كل 3.5 ثوانٍ
       setInterval(triggerVerticalSlide, 3500);
       triggerVerticalSlide();
 
-      // إدارة التفاعل: إخفاء الطبقة بمجرد الضغط أو الكتابة داخل البحث لمنع التداخل العشوائي
       boxWrapper.addEventListener('pointerdown', () => {
           overlay.style.opacity = '0';
       });
       
-      // التفتيش عن الـ Input الداخلي بمكون سلة وتأمين حالته عند مسح النص
       setTimeout(() => {
           const sallaInput = boxWrapper.querySelector('input');
           if (sallaInput) {
@@ -370,6 +380,6 @@
                   }
               });
           }
-      }, 1200); // مهلة كافية لضمان رندرة مكوّن سلة الجاهز بالكامل في المتصفح
+      }, 1200);
   });
 </script>
