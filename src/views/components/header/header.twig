@@ -35,10 +35,18 @@
               </button>
           {% endif %}
 
-          {# 🎯 مربع البحث النظيف والمباشر #}
+          {# 🎯 مربع البحث المستقر مع الطبقة النصية المربوطة رسميًا بلوحة التحكم #}
           <div class="header-search flex-1 min-w-[240px] max-w-[450px] relative">
-            <div class="fandom-search-box relative w-full" data-search-words="{{ theme.settings.get('search_words') }}">
+            <div class="fandom-search-box relative w-full">
+              
               <salla-search inline oval height="36"></salla-search>
+              
+              {# الطبقة النصية المتحركة جلب النص الصافي عبر الدالة الرسمية والمعتمدة في توثيق سلة .get() #}
+              <div id="search-dynamic-overlay" class="fandom-search-overlay" data-search-words="{{ theme.settings.get('search_words') }}">
+                  <span class="static-txt">ابحث عن: </span>
+                  <span id="changing-txt" class="changing-txt"></span>
+              </div>
+
             </div>
           </div>
       </div>
@@ -102,7 +110,7 @@
 
 </div>
 
-{# 🎯 1. الستايل العام النظيف والمستقر لجميع الحالات (متوافق 100% مع معايير محررات الأكواد) #}
+{# 🎯 1. الستايل العام النظيف والمستقر لجميع الحالات #}
 <style>
   body .navbar-brand {
       float: none !important;
@@ -192,14 +200,59 @@
       }
   }
 
-  /* 🎯 التنسيق الهندسي لحقل البحث */
+  /* 🎯 التنسيق الهندسي لحقل البحث وإخفاء الـ placeholder الافتراضي */
   .fandom-search-box salla-search {
       width: 100% !important;
       display: block !important;
   }
+
+  /* إخفاء نص سلة الافتراضي "أدخل كلمة البحث" تماماً وفي جميع الأوضاع */
+  .fandom-search-box salla-search::part(input)::placeholder {
+      color: transparent !important;
+      opacity: 0 !important;
+  }
+  .fandom-search-box salla-search::part(input)::-webkit-input-placeholder {
+      color: transparent !important;
+      opacity: 0 !important;
+  }
+
+  /* 🎯 الطبقة النصية المتحركة الفخمة - مجهزة هندسياً لتمرير النقرات بالكامل للخلف */
+  .fandom-search-overlay {
+      position: absolute;
+      right: 42px; /* محاذاته بشكل متناسق مع أيقونة البحث */
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none !important; /* سر الميزة: تمرير أي نقرة أو لمسة مباشرة لصندوق البحث الحقيقي خلفه */
+      font-size: 13px;
+      color: #9c9c9c;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      z-index: 5; /* أعلى من صندوق الإدخال كعرض وأقل كـ تفاعل */
+      font-weight: 400;
+      user-select: none;
+      transition: opacity 0.2s ease;
+  }
+  
+  .changing-txt {
+      display: inline-block;
+      color: #2a2a2a;
+      font-weight: 500;
+      transition: transform 0.4s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease;
+      opacity: 1;
+      transform: translateY(0);
+  }
+  .changing-txt.slide-out {
+      opacity: 0;
+      transform: translateY(-16px); /* تأثير الهروب والصعود للأعلى الفخم */
+  }
+  .changing-txt.slide-in {
+      opacity: 0;
+      transform: translateY(16px); /* الدخول الانسيابي من الأسفل */
+  }
 </style>
 
-{# 🎯 2. الحل الهندسي الصارم لقفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
+{# 🎯 2. قفل ارتفاع الشريط الأبيض من الانضغاط (لوجو يمين + منيو سنتر) #}
 {% if logo_position == 'right' and menu_position == 'center' %}
 <style>
   @media (min-width: 1024px) {
@@ -240,14 +293,17 @@
 </style>
 {% endif %}
 
-{# 🎯 3. سكريبت التبديل الديناميكي الذكي للـ Placeholder الأصلي #}
+{# 🎯 3. سكريبت التبديل العمودي الانسيابي والمراقبة التفاعلية الكاملة لحقل البحث #}
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+      const overlay = document.getElementById('search-dynamic-overlay');
+      const changingTxt = document.getElementById('changing-txt');
       const boxWrapper = document.querySelector('.fandom-search-box');
-      if (!boxWrapper) return;
+      
+      if (!overlay || !changingTxt || !boxWrapper) return;
 
-      // قراءة الكلمات المخصصة من الـ Attribute مباشرة
-      let rawData = boxWrapper.getAttribute('data-search-words');
+      // قراءة النص وتجهيز فلترة ذكية لفك تشفير مخرجات اللغات المتعددة في سلة
+      let rawData = overlay.getAttribute('data-search-words');
       
       if (rawData) {
           rawData = rawData.trim();
@@ -263,36 +319,83 @@
           }
       }
 
-      // تجهيز المصفوفة
+      // تقسيم العبارات
       let searchPhrases = rawData && rawData.trim() !== "" && !rawData.includes('object Object')
-          ? rawData.split(',').map(word => "ابحث عن: " + word.trim()) 
+          ? rawData.split(',').map(word => word.trim()) 
           : [];
 
       if (searchPhrases.length === 0) {
-          searchPhrases = ["ابحث عن: يد تحكم GameSir", "ابحث عن: سلك شاحن آيفون", "ابحث عن: اكسسوارات قيمنق فخمة"];
+          searchPhrases = ["يد تحكم GameSir", "سلك شاحن آيفون", "اكسسوارات قيمنق فخمة"];
       }
 
       let currentIndex = 0;
-      let sallaInput = null;
+      let intervalId = null;
 
-      // دالة لتحديث الـ placeholder بانتظام داخل الحقل الحقيقي
-      function updatePlaceholder() {
-          if (sallaInput) {
-              sallaInput.setAttribute('placeholder', searchPhrases[currentIndex]);
+      function triggerVerticalSlide() {
+          changingTxt.classList.add('slide-out');
+          
+          setTimeout(() => {
+              changingTxt.textContent = searchPhrases[currentIndex];
+              changingTxt.classList.remove('slide-out');
+              changingTxt.classList.add('slide-in');
+              
+              setTimeout(() => {
+                  changingTxt.classList.remove('slide-in');
+              }, 40);
+
               currentIndex = (currentIndex + 1) % searchPhrases.length;
+          }, 400);
+      }
+
+      // تشغيل الأنيميشن تلقائياً
+      function startAnimation() {
+          if (!intervalId) {
+              triggerVerticalSlide();
+              intervalId = setInterval(triggerVerticalSlide, 3500);
           }
       }
 
-      // مراقبة المكون لحين اكتمال رندرة الـ Shadow DOM والعثور على حقل الـ input الحقيقي
-      const checkInputExist = setInterval(() => {
-          sallaInput = boxWrapper.querySelector('input') || (boxWrapper.querySelector('salla-search') && boxWrapper.querySelector('salla-search').shadowRoot ? boxWrapper.querySelector('salla-search').shadowRoot.querySelector('input') : null);
-          
-          if (sallaInput) {
-              clearInterval(checkInputExist); // التوقف عن المراقبة بمجرد العثور عليه
+      function stopAnimation() {
+          clearInterval(intervalId);
+          intervalId = null;
+      }
+
+      startAnimation();
+
+      // البحث عن الحقل الداخلي لـ سلة لربط الأحداث بشكل كامل وصحيح ومستقر
+      const checkInputAndLock = setInterval(() => {
+          const sallaSearchElement = boxWrapper.querySelector('salla-search');
+          const sallaInput = sallaSearchElement && sallaSearchElement.shadowRoot 
+              ? sallaSearchElement.shadowRoot.querySelector('input') 
+              : boxWrapper.querySelector('input');
               
-              // تشغيل التغيير التلقائي كل 3 ثوانٍ مباشرة داخل حقل الإدخال
-              updatePlaceholder();
-              setInterval(updatePlaceholder, 3000);
+          if (sallaInput) {
+              clearInterval(checkInputAndLock);
+              
+              // مسح الـ placeholder الافتراضي من داخل الـ input الحقيقي لضمان الأمان الفوري
+              sallaInput.setAttribute('placeholder', '');
+
+              // إدارة الحالة عند التركيز (Focus) والكتابة
+              sallaInput.addEventListener('focus', function() {
+                  overlay.style.opacity = '0';
+                  stopAnimation();
+              });
+
+              sallaInput.addEventListener('blur', function() {
+                  if (this.value.length === 0) {
+                      overlay.style.opacity = '1';
+                      startAnimation();
+                  }
+              });
+
+              sallaInput.addEventListener('input', function() {
+                  if (this.value.length > 0) {
+                      overlay.style.opacity = '0';
+                      overlay.style.display = 'none';
+                  } else {
+                      overlay.style.display = 'flex';
+                  }
+              });
           }
       }, 100);
   });
