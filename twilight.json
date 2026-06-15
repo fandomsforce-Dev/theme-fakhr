@@ -1,6 +1,6 @@
 {
     "name": {
-        "ar": "ثيم فخر",
+        "ar": "فخر",
         "en": "Theme Raed"
     },
     "repository": "https://github.com/fandomsforce-Dev/theme-fakhr",
@@ -829,5 +829,10 @@
                 }
             ]
         }
-    ]
+    ],
+    "description": {
+        "ar": "مجموعة كبيرة من المزايا لدعم تجارتك وتقديم تجربة تسوق مثيرة لعملائك",
+        "en": "A wide range of features to support your business and provide an exciting shopping experience for your customers"
+    },
+    "support_url": "https://salla.com/"
 }
