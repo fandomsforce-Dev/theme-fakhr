@@ -38,7 +38,7 @@
             "multilanguage": true,
             "required": false,
             "minLength": "3",
-            "maxLength": 30
+            "maxLength": "100"
         },
         {
             "id": "squar_photo_bg_image_size",
