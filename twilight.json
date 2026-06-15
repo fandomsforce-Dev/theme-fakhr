@@ -26,21 +26,6 @@
     ],
     "settings": [
         {
-            "id": "search_words",
-            "type": "string",
-            "format": "text",
-            "label": "اضف كلمات متحركه لمحرك البحث",
-            "description": null,
-            "labelHTML": null,
-            "placeholder": "Placeholder text ..",
-            "icon": "sicon-format-text-alt",
-            "value": null,
-            "multilanguage": true,
-            "required": false,
-            "minLength": "3",
-            "maxLength": "100"
-        },
-        {
             "id": "squar_photo_bg_image_size",
             "type": "items",
             "format": "dropdown-list",
@@ -98,6 +83,21 @@
             "id": "static-label2",
             "value": "<div class='rounded-lg' ><h6 > خيارات أعلى الصفحة</h6></div>",
             "variant": "h6"
+        },
+        {
+            "id": "search_words",
+            "type": "string",
+            "format": "text",
+            "label": "اضف كلمات متحركه لمحرك البحث",
+            "description": "الرجاء فصل الكلمات بفاصلة ( , )",
+            "labelHTML": null,
+            "placeholder": "Placeholder text ..",
+            "icon": "sicon-format-text-alt",
+            "value": null,
+            "multilanguage": true,
+            "required": false,
+            "minLength": "3",
+            "maxLength": "100"
         },
         {
             "id": "title",
