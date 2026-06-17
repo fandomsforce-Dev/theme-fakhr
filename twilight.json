@@ -89,7 +89,7 @@
             "type": "string",
             "format": "text",
             "label": "اضف كلمات متحركه لمحرك البحث",
-            "description": "الرجاء فصل الكلمات بفاصلة مثال: ( ملابس,اكسسوارات)",
+            "description": "الرجاء فصل الكلمات بفاصلة مثال: ( ملابس,اكسسوارات) - ملاحظة: عند ترك الحقل فارغ يعود المحرك الافتراضي",
             "labelHTML": null,
             "placeholder": null,
             "icon": "sicon-format-text-alt",
