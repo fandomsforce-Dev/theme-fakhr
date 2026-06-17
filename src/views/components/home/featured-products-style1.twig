@@ -18,8 +18,8 @@
 #}
 {% set component_id='featured-products-style1-' ~ position %}
 
-{# 🎯 1. التقاط النص المكتوب من لوحة التحكم بشكل صحيح #}
-{% set custom_btn_text = instance.settings.btn_text|default('إضافة للسلة') %}
+{# 🎯 1. جلب النص من التاجر عبر المعرف البرمجي btn_text الذي أنشأته #}
+{% set custom_cart_text = instance.settings.btn_text|default('إضافة للسلة') %}
 
 <section class="s-block s-block-tabs s-block--special-products container" id="{{ component_id }}">
     <div class="s-block__title"> 
@@ -43,7 +43,8 @@
     <div class="grid grid-cols-1 {{ main_product?'lg:grid-cols-2':''}} gap-8">
         {% if main_product %}
             <div class="flex flex-col">
-                <custom-salla-product-card shadow-on-hover product="{{main_product.product}}" isSpecial></custom-salla-product-card>  
+                {# 🎯 2. تمرير النص للمنتج الخاص عبر الخاصية الرسمية cart-text #}
+                <custom-salla-product-card shadow-on-hover product="{{main_product.product}}" isSpecial cart-text="{{ custom_cart_text }}"></custom-salla-product-card>  
             </div>
         {% endif %}
         <div class="flex flex-col">
@@ -64,38 +65,12 @@
                 {% for section in items %}
                     <div id="{{ component_id }}-{{ section.id }}" class="tabs__item grid-cols-2 {{ main_product?'':'lg:grid-cols-4'}} {{ loop.first?'is-active':'' }}">
                         {% for product in section.products|slice(0,main_product?4:8) %}
-                            <custom-salla-product-card product="{{product}}"></custom-salla-product-card>
+                            {# 🎯 3. تمرير النص المخصص لجميع بطاقات المنتجات في هذا المكون #}
+                            <custom-salla-product-card product="{{product}}" cart-text="{{ custom_cart_text }}"></custom-salla-product-card>
                         {% endfor %}
                     </div>
                 {% endfor %}
             </div>
         </div>
     </div>
-</section> 
-
-{# 🎯 2. كود السكريبت الذكي لتبديل النص داخل الـ Shadow DOM مباشرة وبدون تعارض مع الـ CSS #}
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      const section = document.getElementById("{{ component_id }}");
-      if (section) {
-          // جلب جميع أزرار السلة داخل هذا القسم فقط
-          const cartButtons = section.querySelectorAll("salla-add-product-button");
-          
-          cartButtons.forEach(btn => {
-              // التأكد من استهداف الـ Shadow DOM للزر واختراق الجزء الداخلي برمجياً
-              if (btn.shadowRoot) {
-                  const spanText = btn.shadowRoot.querySelector("button span");
-                  if (spanText) {
-                      spanText.innerText = "{{ custom_btn_text }}";
-                  }
-              } else {
-                  // في حال لم يكتمل تحميل الـ shadowRoot بعد، ننتظر التحديث
-                  btn.addEventListener('ready', () => {
-                      const spanText = btn.shadowRoot.querySelector("button span");
-                      if (spanText) spanText.innerText = "{{ custom_btn_text }}";
-                  });
-              }
-          });
-      }
-  });
-</script>
+</section>
