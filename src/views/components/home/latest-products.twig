@@ -4,10 +4,20 @@
 | products        | Products[] |                                |
 | position        | Int        | Sorting number start from zero |
 #}
+
+{# 🎯 1. جلب النص المكتوب من قبل التاجر في الحقل المخصص عبر المعرف btn_text #}
+{% set custom_cart_text = instance.settings.btn_text|default('إضافة للسلة') %}
+
 <section class="s-block s-block--latest-products container mt-6 sm:mt-8">
     <div class="s-block__title">
       <h2>{{ trans('blocks.home.latest_products') }}</h2>
     </div>
     
-    <salla-products-list source="latest"></salla-products-list>
-</section> 
+    {# 🎯 2. تفكيك المكون الجاهز وعرض المنتجات على شكل شبكة (Grid) متناسقة مع الثيم #}
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8">
+        {% for product in products %}
+            {# 🎯 3. استدعاء كرت المنتج وتمرير النص المخصص له مباشرة ليطبعه داخل الزر #}
+            <custom-salla-product-card product="{{ product }}" cart-text="{{ custom_cart_text }}"></custom-salla-product-card>
+        {% endfor %}
+    </div>
+</section>
