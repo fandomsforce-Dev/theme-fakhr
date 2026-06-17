@@ -26,6 +26,21 @@
     ],
     "settings": [
         {
+            "id": "btn_text",
+            "type": "string",
+            "format": "textarea",
+            "label": "زر اضافة للسلة",
+            "description": null,
+            "labelHTML": null,
+            "placeholder": "Your text here",
+            "icon": "sicon-typography",
+            "value": null,
+            "multilanguage": false,
+            "required": false,
+            "minLength": 20,
+            "maxLength": 255
+        },
+        {
             "id": "squar_photo_bg_image_size",
             "type": "items",
             "format": "dropdown-list",
