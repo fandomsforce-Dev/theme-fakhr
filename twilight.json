@@ -28,17 +28,17 @@
         {
             "id": "btn_text",
             "type": "string",
-            "format": "textarea",
+            "format": "text",
             "label": "زر اضافة للسلة",
             "description": null,
             "labelHTML": null,
-            "placeholder": "Your text here",
-            "icon": "sicon-typography",
+            "placeholder": "Placeholder text ..",
+            "icon": "sicon-format-text-alt",
             "value": null,
             "multilanguage": false,
             "required": false,
-            "minLength": 20,
-            "maxLength": 255
+            "minLength": 6,
+            "maxLength": 30
         },
         {
             "id": "squar_photo_bg_image_size",
