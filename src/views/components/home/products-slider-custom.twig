@@ -4,29 +4,18 @@
 | instance.settings   | object    | يحتوي على الإعدادات التي يتم اختيارها من لوحة التحكم          |
 #}
 
-<section class="s-block container mt-6 sm:mt-8">
+<section class="s-block s-block--latest-products container mt-6 sm:mt-8">
     
-    {# 1. عنوان القسم الديناميكي #}
+    {# 1. عنوان القسم وجلبه من الحقل المخصص (إذا قمت بإضافته) أو وضع عنوان افتراضي #}
     <div class="s-block__title mb-6">
         <h2>{{ instance.settings.title|default('منتجات متحركة مخصصة') }}</h2>
     </div>
 
-    {# 2. شبكة عرض المنتجات #}
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8">
-        
-        {# 🎯 التعديل هنا: الدوران حول المعرف المميز الخاص بك مباشرة #}
-        {% for product in instance.settings.mntgat_mthrkt_mkhsst %}
-            
-            {# استدعاء كرت المنتج الافتراضي للثيم #}
-            <custom-salla-product-card product="{{ product }}"></custom-salla-product-card>
-            
-        {% empty %}
-            {# رسالة تظهر إذا كانت القائمة فارغة في مخصص المظهر #}
-            <div class="col-span-full text-center py-12 text-gray-400 border border-dashed border-gray-200 rounded-lg">
-                <i class="sicon-box block text-3xl mb-2"></i>
-                لم يتم اختيار أي منتجات بعد. يرجى اختيار المنتجات من لوحة تحكم الثيم وحفظ التعديلات.
-            </div>
-        {% endfor %}
-        
-    </div>
+    {# 2. استدعاء مكون سلة الرسمي لربطه بالمعرف المميز الخاص بك ديناميكياً #}
+    {# نمرر له الخصائص لكي يقرأ المنتجات التي حددتها يدوياً في لوحة التحكم #}
+    <salla-products-list 
+        source="selected" 
+        source-value="{{ instance.settings.mntgat_mthrkt_mkhsst }}">
+    </salla-products-list>
+
 </section>
