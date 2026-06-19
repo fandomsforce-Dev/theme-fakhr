@@ -843,6 +843,16 @@
                     ]
                 }
             ]
+        },
+        {
+            "key": "17ad7ecb-2c85-42ec-bbe9-cb21caac80b2",
+            "title": {
+                "en": "products-slider-custom",
+                "ar": "منتجات متحركة مخصصة"
+            },
+            "icon": "sicon-store",
+            "path": "home.products-slider-custom",
+            "fields": []
         }
     ],
     "description": {
