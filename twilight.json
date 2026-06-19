@@ -852,7 +852,24 @@
             },
             "icon": "sicon-store",
             "path": "home.products-slider-custom",
-            "fields": []
+            "fields": [
+                {
+                    "id": "mntgat_mthrkt_mkhsst",
+                    "type": "items",
+                    "format": "dropdown-list",
+                    "label": "منتجات متحركة مخصصة",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-keyboard_arrow_down",
+                    "selected": [],
+                    "options": [],
+                    "source": "Products",
+                    "multichoice": true,
+                    "searchable": true,
+                    "required": true,
+                    "value": []
+                }
+            ]
         }
     ],
     "description": {
