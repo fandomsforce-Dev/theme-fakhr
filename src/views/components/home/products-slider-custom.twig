@@ -6,7 +6,7 @@
 
 <section class="s-block container mt-6 sm:mt-8">
     
-    {# 1. عنوان القسم (يتم جلبه ديناميكياً إذا أضفت حقل نصي باسم title) #}
+    {# 1. عنوان القسم الديناميكي #}
     <div class="s-block__title mb-6">
         <h2>{{ instance.settings.title|default('منتجات متحركة مخصصة') }}</h2>
     </div>
@@ -14,17 +14,17 @@
     {# 2. شبكة عرض المنتجات #}
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8">
         
-        {# الدوران حول المنتجات المحددة في حقل الـ items الذي أنشأته #}
-        {% for product in instance.settings.items %}
+        {# 🎯 التعديل هنا: الدوران حول المعرف المميز الخاص بك مباشرة #}
+        {% for product in instance.settings.mntgat_mthrkt_mkhsst %}
             
             {# استدعاء كرت المنتج الافتراضي للثيم #}
             <custom-salla-product-card product="{{ product }}"></custom-salla-product-card>
             
         {% empty %}
-            {# رسالة تظهر فقط إذا كانت القائمة فارغة في لوحة التحكم #}
+            {# رسالة تظهر إذا كانت القائمة فارغة في مخصص المظهر #}
             <div class="col-span-full text-center py-12 text-gray-400 border border-dashed border-gray-200 rounded-lg">
                 <i class="sicon-box block text-3xl mb-2"></i>
-                لم يتم اختيار أي منتجات بعد. يرجى اختيار المنتجات من لوحة تحكم الثيم.
+                لم يتم اختيار أي منتجات بعد. يرجى اختيار المنتجات من لوحة تحكم الثيم وحفظ التعديلات.
             </div>
         {% endfor %}
         
