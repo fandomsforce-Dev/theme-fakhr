@@ -863,7 +863,7 @@
                     "icon": "sicon-keyboard_arrow_down",
                     "selected": [],
                     "options": [],
-                    "source": "Manual",
+                    "source": "Products",
                     "multichoice": true,
                     "searchable": true,
                     "required": true,
