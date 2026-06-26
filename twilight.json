@@ -884,23 +884,6 @@
                     "searchable": false,
                     "required": true,
                     "value": []
-                },
-                {
-                    "id": "selected_category",
-                    "type": "items",
-                    "format": "dropdown-list",
-                    "label": "Dropdown List",
-                    "description": null,
-                    "labelHTML": null,
-                    "icon": "sicon-keyboard_arrow_down",
-                    "selected": [],
-                    "options": [],
-                    "source": "Categories",
-                    "multichoice": false,
-                    "searchable": true,
-                    "required": false,
-                    "show_at": "mntgat_mthrkt_mkhsst == 'category'",
-                    "value": []
                 }
             ]
         }
