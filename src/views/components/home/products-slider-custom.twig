@@ -1,21 +1,47 @@
-{% set display_type = instance.settings.mntgat_mthrkt_mkhsst %}
+{#
+| Variable            | Type      | Description                                                    |
+|---------------------|-----------|----------------------------------------------------------------|
+| instance.settings   | object    | يحتوي على الإعدادات التي يتم اختيارها من لوحة التحكم          |
+#}
+
+{# 🎯 1. تنقية القيمة الملتقطة من حقل نوع المنتجات لضمان قراءتها بنجاح #}
+{% set raw_value = instance.settings.mntgat_mthrkt_mkhsst %}
+{% set display_type = raw_value.value|default(raw_value)|default('latest') %}
 
 <section class="s-block container mt-6 sm:mt-8">
+    
+    {# عنوان القسم الرئيسي للمكون #}
     <div class="s-block__title mb-6">
-        <h2>{{ instance.settings.title|default('منتجات مخصصة') }}</h2>
+        <h2>{{ instance.settings.title|default('منتجات متحركة مخصصة') }}</h2>
     </div>
 
+    {# 🎯 2. فحص الخيارات وعرض المنتجات بناءً عليها #}
     {% if display_type == 'category' %}
+        
+        {# إذا اختار التاجر "منتجات من تصنيف" نمرر معرف التصنيف المختار من الحقل الثاني #}
         {% if instance.settings.selected_category %}
-            <salla-products-list source="category" source-value="{{ instance.settings.selected_category }}"></salla-products-list>
+            <salla-products-list 
+                source="category" 
+                source-value="{{ instance.settings.selected_category }}">
+            </salla-products-list>
         {% else %}
-            <div class="text-center py-8 text-gray-400 border border-dashed border-gray-200 rounded-lg">
-                يرجى تحديد التصنيف ليتم عرض المنتجات.
+            {# رسالة تنبيهية تظهر للتاجر في المعاينة لتذكيره باختيار قسم #}
+            <div class="text-center py-12 text-gray-400 border border-dashed border-gray-200 rounded-lg">
+                <i class="sicon-box block text-3xl mb-2"></i>
+                يرجى اختيار التصنيف من القائمة المنسدلة ليتم عرض منتجاته هنا.
             </div>
         {% endif %}
-    {% elseif display_type == 'best-seller' %}
+
+    {% elseif display_type == 'best-seller' or display_type == 'best_seller' %}
+        
+        {# جلب المنتجات الأكثر مبيعاً بالتسمية البرمجية الصحيحة لسلة #}
         <salla-products-list source="best_seller"></salla-products-list>
+
     {% else %}
+        
+        {# العرض الافتراضي: أحدث المنتجات #}
         <salla-products-list source="latest"></salla-products-list>
+
     {% endif %}
+
 </section>

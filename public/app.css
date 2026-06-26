@@ -1792,6 +1792,10 @@ input:where([type='file']):focus {
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
+.py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
 .\!pt-1 {
     padding-top: 0.25rem !important;
 }

@@ -845,65 +845,48 @@
             ]
         },
         {
-    "key": "17ad7ecb-2c85-42ec-bbe9-cb21caac80b2",
-    "title": {
-        "en": "products-slider-custom",
-        "ar": "منتجات متحركة مخصصة"
-    },
-    "icon": "sicon-store",
-    "path": "home.products-slider-custom",
-    "fields": [
-        {
-            "id": "mntgat_mthrkt_mkhsst",
-            "type": "items",
-            "format": "dropdown-list",
-            "label": "نوع المنتجات",
-            "description": null,
-            "labelHTML": null,
-            "icon": "sicon-keyboard_arrow_down",
-            "selected": [],
-            "options": [
+            "key": "17ad7ecb-2c85-42ec-bbe9-cb21caac80b2",
+            "title": {
+                "en": "products-slider-custom",
+                "ar": "منتجات متحركة مخصصة"
+            },
+            "icon": "sicon-store",
+            "path": "home.products-slider-custom",
+            "fields": [
                 {
-                    "label": "أحدث المنتجات",
-                    "value": "latest",
-                    "key": "f2821ed9-a81d-4f7a-a91d-85cfbfe5f41b"
-                },
-                {
-                    "label": "الأكثر مبيعاً",
-                    "value": "best-seller",
-                    "key": "77dd2d06-a59d-4cc9-b52e-232b037910be"
-                },
-                {
-                    "label": "منتجات من تصنيف",
-                    "value": "category",
-                    "key": "0ca77b93-265a-4680-a6f8-e5f6936991d7"
+                    "id": "mntgat_mthrkt_mkhsst",
+                    "type": "items",
+                    "format": "dropdown-list",
+                    "label": "منتجات متحركة مخصصة",
+                    "description": null,
+                    "labelHTML": null,
+                    "icon": "sicon-keyboard_arrow_down",
+                    "selected": [],
+                    "options": [
+                        {
+                            "label": "أحدث المنتجات",
+                            "value": "latest",
+                            "key": "f2821ed9-a81d-4f7a-a91d-85cfbfe5f41b"
+                        },
+                        {
+                            "label": "الأكثر مبيعاً",
+                            "value": "best-seller",
+                            "key": "77dd2d06-a59d-4cc9-b52e-232b037910be"
+                        },
+                        {
+                            "label": "منتجات من تصنيف",
+                            "value": "category",
+                            "key": "0ca77b93-265a-4680-a6f8-e5f6936991d7"
+                        }
+                    ],
+                    "source": "Manual",
+                    "multichoice": false,
+                    "searchable": false,
+                    "required": true,
+                    "value": []
                 }
-            ],
-            "source": "Manual",
-            "multichoice": false,
-            "searchable": false,
-            "required": true,
-            "value": []
-        },
-        {
-            "id": "selected_category",
-            "type": "items",
-            "format": "dropdown-list",
-            "label": "التصنيف المختار",
-            "description": "اختر القسم المراد عرض منتجاته",
-            "labelHTML": null,
-            "icon": "sicon-keyboard_arrow_down",
-            "selected": [],
-            "options": [],
-            "source": "Categories",
-            "multichoice": false,
-            "searchable": true,
-            "required": false,
-            "show_at": "mntgat_mthrkt_mkhsst=='category'",
-            "value": []
+            ]
         }
-    ]
-}
     ],
     "description": {
         "ar": "مجموعة كبيرة من المزايا لدعم تجارتك وتقديم تجربة تسوق مثيرة لعملائك",
