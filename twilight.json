@@ -899,7 +899,7 @@
                     "multichoice": false,
                     "searchable": true,
                     "required": false,
-                    "show_at": "mntgat_mthrkt_mkhsst == category",
+                    "show_at": "mntgat_mthrkt_mkhsst.value == category",
                     "value": []
                 }
             ]
