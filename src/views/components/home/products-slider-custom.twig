@@ -1,5 +1,5 @@
 {#
-| Variable            | Type      | Description                                                    |
+| Variable           | Type      | Description                                                   |
 |---------------------|-----------|----------------------------------------------------------------|
 | instance.settings   | object    | يحتوي على الإعدادات التي يتم اختيارها من لوحة التحكم          |
 #}
@@ -9,9 +9,14 @@
 {% set display_type = raw_value.value|default(raw_value)|default('latest') %}
 
 {# 🎯 2. تحديد مصدر المنتجات بناءً على خيار التاجر #}
-{# إذا اختار التاجر تصنيف، نمرر المعرف للحقل الثاني، وإلا نمرر display_type مباشرة (latest أو best_seller) #}
 {% set slider_source = (display_type == 'category') ? 'category' : display_type %}
 {% set source_value = (display_type == 'category') ? instance.settings.selected_category : '' %}
+
+{# 🎯 3. التقاط عدد المنتجات ديناميكياً من حقل المنسدلة المخصص (من 4 إلى 32) #}
+{% set limit_value = instance.settings.products_limit.value|default(instance.settings.products_limit)|default(4) %}
+
+{# 🎯 4. جلب النص المكتوب في حقل العنوان الرئيسي المعتمد بـ الـ JSON #}
+{% set block_title = instance.settings.section_title|default('منتجات متحركة مخصصة') %}
 
 <section id="custom-products-slider-block" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
@@ -19,9 +24,9 @@
     <salla-products-slider
         source="{{ slider_source }}"
         source-value="{{ source_value }}"
-        limit="10"
+        limit="{{ limit_value }}"
         autoplay
-        block-title="{{ instance.settings.title|default('منتجات متحركة مخصصة') }}"
+        block-title="{{ block_title }}"
         block-subTitle=""
         slider-id="slider-custom-{{ instance.id|default('1') }}">
     </salla-products-slider>
