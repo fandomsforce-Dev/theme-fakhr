@@ -854,40 +854,35 @@
     "path": "home.products-slider-custom",
     "fields": [
         {
-            "id": "block_title",
-            "type": "text",
-            "label": "العنوان الرئيسي",
-            "placeholder": "مثال: منتجات متحركة",
-            "required": true,
-            "value": "منتجات متحركة"
-        },
-        {
             "id": "mntgat_mthrkt_mkhsst",
             "type": "items",
             "format": "dropdown-list",
-            "label": "نوع المنتجات",
+            "label": "منتجات متحركة مخصصة",
+            "description": null,
+            "labelHTML": null,
             "icon": "sicon-keyboard_arrow_down",
-            "required": true,
+            "selected": [],
             "options": [
                 {
                     "label": "أحدث المنتجات",
                     "value": "latest",
-                    "key": "opt-latest"
+                    "key": "f2821ed9-a81d-4f7a-a91d-85cfbfe5f41b"
                 },
                 {
                     "label": "الأكثر مبيعاً",
                     "value": "best-seller",
-                    "key": "opt-best-seller"
+                    "key": "77dd2d06-a59d-4cc9-b52e-232b037910be"
                 },
                 {
                     "label": "منتجات من تصنيف",
                     "value": "category",
-                    "key": "opt-category"
+                    "key": "0ca77b93-265a-4680-a6f8-e5f6936991d7"
                 }
             ],
             "source": "Manual",
             "multichoice": false,
             "searchable": false,
+            "required": true,
             "value": []
         },
         {
@@ -896,20 +891,21 @@
             "format": "dropdown-list",
             "label": "عدد المنتجات",
             "icon": "sicon-keyboard_arrow_down",
-            "required": false,
+            "selected": [],
             "options": [
-                { "label": "4", "value": "4", "key": "num-4" },
-                { "label": "8", "value": "8", "key": "num-8" },
-                { "label": "12", "value": "12", "key": "num-12" },
-                { "label": "16", "value": "16", "key": "num-16" },
-                { "label": "20", "value": "20", "key": "num-20" },
-                { "label": "24", "value": "24", "key": "num-24" },
-                { "label": "28", "value": "28", "key": "num-28" },
-                { "label": "32", "value": "32", "key": "num-32" }
+                { "label": "4", "value": "4", "key": "limit-4" },
+                { "label": "8", "value": "8", "key": "limit-8" },
+                { "label": "12", "value": "12", "key": "limit-12" },
+                { "label": "16", "value": "16", "key": "limit-16" },
+                { "label": "20", "value": "20", "key": "limit-20" },
+                { "label": "24", "value": "24", "key": "limit-24" },
+                { "label": "28", "value": "28", "key": "limit-28" },
+                { "label": "32", "value": "32", "key": "limit-32" }
             ],
             "source": "Manual",
             "multichoice": false,
             "searchable": false,
+            "required": false,
             "value": []
         }
     ]
