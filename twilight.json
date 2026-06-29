@@ -887,11 +887,10 @@
         },
         {
             "id": "products_limit",
-            "type": "range",
+            "type": "number",
             "label": "عدد المنتجات",
-            "min": 4,
-            "max": 32,
-            "step": 1,
+            "placeholder": "من 4 إلى 32",
+            "required": false,
             "value": 4
         }
     ]
