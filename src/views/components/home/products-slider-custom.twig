@@ -4,44 +4,26 @@
 | instance.settings   | object    | يحتوي على الإعدادات التي يتم اختيارها من لوحة التحكم          |
 #}
 
-{# 🎯 1. تنقية القيمة الملتقطة من حقل نوع المنتجات لضمان قراءتها بنجاح #}
+{# 🎯 1. تنقية القيمة الملتقطة من حقل نوع المنتجات #}
 {% set raw_value = instance.settings.mntgat_mthrkt_mkhsst %}
 {% set display_type = raw_value.value|default(raw_value)|default('latest') %}
 
-<section class="s-block container mt-6 sm:mt-8">
+{# 🎯 2. تحديد مصدر المنتجات بناءً على خيار التاجر #}
+{# إذا اختار التاجر تصنيف، نمرر المعرف للحقل الثاني، وإلا نمرر display_type مباشرة (latest أو best_seller) #}
+{% set slider_source = (display_type == 'category') ? 'category' : display_type %}
+{% set source_value = (display_type == 'category') ? instance.settings.selected_category : '' %}
+
+<section id="custom-products-slider-block" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
-    {# عنوان القسم الرئيسي للمكون #}
-    <div class="s-block__title mb-6">
-        <h2>{{ instance.settings.title|default('منتجات متحركة مخصصة') }}</h2>
-    </div>
-
-    {# 🎯 2. فحص الخيارات وعرض المنتجات بناءً عليها #}
-    {% if display_type == 'category' %}
-        
-        {# إذا اختار التاجر "منتجات من تصنيف" نمرر معرف التصنيف المختار من الحقل الثاني #}
-        {% if instance.settings.selected_category %}
-            <salla-products-list 
-                source="category" 
-                source-value="{{ instance.settings.selected_category }}">
-            </salla-products-list>
-        {% else %}
-            {# رسالة تنبيهية تظهر للتاجر في المعاينة لتذكيره باختيار قسم #}
-            <div class="text-center py-12 text-gray-400 border border-dashed border-gray-200 rounded-lg">
-                <i class="sicon-box block text-3xl mb-2"></i>
-                يرجى اختيار التصنيف من القائمة المنسدلة ليتم عرض منتجاته هنا.
-            </div>
-        {% endif %}
-
-    {% elseif display_type == 'best-seller' or display_type == 'best_seller' %}
-        
-        {# جلب المنتجات الأكثر مبيعاً بالتسمية البرمجية الصحيحة لسلة #}
-        <salla-products-list source="best_seller"></salla-products-list>
-
-    {% else %}
-        
-        {# العرض الافتراضي: أحدث المنتجات #}
-        <salla-products-list source="latest"></salla-products-list>
-
-    {% endif %}
+    {# استدعاء الـ Slider الرسمي من سلة وتمرير الإعدادات ديناميكياً #}
+    <salla-products-slider
+        source="{{ slider_source }}"
+        source-value="{{ source_value }}"
+        limit="10"
+        autoplay
+        block-title="{{ instance.settings.title|default('منتجات متحركة مخصصة') }}"
+        block-subTitle=""
+        slider-id="slider-custom-{{ instance.id|default('1') }}">
+    </salla-products-slider>
 
 </section>
