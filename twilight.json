@@ -854,12 +854,18 @@
     "path": "home.products-slider-custom",
     "fields": [
         {
+            "id": "title",
+            "type": "text",
+            "label": "العنوان الرئيسي",
+            "placeholder": "مثال: منتجات متحركة",
+            "required": true,
+            "value": "منتجات متحركة"
+        },
+        {
             "id": "mntgat_mthrkt_mkhsst",
             "type": "items",
             "format": "dropdown-list",
-            "label": "منتجات متحركة مخصصة",
-            "description": null,
-            "labelHTML": null,
+            "label": "نوع المنتجات",
             "icon": "sicon-keyboard_arrow_down",
             "selected": [],
             "options": [
