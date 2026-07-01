@@ -1,31 +1,29 @@
 {#
-| Variable           | Type      | Description                                                   |
-|---------------------|-----------|----------------------------------------------------------------|
-| instance.fields     | object    | الحقول المباشرة المربوطة بلوحة تحكم التطوير                    |
+| Variable               | Type      | Description                                                      |
+|-----------------------|-----------|------------------------------------------------------------------|
+| products.source       | string    |                                                                  |
+| products.source_value | ?int[]    | ids of sources (product_ids, categories_ids, brands_id..etc)     |
+| title                 | string    | Section title (العنوان الافتراضي القادم من الثيم)                   |
+| display_all_url       | ?string   | If it's existed, mean should show load more link to this url      |
+| position              | Int       | Sorting number start from zero                                   |
+| limit                 | int       | Number of products to be shown                                   |
+| instance.fields       | object    | حقولك المخصصة التي تضيفها من لوحة تحكم سلة للمطورين             |
 #}
 
-{# 1. جلب العنوان المخصص الجديد أو استخدام عنوان افتراضي #}
-{% set final_title = instance.fields.custom_section_title.value|default('منتجات متحركة مخصصة') %}
+{# 🎯 الحل السحري: فحص لوحة التحكم أولاً، إذا كانت فارغة نستخدم العنوان الافتراضي للمكون #}
+{% set final_title = instance.fields.custom_section_title.value|default(title) %}
 
-{# 2. جلب قيم المصدر والعدد من الحقول الشغالة عندك #}
-{% set slider_source = instance.fields.mntgat_mthrkt_mkhsst.value|default('latest') %}
-{% set limit_value = instance.fields.products_limit.value|default(8) %}
-
-<section id="custom-best-offers-slider" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
-    
-    {# 🎯 طباعة العنوان يدوياً بكلاسات سلة الرسمية لضمان ظهوره وتغييره فوراً #}
-    <div class="s-slider-block__title mb-4 flex justify-between items-center">
-        <div class="s-slider-block__title-right">
-            <h2 class="text-xl font-bold text-gray-800">{{ final_title }}</h2>
-        </div>
-    </div>
-
-    {# استدعاء السلايدر بدون خاصية block-title المكسورة #}
+<section id="best-offers-{{ position }}-slider" class="s-block s-block--best-offers container overflow-hidden">
+  {% if products|length %}
     <salla-products-slider
-        source="{{ slider_source }}"
-        limit="{{ limit_value }}"
-        autoplay
-        slider-id="slider-custom-{{ instance.id|default('1') }}">
-    </salla-products-slider>
-
+            source="{{ products.source }}"
+            limit="{{ limit }}"
+            autoplay
+            source-value="{{ products.source_value|json_encode }}"
+            display-all-url="{{ display_all_url }}"
+            block-title="{{ final_title }}"
+            block-subTitle="{{ sub_title|raw }}"
+            slider-id="slider-with-bg-{{ position }}"
+    ></salla-products-slider>
+  {% endif %}
 </section>
