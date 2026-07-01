@@ -12,15 +12,15 @@
 {% set slider_source = (display_type == 'category') ? 'category' : display_type %}
 {% set source_value = (display_type == 'category') ? instance.settings.selected_category : '' %}
 
-{# 🎯 3. التقاط عدد المنتجات ديناميكياً من حقل المنسدلة المخصص (من 4 إلى 32) #}
+{# 🎯 3. التقاط عدد المنتجات ديناميكياً من حقل المنسدلة #}
 {% set limit_value = instance.settings.products_limit.value|default(instance.settings.products_limit)|default(4) %}
 
-{# 🎯 4. جلب النص المكتوب في حقل العنوان الرئيسي المعتمد بـ الـ JSON #}
-{% set block_title = instance.settings.section_title|default('منتجات متحركة مخصصة') %}
+{# 🎯 4. الحل الفوري: التقاط العنوان المكتوب مع دعم قيم لوحة التحكم المتعددة #}
+{% set block_title = instance.settings.section_title.value|default(instance.settings.section_title)|default('منتجات متحركة مخصصة') %}
 
 <section id="custom-products-slider-block" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
-    {# استدعاء الـ Slider الرسمي من سلة وتمرير الإعدادات ديناميكياً #}
+    {# استدعاء الـ Slider وتمرير العنوان الجديد ديناميكياً #}
     <salla-products-slider
         source="{{ slider_source }}"
         source-value="{{ source_value }}"
