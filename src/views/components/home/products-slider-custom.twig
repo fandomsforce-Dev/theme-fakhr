@@ -1,29 +1,35 @@
 {#
-| Variable               | Type      | Description                                                      |
-|-----------------------|-----------|------------------------------------------------------------------|
-| products.source       | string    |                                                                  |
-| products.source_value | ?int[]    | ids of sources (product_ids, categories_ids, brands_id..etc)     |
-| title                 | string    | Section title (العنوان الافتراضي القادم من الثيم)                   |
-| display_all_url       | ?string   | If it's existed, mean should show load more link to this url      |
-| position              | Int       | Sorting number start from zero                                   |
-| limit                 | int       | Number of products to be shown                                   |
-| instance.fields       | object    | حقولك المخصصة التي تضيفها من لوحة تحكم سلة للمطورين             |
+| Variable           | Type      | Description                                                   |
+|---------------------|-----------|----------------------------------------------------------------|
+| instance.fields     | object    | الحقول المباشرة المعرفة داخل ملف الـ JSON المحدث              |
 #}
 
-{# 🎯 الحل السحري: فحص لوحة التحكم أولاً، إذا كانت فارغة نستخدم العنوان الافتراضي للمكون #}
-{% set final_title = instance.fields.custom_section_title|default(title) %}
+{# 🎯 1. التقاط عنوان القسم المكتوب #}
+{% set block_title = instance.fields.custom_section_title.value|default('منتجات متحركة مخصصة') %}
 
-<section id="best-offers-{{ position }}-slider" class="s-block s-block--best-offers container overflow-hidden">
-  {% if products|length %}
+{# 🎯 2. تنقية واستخراج قيمة نوع المنتجات #}
+{% set raw_source = instance.fields.mntgat_mthrkt_mkhsst.value %}
+{% set slider_source = raw_source.value|default(raw_source is iterable ? raw_source[0].value|default(raw_source[0]) : raw_source)|default('latest') %}
+
+{# 🎯 3. تنقية واستخراج قيمة عدد المنتجات #}
+{% set raw_limit = instance.fields.products_limit.value %}
+{% set limit_value = raw_limit.value|default(raw_limit is iterable ? raw_limit[0].value|default(raw_limit[0]) : raw_limit)|default('8') %}
+
+<section class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
+    
+    {# طباعة العنوان برمجياً لتجنب مشاكل الـ Web Component الخاص بسلة #}
+    <div class="s-slider-block__title mb-4 flex justify-between items-center">
+        <div class="s-slider-block__title-right">
+            <h2 class="text-xl font-bold text-gray-800">{{ block_title }}</h2>
+        </div>
+    </div>
+
+    {# استدعاء السلايدر بتمرير القيم النظيفة #}
     <salla-products-slider
-            source="{{ products.source }}"
-            limit="{{ limit }}"
-            autoplay
-            source-value="{{ products.source_value|json_encode }}"
-            display-all-url="{{ display_all_url }}"
-            block-title="{{ final_title }}"
-            block-subTitle="{{ sub_title|raw }}"
-            slider-id="slider-with-bg-{{ position }}"
-    ></salla-products-slider>
-  {% endif %}
+        source="{{ slider_source }}"
+        limit="{{ limit_value }}"
+        autoplay
+        slider-id="slider-custom-pure-{{ instance.id|default('100') }}">
+    </salla-products-slider>
+
 </section>
