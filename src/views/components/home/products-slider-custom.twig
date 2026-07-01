@@ -4,32 +4,30 @@
 | instance.fields     | object    | الحقول المباشرة المعرفة داخل ملف الـ JSON المحدث              |
 #}
 
-{# 🎯 1. التقاط عنوان القسم المكتوب #}
+{# 1. التقاط عنوان القسم المكتب من لوحة التحكم #}
 {% set block_title = instance.fields.custom_section_title.value|default('منتجات متحركة مخصصة') %}
 
-{# 🎯 2. تنقية واستخراج قيمة نوع المنتجات #}
+{# 2. تنقية واستخراج قيمة نوع المنتجات #}
 {% set raw_source = instance.fields.mntgat_mthrkt_mkhsst.value %}
 {% set slider_source = raw_source.value|default(raw_source is iterable ? raw_source[0].value|default(raw_source[0]) : raw_source)|default('latest') %}
 
-{# 🎯 3. تنقية واستخراج قيمة عدد المنتجات #}
+{# 3. تنقية واستخراج قيمة عدد المنتجات #}
 {% set raw_limit = instance.fields.products_limit.value %}
 {% set limit_value = raw_limit.value|default(raw_limit is iterable ? raw_limit[0].value|default(raw_limit[0]) : raw_limit)|default('8') %}
 
 <section class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
-    
-    {# طباعة العنوان برمجياً لتجنب مشاكل الـ Web Component الخاص بسلة #}
-    <div class="s-slider-block__title mb-4 flex justify-between items-center">
-        <div class="s-slider-block__title-right">
-            <h2 class="text-xl font-bold text-gray-800">{{ block_title }}</h2>
-        </div>
-    </div>
 
-    {# استدعاء السلايدر بتمرير القيم النظيفة #}
+    {# 
+       🎯 تمرير العنوان داخل block-title مباشرة
+       🎯 تغيير الـ slider-id وضبطه ديناميكياً بـ instance.id مهم جداً لكسر كاش سلة ومزامنة النص الحقيقي
+    #}
     <salla-products-slider
         source="{{ slider_source }}"
         limit="{{ limit_value }}"
         autoplay
-        slider-id="slider-custom-pure-{{ instance.id|default('100') }}">
+        block-title="{{ block_title }}"
+        block-subTitle=""
+        slider-id="slider-final-v1-{{ instance.id|default('custom') }}">
     </salla-products-slider>
 
 </section>
