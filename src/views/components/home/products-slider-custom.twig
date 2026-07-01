@@ -1,29 +1,26 @@
 {#
-| Variable               | Type      | Description                                                      |
-|-----------------------|-----------|------------------------------------------------------------------|
-| products.source       | string    |                                                                  |
-| products.source_value | ?int[]    | ids of sources (product_ids, categories_ids, brands_id..etc)     |
-| title                 | string    | Section title (العنوان الافتراضي القادم من الثيم)                   |
-| display_all_url       | ?string   | If it's existed, mean should show load more link to this url      |
-| position              | Int       | Sorting number start from zero                                   |
-| limit                 | int       | Number of products to be shown                                   |
-| instance.fields       | object    | حقولك المخصصة التي تضيفها من لوحة تحكم سلة للمطورين             |
+| Variable           | Type      | Description                                                   |
+|---------------------|-----------|----------------------------------------------------------------|
+| instance.fields     | object    | الحقول المباشرة المربوطة بلوحة تحكم التطوير                    |
 #}
 
-{# 🎯 الحل السحري: فحص لوحة التحكم أولاً، إذا كانت فارغة نستخدم العنوان الافتراضي للمكون #}
-{% set final_title = instance.fields.custom_section_title.value|default(title) %}
+{# 1. جلب العنوان المخصص الجديد أو استخدام عنوان افتراضي #}
+{% set final_title = instance.fields.custom_section_title.value|default('منتجات متحركة مخصصة') %}
 
-<section id="best-offers-{{ position }}-slider" class="s-block s-block--best-offers container overflow-hidden">
-  {% if products|length %}
+{# 2. جلب قيم المصدر والعدد من الحقول الشغالة عندك #}
+{% set slider_source = instance.fields.mntgat_mthrkt_mkhsst.value|default('latest') %}
+{% set limit_value = instance.fields.products_limit.value|default(8) %}
+
+<section id="custom-best-offers-slider" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
+    
+    {# استدعاء المكون وتمرير الحقول التي يتحكم بها التاجر مباشرة #}
     <salla-products-slider
-            source="{{ products.source }}"
-            limit="{{ limit }}"
-            autoplay
-            source-value="{{ products.source_value|json_encode }}"
-            display-all-url="{{ display_all_url }}"
-            block-title="{{ final_title }}"
-            block-subTitle="{{ sub_title|raw }}"
-            slider-id="slider-with-bg-{{ position }}"
-    ></salla-products-slider>
-  {% endif %}
+        source="{{ slider_source }}"
+        limit="{{ limit_value }}"
+        autoplay
+        block-title="{{ final_title }}"
+        block-subTitle=""
+        slider-id="slider-custom-{{ instance.id|default('1') }}">
+    </salla-products-slider>
+
 </section>
