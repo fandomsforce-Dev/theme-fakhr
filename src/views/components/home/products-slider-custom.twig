@@ -11,7 +11,7 @@
 #}
 
 {# 🎯 الحل السحري: فحص لوحة التحكم أولاً، إذا كانت فارغة نستخدم العنوان الافتراضي للمكون #}
-{% set final_title = instance.fields.custom_section_title.value|default(title) %}
+{% set final_title = instance.fields.custom_section_title|default(title) %}
 
 <section id="best-offers-{{ position }}-slider" class="s-block s-block--best-offers container overflow-hidden">
   {% if products|length %}
