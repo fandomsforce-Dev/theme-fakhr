@@ -1,32 +1,33 @@
 {#
 | Variable           | Type      | Description                                                   |
 |---------------------|-----------|----------------------------------------------------------------|
-| instance.settings   | object    | يحتوي على الإعدادات التي يتم اختيارها من لوحة التحكم          |
+| instance.fields     | object    | يحتوي على الحقول المباشرة المعرفة للمكون                     |
+| instance.settings   | object    | يحتوي على الإعدادات العامة                                    |
 #}
 
 {# 🎯 1. تنقية القيمة الملتقطة من حقل نوع المنتجات #}
-{% set raw_value = instance.settings.mntgat_mthrkt_mkhsst %}
+{% set raw_value = instance.fields.mntgat_mthrkt_mkhsst.value|default(instance.settings.mntgat_mthrkt_mkhsst) %}
 {% set display_type = raw_value.value|default(raw_value)|default('latest') %}
 
 {# 🎯 2. تحديد مصدر المنتجات بناءً على خيار التاجر #}
 {% set slider_source = (display_type == 'category') ? 'category' : display_type %}
-{% set source_value = (display_type == 'category') ? instance.settings.selected_category : '' %}
+{% set source_value = (display_type == 'category') ? instance.fields.selected_category.value|default(instance.settings.selected_category) : '' %}
 
-{# 🎯 3. التقاط عدد المنتجات ديناميكياً من حقل المنسدلة #}
-{% set limit_value = instance.settings.products_limit.value|default(instance.settings.products_limit)|default(4) %}
+{# 🎯 3. التقاط عدد المنتجات ديناميكياً #}
+{% set limit_value = instance.fields.products_limit.value|default(instance.settings.products_limit)|default(4) %}
 
-{# 🎯 4. استخراج النص المكتوب بدعم كود اللغة لضمان عدم كسر السلايدر #}
-{% set block_title = instance.settings.section_title.ar|default(instance.settings.section_title.value)|default(instance.settings.section_title)|default('منتجات متحركة مخصصة') %}
+{# 🎯 4. الحل الحاسم: فحص حقل الـ fields أولاً ثم الـ settings لطباعة العنوان المكتوب #}
+{% set block_title = instance.fields.section_title.value|default(instance.settings.section_title)|default('منتجات متحركة مخصصة') %}
 
 <section id="custom-products-slider-block" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
-    {# استدعاء الـ Slider وتمرير العنوان الجديد ديناميكياً #}
+    {# استدعاء الـ Slider وتمرير العنوان المكتوب #}
     <salla-products-slider
         source="{{ slider_source }}"
         source-value="{{ source_value }}"
         limit="{{ limit_value }}"
         autoplay
-        block-title="{{ block_title|raw }}"
+        block-title="{{ block_title }}"
         block-subTitle=""
         slider-id="slider-custom-{{ instance.id|default('1') }}">
     </salla-products-slider>
