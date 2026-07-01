@@ -854,21 +854,6 @@
             "path": "home.products-slider-custom",
             "fields": [
                 {
-                    "id": "section_title",
-                    "type": "string",
-                    "format": "text",
-                    "label": "عنوان رئيسي",
-                    "description": null,
-                    "labelHTML": null,
-                    "placeholder": "Placeholder text ..",
-                    "icon": "sicon-format-text-alt",
-                    "value": null,
-                    "multilanguage": false,
-                    "required": false,
-                    "minLength": "5",
-                    "maxLength": 30
-                },
-                {
                     "id": "mntgat_mthrkt_mkhsst",
                     "type": "items",
                     "format": "dropdown-list",
