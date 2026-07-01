@@ -1,33 +1,26 @@
 {#
 | Variable           | Type      | Description                                                   |
 |---------------------|-----------|----------------------------------------------------------------|
-| instance.fields     | object    | الحقول المباشرة المعرفة داخل ملف الـ JSON المحدث              |
+| instance.fields     | object    | يحتوي على الحقول المباشرة المعرفة للمكون                     |
+| instance.settings   | object    | يحتوي على الإعدادات العامة                                    |
 #}
 
-{# 1. التقاط عنوان القسم المكتب من لوحة التحكم #}
-{% set block_title = instance.fields.custom_section_title.value|default('منتجات متحركة مخصصة') %}
+{# 🎯 الطريقة القياسية المباشرة لطباعة الحقل النصي حسب الدوكيومنتيش #}
+{% set block_title = instance.fields.custom_section_title.value|default(instance.fields.custom_section_title)|default(instance.settings.custom_section_title)|default('منتجات متحركة مخصصة') %}
 
-{# 2. تنقية واستخراج قيمة نوع المنتجات #}
-{% set raw_source = instance.fields.mntgat_mthrkt_mkhsst.value %}
-{% set slider_source = raw_source.value|default(raw_source is iterable ? raw_source[0].value|default(raw_source[0]) : raw_source)|default('latest') %}
-
-{# 3. تنقية واستخراج قيمة عدد المنتجات #}
-{% set raw_limit = instance.fields.products_limit.value %}
-{% set limit_value = raw_limit.value|default(raw_limit is iterable ? raw_limit[0].value|default(raw_limit[0]) : raw_limit)|default('8') %}
+{# جلب المصدر والعدد المستقرين عندك #}
+{% set slider_source = instance.fields.mntgat_mthrkt_mkhsst.value|default('latest') %}
+{% set limit_value = instance.fields.products_limit.value|default(4) %}
 
 <section class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
 
-    {# 
-       🎯 تمرير العنوان داخل block-title مباشرة
-       🎯 تغيير الـ slider-id وضبطه ديناميكياً بـ instance.id مهم جداً لكسر كاش سلة ومزامنة النص الحقيقي
-    #}
     <salla-products-slider
         source="{{ slider_source }}"
         limit="{{ limit_value }}"
         autoplay
         block-title="{{ block_title }}"
         block-subTitle=""
-        slider-id="slider-final-v1-{{ instance.id|default('custom') }}">
+        slider-id="slider-final-pure-{{ instance.id|default('custom') }}">
     </salla-products-slider>
 
 </section>
