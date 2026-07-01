@@ -15,18 +15,15 @@
 {# 🎯 3. التقاط عدد المنتجات ديناميكياً من حقل المنسدلة #}
 {% set limit_value = instance.settings.products_limit.value|default(instance.settings.products_limit)|default(4) %}
 
-{# 🎯 4. الحل الفوري: التقاط العنوان المكتوب مع دعم قيم لوحة التحكم المتعددة #}
-{% set block_title = instance.settings.section_title.value|default(instance.settings.section_title)|default('منتجات متحركة مخصصة') %}
-
 <section id="custom-products-slider-block" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
-    {# استدعاء الـ Slider وتمرير العنوان الجديد ديناميكياً #}
+    {# استدعاء الـ Slider وتمرير حقل العنوان المخصص مباشرة دون وسيط #}
     <salla-products-slider
         source="{{ slider_source }}"
         source-value="{{ source_value }}"
         limit="{{ limit_value }}"
         autoplay
-        block-title="{{ block_title }}"
+        block-title="{{ instance.settings.section_title }}"
         block-subTitle=""
         slider-id="slider-custom-{{ instance.id|default('1') }}">
     </salla-products-slider>
