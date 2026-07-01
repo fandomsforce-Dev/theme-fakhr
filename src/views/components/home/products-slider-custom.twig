@@ -1,17 +1,11 @@
 {#
 | Variable           | Type      | Description                                                   |
 |---------------------|-----------|----------------------------------------------------------------|
-| instance.fields     | object    | الحقول المباشرة المعرفة داخل ملف الـ JSON                     |
+| instance.fields     | object    | الحقول المباشرة المعرفة داخل ملف الـ JSON المحدث              |
 #}
 
-{# 🎯 الحل الحاسم للعنوان: فحص إذا كان الحقل مصفوفة لغات (كائن) أو نصاً مباشراً #}
-{% set raw_title = instance.fields.custom_section_title.value %}
-{% if raw_title is iterable %}
-    {# جلب لغة المتجر الحالية المفتوحة (عربي أو إنجليزي) #}
-    {% set block_title = raw_title[app.current_language]|default(raw_title.ar)|default(raw_title.en)|default('منتجات متحركة مخصصة') %}
-{% else %}
-    {% set block_title = raw_title|default('منتجات متحركة مخصصة') %}
-{% endif %}
+{# 1. التقاط عنوان القسم المكتب من لوحة التحكم #}
+{% set block_title = instance.fields.custom_section_title.value|default('منتجات متحركة مخصصة') %}
 
 {# 2. تنقية واستخراج قيمة نوع المنتجات #}
 {% set raw_source = instance.fields.mntgat_mthrkt_mkhsst.value %}
@@ -19,17 +13,21 @@
 
 {# 3. تنقية واستخراج قيمة عدد المنتجات #}
 {% set raw_limit = instance.fields.products_limit.value %}
-{% set limit_value = raw_limit.value|default(raw_limit is iterable ? raw_limit[0].value|default(raw_limit[0]) : raw_limit)|default('4') %}
+{% set limit_value = raw_limit.value|default(raw_limit is iterable ? raw_limit[0].value|default(raw_limit[0]) : raw_limit)|default('8') %}
 
 <section class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
 
+    {# 
+       🎯 تمرير العنوان داخل block-title مباشرة
+       🎯 تغيير الـ slider-id وضبطه ديناميكياً بـ instance.id مهم جداً لكسر كاش سلة ومزامنة النص الحقيقي
+    #}
     <salla-products-slider
         source="{{ slider_source }}"
         limit="{{ limit_value }}"
         autoplay
         block-title="{{ block_title }}"
         block-subTitle=""
-        slider-id="slider-final-v2-{{ instance.id|default('custom') }}">
+        slider-id="slider-final-v1-{{ instance.id|default('custom') }}">
     </salla-products-slider>
 
 </section>
