@@ -15,15 +15,18 @@
 {# 🎯 3. التقاط عدد المنتجات ديناميكياً من حقل المنسدلة #}
 {% set limit_value = instance.settings.products_limit.value|default(instance.settings.products_limit)|default(4) %}
 
+{# 🎯 4. استخراج النص المكتوب بدعم كود اللغة لضمان عدم كسر السلايدر #}
+{% set block_title = instance.settings.section_title.ar|default(instance.settings.section_title.value)|default(instance.settings.section_title)|default('منتجات متحركة مخصصة') %}
+
 <section id="custom-products-slider-block" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
-    {# استدعاء الـ Slider وتمرير حقل العنوان المخصص مباشرة دون وسيط #}
+    {# استدعاء الـ Slider وتمرير العنوان الجديد ديناميكياً #}
     <salla-products-slider
         source="{{ slider_source }}"
         source-value="{{ source_value }}"
         limit="{{ limit_value }}"
         autoplay
-        block-title="{{ instance.settings.section_title }}"
+        block-title="{{ block_title|raw }}"
         block-subTitle=""
         slider-id="slider-custom-{{ instance.id|default('1') }}">
     </salla-products-slider>
