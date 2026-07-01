@@ -5,23 +5,34 @@
 | instance.settings   | object    | يحتوي على الإعدادات العامة                                    |
 #}
 
-{# 🎯 1. تنقية القيمة الملتقطة من حقل نوع المنتجات #}
+{# 🎯 1. تنقية القيمة الملتقطة من حقل نوع المنتجات من الـ fields #}
 {% set raw_value = instance.fields.mntgat_mthrkt_mkhsst.value|default(instance.settings.mntgat_mthrkt_mkhsst) %}
-{% set display_type = raw_value.value|default(raw_value)|default('latest') %}
+
+{# معالجة القيمة المحددة من القائمة المنسدلة لضمان استخراج النص الصريح #}
+{% if raw_value is iterable and raw_value|length > 0 %}
+    {% set display_type = raw_value[0].value|default(raw_value[0]) %}
+{% else %}
+    {% set display_type = raw_value.value|default(raw_value)|default('latest') %}
+{% endif %}
 
 {# 🎯 2. تحديد مصدر المنتجات بناءً على خيار التاجر #}
 {% set slider_source = (display_type == 'category') ? 'category' : display_type %}
 {% set source_value = (display_type == 'category') ? instance.fields.selected_category.value|default(instance.settings.selected_category) : '' %}
 
-{# 🎯 3. التقاط عدد المنتجات ديناميكياً #}
-{% set limit_value = instance.fields.products_limit.value|default(instance.settings.products_limit)|default(4) %}
+{# 🎯 3. التقاط عدد المنتجات ديناميكياً من الـ fields #}
+{% set raw_limit = instance.fields.products_limit.value|default(instance.settings.products_limit) %}
+{% if raw_limit is iterable and raw_limit|length > 0 %}
+    {% set limit_value = raw_limit[0].value|default(raw_limit[0]) %}
+{% else %}
+    {% set limit_value = raw_limit.value|default(raw_limit)|default(4) %}
+{% endif %}
 
-{# 🎯 4. الحل الحاسم: فحص حقل الـ fields أولاً ثم الـ settings لطباعة العنوان المكتوب #}
+{# 🎯 4. الحل الحاسم للعنوان: قراءة القيمة النصية مباشرة من حقل الـ fields مع مسار احتياطي #}
 {% set block_title = instance.fields.section_title.value|default(instance.settings.section_title)|default('منتجات متحركة مخصصة') %}
 
 <section id="custom-products-slider-block" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
-    {# استدعاء الـ Slider وتمرير العنوان المكتوب #}
+    {# استدعاء الـ Slider وتمرير القيم المحددة ديناميكياً #}
     <salla-products-slider
         source="{{ slider_source }}"
         source-value="{{ source_value }}"
