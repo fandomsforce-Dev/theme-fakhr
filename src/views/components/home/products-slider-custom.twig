@@ -13,13 +13,18 @@
 
 <section id="custom-best-offers-slider" class="s-block s-block--best-offers container overflow-hidden mt-6 sm:mt-8">
     
-    {# استدعاء المكون وتمرير الحقول التي يتحكم بها التاجر مباشرة #}
+    {# 🎯 طباعة العنوان يدوياً بكلاسات سلة الرسمية لضمان ظهوره وتغييره فوراً #}
+    <div class="s-slider-block__title mb-4 flex justify-between items-center">
+        <div class="s-slider-block__title-right">
+            <h2 class="text-xl font-bold text-gray-800">{{ final_title }}</h2>
+        </div>
+    </div>
+
+    {# استدعاء السلايدر بدون خاصية block-title المكسورة #}
     <salla-products-slider
         source="{{ slider_source }}"
         limit="{{ limit_value }}"
         autoplay
-        block-title="{{ final_title }}"
-        block-subTitle=""
         slider-id="slider-custom-{{ instance.id|default('1') }}">
     </salla-products-slider>
 
